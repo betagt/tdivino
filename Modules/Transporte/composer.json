@@ -1,0 +1,17 @@
+{
+    "name": "betagt/transporte",
+    "description": "",
+    "license": "MIT",
+    "type": "laravel-module",
+    "authors": [
+        {
+            "name": "diuliano oliveira",
+            "email": "diuliano0@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Modules\\Transporte\\": ""
+        }
+    }
+}

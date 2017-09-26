@@ -1,0 +1,16 @@
+{
+    "name": "Transporte",
+    "alias": "transporte",
+    "description": "",
+    "keywords": [],
+    "active": 1,
+    "order": 0,
+    "providers": [
+        "Modules\\Transporte\\Providers\\TransporteServiceProvider"
+    ],
+    "aliases": {},
+    "files": [
+        "start.php"
+    ],
+    "requires": []
+}

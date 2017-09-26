@@ -1,0 +1,3570 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>API Reference</title>
+
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="js/all.js"></script>
+
+
+          <script>
+        $(function() {
+            setupLanguages(["bash","javascript"]);
+        });
+      </script>
+      </head>
+
+  <body class="">
+    <a href="#" id="nav-button">
+      <span>
+        NAV
+        <img src="images/navbar.png" />
+      </span>
+    </a>
+    <div class="tocify-wrapper">
+        <img src="images/logo.png" />
+                    <div class="lang-selector">
+                                  <a href="#" data-language-name="bash">bash</a>
+                                  <a href="#" data-language-name="javascript">javascript</a>
+                            </div>
+                            <div class="search">
+              <input type="text" class="search" id="input-search" placeholder="Search">
+            </div>
+            <ul class="search-results"></ul>
+              <div id="toc">
+      </div>
+                    <ul class="toc-footer">
+                                  <li><a href='http://github.com/mpociot/documentarian'>Documentation Powered by Documentarian</a></li>
+                            </ul>
+            </div>
+    <div class="page-wrapper">
+      <div class="dark-box"></div>
+      <div class="content">
+          <!-- START_INFO -->
+<h1>Informação</h1>
+<p>Bem vindo a documentação da API do Portal Qimob.</p>
+<!-- END_INFO -->
+<h1>API Client Token - Backend</h1>
+<p>Essa API é responsável pelo gerenciamento dos tokens no portal qImob.
+Os próximos tópicos apresentara os endpoints de Consulta, Cadastro, Edição e Deleção.</p>
+<!-- START_b01e9d0351c8ba4161e07df3a37bda7f -->
+<h2>Remover Client Token</h2>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/admin/client/api/revoke/{id}" \
+-H "Accept: application/json"</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/admin/client/api/revoke/{id}",
+    "method": "GET",
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<blockquote>
+<p>Example response:</p>
+</blockquote>
+<pre><code class="language-json">{
+    "error": "Unauthenticated."
+}</code></pre>
+<h3>HTTP Request</h3>
+<p><code>GET api/v1/admin/client/api/revoke/{id}</code></p>
+<p><code>HEAD api/v1/admin/client/api/revoke/{id}</code></p>
+<!-- END_b01e9d0351c8ba4161e07df3a37bda7f -->
+<!-- START_2c006597e91c1281150d4fda5ab40d9a -->
+<h2>Atualizar Client Token</h2>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/admin/client/api/update_token/{id}" \
+-H "Accept: application/json"</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/admin/client/api/update_token/{id}",
+    "method": "GET",
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<blockquote>
+<p>Example response:</p>
+</blockquote>
+<pre><code class="language-json">{
+    "error": "Unauthenticated."
+}</code></pre>
+<h3>HTTP Request</h3>
+<p><code>GET api/v1/admin/client/api/update_token/{id}</code></p>
+<p><code>HEAD api/v1/admin/client/api/update_token/{id}</code></p>
+<!-- END_2c006597e91c1281150d4fda5ab40d9a -->
+<!-- START_bf523de05dc23abfc7c69b824e6ba8b4 -->
+<h2>Cadastrar Client Token</h2>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/admin/client" \
+-H "Accept: application/json"</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/admin/client",
+    "method": "POST",
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<h3>HTTP Request</h3>
+<p><code>POST api/v1/admin/client</code></p>
+<!-- END_bf523de05dc23abfc7c69b824e6ba8b4 -->
+<!-- START_9d00c837fae0254e02b9039019776c6f -->
+<h2>Atualizar Client Token</h2>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/admin/client/{client}" \
+-H "Accept: application/json"</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/admin/client/{client}",
+    "method": "PUT",
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<h3>HTTP Request</h3>
+<p><code>PUT api/v1/admin/client/{client}</code></p>
+<p><code>PATCH api/v1/admin/client/{client}</code></p>
+<!-- END_9d00c837fae0254e02b9039019776c6f -->
+<!-- START_66600600f840ed827145748df69aab35 -->
+<h2>Deletar Client Token</h2>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/admin/client/{client}" \
+-H "Accept: application/json"</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/admin/client/{client}",
+    "method": "DELETE",
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<h3>HTTP Request</h3>
+<p><code>DELETE api/v1/admin/client/{client}</code></p>
+<!-- END_66600600f840ed827145748df69aab35 -->
+<h1>API Configuração - Backend</h1>
+<p>Essa API é responsável pelo gerenciamento da Configuração no portal qImob.
+Os próximos tópicos apresentara os endpoints de Consulta, Cadastro, Edição e Deleção.</p>
+<p>Class ConfiguracaoController</p>
+<!-- START_d804ef610c146f4729669d80fc22b573 -->
+<h2>Consulta Configuração</h2>
+<p>Endpoint para consulta registro</p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/admin/configuracao" \
+-H "Accept: application/json"</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/admin/configuracao",
+    "method": "GET",
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<blockquote>
+<p>Example response:</p>
+</blockquote>
+<pre><code class="language-json">{
+    "error": "Unauthenticated."
+}</code></pre>
+<h3>HTTP Request</h3>
+<p><code>GET api/v1/admin/configuracao</code></p>
+<p><code>HEAD api/v1/admin/configuracao</code></p>
+<!-- END_d804ef610c146f4729669d80fc22b573 -->
+<!-- START_58e4f40890e1182ae38f965358c951b4 -->
+<h2>Alterar Configuração</h2>
+<p>Endpoint para alterar configuração</p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/admin/configuracao" \
+-H "Accept: application/json" \
+    -d "titulo"="perspiciatis" \
+    -d "email"="malika72@example.com" \
+    -d "url_site"="http://www.rippin.biz/ab-et-tempore-unde-earum-ratione-dignissimos-sunt.html" \
+    -d "telefone"="perspiciatis" \
+    -d "horario_atendimento"="perspiciatis" \
+    -d "endereco"="perspiciatis" \
+    -d "rodape"="perspiciatis" \
+    -d "facebook"="perspiciatis" \
+    -d "twitter"="perspiciatis" \
+    -d "google_plus"="perspiciatis" \
+    -d "youtube"="perspiciatis" \
+    -d "instagram"="perspiciatis" \
+    -d "palavra_chave"="perspiciatis" \
+    -d "descricao_site"="perspiciatis" \
+    -d "og_tipo_app"="perspiciatis" \
+    -d "og_titulo_site"="perspiciatis" \
+    -d "od_url_site"="http://www.rippin.biz/ab-et-tempore-unde-earum-ratione-dignissimos-sunt.html" \
+    -d "od_autor_site"="perspiciatis" \
+    -d "facebook_id"="perspiciatis" \
+    -d "token"="perspiciatis" \
+    -d "analytcs_code"="73660" \
+</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/admin/configuracao",
+    "method": "PUT",
+    "data": {
+        "titulo": "perspiciatis",
+        "email": "malika72@example.com",
+        "url_site": "http:\/\/www.rippin.biz\/ab-et-tempore-unde-earum-ratione-dignissimos-sunt.html",
+        "telefone": "perspiciatis",
+        "horario_atendimento": "perspiciatis",
+        "endereco": "perspiciatis",
+        "rodape": "perspiciatis",
+        "facebook": "perspiciatis",
+        "twitter": "perspiciatis",
+        "google_plus": "perspiciatis",
+        "youtube": "perspiciatis",
+        "instagram": "perspiciatis",
+        "palavra_chave": "perspiciatis",
+        "descricao_site": "perspiciatis",
+        "og_tipo_app": "perspiciatis",
+        "og_titulo_site": "perspiciatis",
+        "od_url_site": "http:\/\/www.rippin.biz\/ab-et-tempore-unde-earum-ratione-dignissimos-sunt.html",
+        "od_autor_site": "perspiciatis",
+        "facebook_id": "perspiciatis",
+        "token": "perspiciatis",
+        "analytcs_code": 73660
+},
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<h3>HTTP Request</h3>
+<p><code>PUT api/v1/admin/configuracao</code></p>
+<h4>Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>titulo</td>
+<td>string</td>
+<td>required</td>
+<td>Maximum: <code>255</code></td>
+</tr>
+<tr>
+<td>email</td>
+<td>email</td>
+<td>required</td>
+</tr>
+<tr>
+<td>url_site</td>
+<td>url</td>
+<td>required</td>
+</tr>
+<tr>
+<td>telefone</td>
+<td>string</td>
+<td>required</td>
+<td>Maximum: <code>255</code></td>
+</tr>
+<tr>
+<td>horario_atendimento</td>
+<td>string</td>
+<td>required</td>
+<td>Maximum: <code>255</code></td>
+</tr>
+<tr>
+<td>endereco</td>
+<td>string</td>
+<td>required</td>
+<td>Maximum: <code>255</code></td>
+</tr>
+<tr>
+<td>rodape</td>
+<td>string</td>
+<td>required</td>
+<td>Maximum: <code>255</code></td>
+</tr>
+<tr>
+<td>facebook</td>
+<td>string</td>
+<td>required</td>
+<td>Maximum: <code>255</code></td>
+</tr>
+<tr>
+<td>twitter</td>
+<td>string</td>
+<td>required</td>
+<td>Maximum: <code>255</code></td>
+</tr>
+<tr>
+<td>google_plus</td>
+<td>string</td>
+<td>required</td>
+<td>Maximum: <code>255</code></td>
+</tr>
+<tr>
+<td>youtube</td>
+<td>string</td>
+<td>required</td>
+<td>Maximum: <code>255</code></td>
+</tr>
+<tr>
+<td>instagram</td>
+<td>string</td>
+<td>required</td>
+<td>Maximum: <code>255</code></td>
+</tr>
+<tr>
+<td>palavra_chave</td>
+<td>string</td>
+<td>required</td>
+<td>Maximum: <code>255</code></td>
+</tr>
+<tr>
+<td>descricao_site</td>
+<td>string</td>
+<td>required</td>
+<td>Maximum: <code>255</code></td>
+</tr>
+<tr>
+<td>og_tipo_app</td>
+<td>string</td>
+<td>required</td>
+<td>Maximum: <code>255</code></td>
+</tr>
+<tr>
+<td>og_titulo_site</td>
+<td>string</td>
+<td>required</td>
+<td>Maximum: <code>255</code></td>
+</tr>
+<tr>
+<td>od_url_site</td>
+<td>url</td>
+<td>required</td>
+</tr>
+<tr>
+<td>od_autor_site</td>
+<td>string</td>
+<td>required</td>
+<td>Maximum: <code>255</code></td>
+</tr>
+<tr>
+<td>facebook_id</td>
+<td>string</td>
+<td>required</td>
+<td>Maximum: <code>255</code></td>
+</tr>
+<tr>
+<td>token</td>
+<td>string</td>
+<td>required</td>
+<td>Maximum: <code>255</code></td>
+</tr>
+<tr>
+<td>analytcs_code</td>
+<td>integer</td>
+<td>required</td>
+</tr>
+</tbody>
+</table>
+<!-- END_58e4f40890e1182ae38f965358c951b4 -->
+<h1>API Permissão de Usuários - Backend</h1>
+<p>Essa API é responsável pelo gerenciamento de Permissão de Usuários no portal qImob.
+Os próximos tópicos apresenta os endpoints de Consulta, Cadastro, Edição e Deleção.</p>
+<!-- START_b689c6600d2e83d17dd5324be00f2a94 -->
+<h2>Revogar Permissões</h2>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/admin/permissao/revogar_permissoes/{id}" \
+-H "Accept: application/json"</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/admin/permissao/revogar_permissoes/{id}",
+    "method": "GET",
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<blockquote>
+<p>Example response:</p>
+</blockquote>
+<pre><code class="language-json">{
+    "error": "Unauthenticated."
+}</code></pre>
+<h3>HTTP Request</h3>
+<p><code>GET api/v1/admin/permissao/revogar_permissoes/{id}</code></p>
+<p><code>HEAD api/v1/admin/permissao/revogar_permissoes/{id}</code></p>
+<!-- END_b689c6600d2e83d17dd5324be00f2a94 -->
+<!-- START_02e86544aac787b55102c55e355e12d6 -->
+<h2>Listar todas permissões do grupo.</h2>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/admin/permissao/lista_de_permissao_regra/{id}" \
+-H "Accept: application/json"</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/admin/permissao/lista_de_permissao_regra/{id}",
+    "method": "GET",
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<blockquote>
+<p>Example response:</p>
+</blockquote>
+<pre><code class="language-json">{
+    "error": "Unauthenticated."
+}</code></pre>
+<h3>HTTP Request</h3>
+<p><code>GET api/v1/admin/permissao/lista_de_permissao_regra/{id}</code></p>
+<p><code>HEAD api/v1/admin/permissao/lista_de_permissao_regra/{id}</code></p>
+<!-- END_02e86544aac787b55102c55e355e12d6 -->
+<!-- START_15a1f06c3078d61af1a9daef8b0f17ae -->
+<h2>Listar todas permissões do usuário.</h2>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/admin/permissao/lista_de_permissao_usuario/{id}" \
+-H "Accept: application/json"</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/admin/permissao/lista_de_permissao_usuario/{id}",
+    "method": "GET",
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<blockquote>
+<p>Example response:</p>
+</blockquote>
+<pre><code class="language-json">{
+    "error": "Unauthenticated."
+}</code></pre>
+<h3>HTTP Request</h3>
+<p><code>GET api/v1/admin/permissao/lista_de_permissao_usuario/{id}</code></p>
+<p><code>HEAD api/v1/admin/permissao/lista_de_permissao_usuario/{id}</code></p>
+<!-- END_15a1f06c3078d61af1a9daef8b0f17ae -->
+<!-- START_b9cc6e6b079933ffce8473ba4b43c92c -->
+<h2>Listar tipos de permissões de requisições</h2>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/admin/permissao/list_slugs" \
+-H "Accept: application/json"</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/admin/permissao/list_slugs",
+    "method": "GET",
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<blockquote>
+<p>Example response:</p>
+</blockquote>
+<pre><code class="language-json">{
+    "error": "Unauthenticated."
+}</code></pre>
+<h3>HTTP Request</h3>
+<p><code>GET api/v1/admin/permissao/list_slugs</code></p>
+<p><code>HEAD api/v1/admin/permissao/list_slugs</code></p>
+<!-- END_b9cc6e6b079933ffce8473ba4b43c92c -->
+<!-- START_c076cbeaa1f1ff901053947cfce5866d -->
+<h2>Associar Permissão a Regra</h2>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/admin/permissao/associar_permissao_regra" \
+-H "Accept: application/json"</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/admin/permissao/associar_permissao_regra",
+    "method": "POST",
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<h3>HTTP Request</h3>
+<p><code>POST api/v1/admin/permissao/associar_permissao_regra</code></p>
+<!-- END_c076cbeaa1f1ff901053947cfce5866d -->
+<!-- START_362ffeb48e15b3d864b5c69b3562f687 -->
+<h2>Criar uma permissão para um unico usuário.</h2>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/admin/permissao/criar_permissao_usuario" \
+-H "Accept: application/json" \
+    -d "inherit_id"="957" \
+    -d "name"="ad" \
+    -d "slug"="ad" \
+</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/admin/permissao/criar_permissao_usuario",
+    "method": "POST",
+    "data": {
+        "inherit_id": 957,
+        "name": "ad",
+        "slug": "ad"
+},
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<h3>HTTP Request</h3>
+<p><code>POST api/v1/admin/permissao/criar_permissao_usuario</code></p>
+<h4>Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>inherit_id</td>
+<td>numeric</td>
+<td>optional</td>
+</tr>
+<tr>
+<td>name</td>
+<td>string</td>
+<td>required</td>
+</tr>
+<tr>
+<td>slug</td>
+<td>array</td>
+<td>optional</td>
+</tr>
+</tbody>
+</table>
+<!-- END_362ffeb48e15b3d864b5c69b3562f687 -->
+<!-- START_ffc2118dbcdae15e22ed790e3946b7b0 -->
+<h2>Consultar Permissão</h2>
+<p>Endpoint para consulta de permissão cadastrados paginadas</p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/admin/permissao" \
+-H "Accept: application/json"</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/admin/permissao",
+    "method": "GET",
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<blockquote>
+<p>Example response:</p>
+</blockquote>
+<pre><code class="language-json">{
+    "error": "Unauthenticated."
+}</code></pre>
+<h3>HTTP Request</h3>
+<p><code>GET api/v1/admin/permissao</code></p>
+<p><code>HEAD api/v1/admin/permissao</code></p>
+<!-- END_ffc2118dbcdae15e22ed790e3946b7b0 -->
+<!-- START_17f27e1aa27d71f9c5cc71184c2ebe64 -->
+<h2>Cadastrar Permissão</h2>
+<p>Endpoint para cadastrar permissão usuário</p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/admin/permissao" \
+-H "Accept: application/json" \
+    -d "inherit_id"="1" \
+    -d "name"="explicabo" \
+    -d "slug"="explicabo" \
+</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/admin/permissao",
+    "method": "POST",
+    "data": {
+        "inherit_id": 1,
+        "name": "explicabo",
+        "slug": "explicabo"
+},
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<h3>HTTP Request</h3>
+<p><code>POST api/v1/admin/permissao</code></p>
+<h4>Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>inherit_id</td>
+<td>numeric</td>
+<td>optional</td>
+</tr>
+<tr>
+<td>name</td>
+<td>string</td>
+<td>required</td>
+</tr>
+<tr>
+<td>slug</td>
+<td>array</td>
+<td>optional</td>
+</tr>
+</tbody>
+</table>
+<!-- END_17f27e1aa27d71f9c5cc71184c2ebe64 -->
+<!-- START_0bca080d39c2c041e3ec3a11239aa59b -->
+<h2>Consultar Permissão por ID</h2>
+<p>Endpoint para consultar permisão passando o ID como parametro</p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/admin/permissao/{permissao}" \
+-H "Accept: application/json"</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/admin/permissao/{permissao}",
+    "method": "GET",
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<blockquote>
+<p>Example response:</p>
+</blockquote>
+<pre><code class="language-json">{
+    "error": "Unauthenticated."
+}</code></pre>
+<h3>HTTP Request</h3>
+<p><code>GET api/v1/admin/permissao/{permissao}</code></p>
+<p><code>HEAD api/v1/admin/permissao/{permissao}</code></p>
+<!-- END_0bca080d39c2c041e3ec3a11239aa59b -->
+<!-- START_546b69fb3c5dac7b4e50acaaef4c48b7 -->
+<h2>Alterar Permissão por ID</h2>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/admin/permissao/{permissao}" \
+-H "Accept: application/json" \
+    -d "inherit_id"="805731" \
+    -d "name"="harum" \
+    -d "slug"="harum" \
+</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/admin/permissao/{permissao}",
+    "method": "PUT",
+    "data": {
+        "inherit_id": 805731,
+        "name": "harum",
+        "slug": "harum"
+},
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<h3>HTTP Request</h3>
+<p><code>PUT api/v1/admin/permissao/{permissao}</code></p>
+<p><code>PATCH api/v1/admin/permissao/{permissao}</code></p>
+<h4>Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>inherit_id</td>
+<td>numeric</td>
+<td>optional</td>
+</tr>
+<tr>
+<td>name</td>
+<td>string</td>
+<td>required</td>
+</tr>
+<tr>
+<td>slug</td>
+<td>array</td>
+<td>optional</td>
+</tr>
+</tbody>
+</table>
+<!-- END_546b69fb3c5dac7b4e50acaaef4c48b7 -->
+<!-- START_36b808b68ba449c685e06a455cfd6a1a -->
+<h2>Deletar Permissão</h2>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/admin/permissao/{permissao}" \
+-H "Accept: application/json"</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/admin/permissao/{permissao}",
+    "method": "DELETE",
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<h3>HTTP Request</h3>
+<p><code>DELETE api/v1/admin/permissao/{permissao}</code></p>
+<!-- END_36b808b68ba449c685e06a455cfd6a1a -->
+<h1>API Plano de Anúncio - Backend</h1>
+<p>*Essa API é responsável pelo gerenciamento de planos de anúncio no portal qImob.
+Os próximos tópicos apresenta os endpoints de Consulta, Cadastro, Edição e Deleção.
+Class PlanoController</p>
+<!-- START_e93b905843b0e8e829d334bb917c389f -->
+<h2>Cadastrar Tabela Preço</h2>
+<p>Endpoint para cadastrar tabela de preço de plano</p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/admin/plano/tabela_preco" \
+-H "Accept: application/json" \
+    -d "id"="288649472" \
+    -d "plano_id"="288649472" \
+    -d "estado_id"="288649472" \
+    -d "cidade_id"="288649472" \
+    -d "valor"="288649472" \
+</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/admin/plano/tabela_preco",
+    "method": "POST",
+    "data": {
+        "id": 288649472,
+        "plano_id": 288649472,
+        "estado_id": 288649472,
+        "cidade_id": 288649472,
+        "valor": 288649472
+},
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<h3>HTTP Request</h3>
+<p><code>POST api/v1/admin/plano/tabela_preco</code></p>
+<h4>Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>integer</td>
+<td>optional</td>
+</tr>
+<tr>
+<td>plano_id</td>
+<td>integer</td>
+<td>required</td>
+</tr>
+<tr>
+<td>estado_id</td>
+<td>integer</td>
+<td>required</td>
+</tr>
+<tr>
+<td>cidade_id</td>
+<td>integer</td>
+<td>required</td>
+</tr>
+<tr>
+<td>valor</td>
+<td>numeric</td>
+<td>required</td>
+</tr>
+</tbody>
+</table>
+<!-- END_e93b905843b0e8e829d334bb917c389f -->
+<!-- START_606f5e61b283ccac6b4f64fd4f2fa4f3 -->
+<h2>Alterar Tabela de Preço</h2>
+<p>Endpoint para alterar tabela de preço</p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/admin/plano/tabela_preco/{tabela_preco}" \
+-H "Accept: application/json" \
+    -d "id"="7379600" \
+    -d "plano_id"="7379600" \
+    -d "estado_id"="7379600" \
+    -d "cidade_id"="7379600" \
+    -d "valor"="7379600" \
+</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/admin/plano/tabela_preco/{tabela_preco}",
+    "method": "PUT",
+    "data": {
+        "id": 7379600,
+        "plano_id": 7379600,
+        "estado_id": 7379600,
+        "cidade_id": 7379600,
+        "valor": 7379600
+},
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<h3>HTTP Request</h3>
+<p><code>PUT api/v1/admin/plano/tabela_preco/{tabela_preco}</code></p>
+<h4>Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>integer</td>
+<td>optional</td>
+</tr>
+<tr>
+<td>plano_id</td>
+<td>integer</td>
+<td>required</td>
+</tr>
+<tr>
+<td>estado_id</td>
+<td>integer</td>
+<td>required</td>
+</tr>
+<tr>
+<td>cidade_id</td>
+<td>integer</td>
+<td>required</td>
+</tr>
+<tr>
+<td>valor</td>
+<td>numeric</td>
+<td>required</td>
+</tr>
+</tbody>
+</table>
+<!-- END_606f5e61b283ccac6b4f64fd4f2fa4f3 -->
+<!-- START_033bf91b17d5af22abbf85a1d6b62cfc -->
+<h2>Deletar Tabela de Preço</h2>
+<p>Endpoint para deletar tabela de preço passando o ID</p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/admin/plano/tabela_preco/{id}" \
+-H "Accept: application/json"</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/admin/plano/tabela_preco/{id}",
+    "method": "DELETE",
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<h3>HTTP Request</h3>
+<p><code>DELETE api/v1/admin/plano/tabela_preco/{id}</code></p>
+<!-- END_033bf91b17d5af22abbf85a1d6b62cfc -->
+<!-- START_b90e885f988c471a3d4e7919938b868e -->
+<h2>Consulta Tabelas de Preco</h2>
+<p>Endpoint para consulta as tabelas de preço passando o ID do Plano como parametro</p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/admin/plano/tabela_preco/{plano}" \
+-H "Accept: application/json"</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/admin/plano/tabela_preco/{plano}",
+    "method": "GET",
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<blockquote>
+<p>Example response:</p>
+</blockquote>
+<pre><code class="language-json">{
+    "error": "Unauthenticated."
+}</code></pre>
+<h3>HTTP Request</h3>
+<p><code>GET api/v1/admin/plano/tabela_preco/{plano}</code></p>
+<p><code>HEAD api/v1/admin/plano/tabela_preco/{plano}</code></p>
+<!-- END_b90e885f988c471a3d4e7919938b868e -->
+<!-- START_4097e15e8b1d7c18b497969a14b64ae9 -->
+<h2>Consulta Planos</h2>
+<p>Endpoint para consultar todos os planos cadastrados</p>
+<p>Nessa consulta pode ser aplicado os seguintes filtros:</p>
+<ul>
+<li>
+<p>Consultar Normal:
+<br> - Não passar parametros</p>
+</li>
+<li>Consultar por Cidade:
+<br> - ?consulta={&quot;filtro&quot;: {&quot;estados.uf&quot;: &quot;TO&quot;, &quot;cidades.titulo&quot; : &quot;Palmas&quot;}}</li>
+</ul>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/admin/plano" \
+-H "Accept: application/json"</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/admin/plano",
+    "method": "GET",
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<blockquote>
+<p>Example response:</p>
+</blockquote>
+<pre><code class="language-json">{
+    "error": "Unauthenticated."
+}</code></pre>
+<h3>HTTP Request</h3>
+<p><code>GET api/v1/admin/plano</code></p>
+<p><code>HEAD api/v1/admin/plano</code></p>
+<!-- END_4097e15e8b1d7c18b497969a14b64ae9 -->
+<!-- START_47c021e4b53fc23a2cb85319cf602627 -->
+<h2>Cadastrar Plano</h2>
+<p>Endpoint para cadastrar plano</p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/admin/plano" \
+-H "Accept: application/json" \
+    -d "id"="862074916" \
+    -d "nome"="sint" \
+    -d "dias"="862074916" \
+    -d "qtde_destaque"="862074916" \
+    -d "qtde_anuncio"="862074916" \
+    -d "valor"="862074916" \
+    -d "tipo"="qimob-erp" \
+    -d "status"="1" \
+</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/admin/plano",
+    "method": "POST",
+    "data": {
+        "id": 862074916,
+        "nome": "sint",
+        "dias": 862074916,
+        "qtde_destaque": 862074916,
+        "qtde_anuncio": 862074916,
+        "valor": 862074916,
+        "tipo": "qimob-erp",
+        "status": true
+},
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<h3>HTTP Request</h3>
+<p><code>POST api/v1/admin/plano</code></p>
+<h4>Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>integer</td>
+<td>optional</td>
+</tr>
+<tr>
+<td>nome</td>
+<td>string</td>
+<td>required</td>
+<td>Maximum: <code>255</code></td>
+</tr>
+<tr>
+<td>dias</td>
+<td>integer</td>
+<td>required</td>
+</tr>
+<tr>
+<td>qtde_destaque</td>
+<td>integer</td>
+<td>required</td>
+</tr>
+<tr>
+<td>qtde_anuncio</td>
+<td>integer</td>
+<td>required</td>
+</tr>
+<tr>
+<td>valor</td>
+<td>numeric</td>
+<td>required</td>
+</tr>
+<tr>
+<td>tipo</td>
+<td>string</td>
+<td>required</td>
+<td><code>anunciante</code>, <code>imobiliaria</code> or <code>qimob-erp</code></td>
+</tr>
+<tr>
+<td>status</td>
+<td>boolean</td>
+<td>required</td>
+</tr>
+</tbody>
+</table>
+<!-- END_47c021e4b53fc23a2cb85319cf602627 -->
+<!-- START_727ea85f9528490b1c2ce368a60cd078 -->
+<h2>Consulta Plano por ID</h2>
+<p>Endpoint para consulta plano passando o ID como parametro</p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/admin/plano/{plano}" \
+-H "Accept: application/json"</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/admin/plano/{plano}",
+    "method": "GET",
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<blockquote>
+<p>Example response:</p>
+</blockquote>
+<pre><code class="language-json">{
+    "error": "Unauthenticated."
+}</code></pre>
+<h3>HTTP Request</h3>
+<p><code>GET api/v1/admin/plano/{plano}</code></p>
+<p><code>HEAD api/v1/admin/plano/{plano}</code></p>
+<!-- END_727ea85f9528490b1c2ce368a60cd078 -->
+<!-- START_eadef47e67a689587ace339ae9067ce3 -->
+<h2>Alterar Plano</h2>
+<p>Endpoint para alterar plano</p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/admin/plano/{plano}" \
+-H "Accept: application/json" \
+    -d "id"="26" \
+    -d "nome"="fugit" \
+    -d "dias"="26" \
+    -d "qtde_destaque"="26" \
+    -d "qtde_anuncio"="26" \
+    -d "valor"="26" \
+    -d "tipo"="anunciante" \
+    -d "status"="1" \
+</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/admin/plano/{plano}",
+    "method": "PUT",
+    "data": {
+        "id": 26,
+        "nome": "fugit",
+        "dias": 26,
+        "qtde_destaque": 26,
+        "qtde_anuncio": 26,
+        "valor": 26,
+        "tipo": "anunciante",
+        "status": true
+},
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<h3>HTTP Request</h3>
+<p><code>PUT api/v1/admin/plano/{plano}</code></p>
+<p><code>PATCH api/v1/admin/plano/{plano}</code></p>
+<h4>Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>integer</td>
+<td>optional</td>
+</tr>
+<tr>
+<td>nome</td>
+<td>string</td>
+<td>required</td>
+<td>Maximum: <code>255</code></td>
+</tr>
+<tr>
+<td>dias</td>
+<td>integer</td>
+<td>required</td>
+</tr>
+<tr>
+<td>qtde_destaque</td>
+<td>integer</td>
+<td>required</td>
+</tr>
+<tr>
+<td>qtde_anuncio</td>
+<td>integer</td>
+<td>required</td>
+</tr>
+<tr>
+<td>valor</td>
+<td>numeric</td>
+<td>required</td>
+</tr>
+<tr>
+<td>tipo</td>
+<td>string</td>
+<td>required</td>
+<td><code>anunciante</code>, <code>imobiliaria</code> or <code>qimob-erp</code></td>
+</tr>
+<tr>
+<td>status</td>
+<td>boolean</td>
+<td>required</td>
+</tr>
+</tbody>
+</table>
+<!-- END_eadef47e67a689587ace339ae9067ce3 -->
+<!-- START_5e8417980b6843806a6a00b2b08466ba -->
+<h2>Deletar Plano</h2>
+<p>Endpoint para deletar plano passando o ID</p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/admin/plano/{plano}" \
+-H "Accept: application/json"</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/admin/plano/{plano}",
+    "method": "DELETE",
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<h3>HTTP Request</h3>
+<p><code>DELETE api/v1/admin/plano/{plano}</code></p>
+<!-- END_5e8417980b6843806a6a00b2b08466ba -->
+<h1>API Plano de Anúncio - Frontend</h1>
+<p>Essa API é responsável pelo gerenciamento de planos de anúncio no portal qImob.
+Os próximos tópicos apresenta os endpoints de Consulta, Cadastro, Edição e Deleção.</p>
+<p>Class PlanoController</p>
+<!-- START_96b8f7dd0605b8e2c77e91d5254fb478 -->
+<h2>Consulta Planos</h2>
+<p>Endpoint para consulta de planos no frontend.</p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/front/plano/consulta/{tipo_anunciante}/{estado}/{cidade}" \
+-H "Accept: application/json"</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/front/plano/consulta/{tipo_anunciante}/{estado}/{cidade}",
+    "method": "GET",
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<blockquote>
+<p>Example response:</p>
+</blockquote>
+<pre><code class="language-json">null</code></pre>
+<h3>HTTP Request</h3>
+<p><code>GET api/v1/front/plano/consulta/{tipo_anunciante}/{estado}/{cidade}</code></p>
+<p><code>HEAD api/v1/front/plano/consulta/{tipo_anunciante}/{estado}/{cidade}</code></p>
+<!-- END_96b8f7dd0605b8e2c77e91d5254fb478 -->
+<h1>API Página - Backend</h1>
+<p>Essa API é responsável pelo gerenciamento de Página no portal qImob.
+Os próximos tópicos apresentara os endpoints de Consulta, Cadastro, Edição e Deleção.</p>
+<!-- START_f7a0ef7009e5dde51b815eb746e7dc03 -->
+<h2>Consulta Todas a Páginas</h2>
+<p>Endpoint para consulta todas as páginas cadastradas paginadas em 25 por páginas</p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/admin/pagina" \
+-H "Accept: application/json"</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/admin/pagina",
+    "method": "GET",
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<blockquote>
+<p>Example response:</p>
+</blockquote>
+<pre><code class="language-json">{
+    "error": "Unauthenticated."
+}</code></pre>
+<h3>HTTP Request</h3>
+<p><code>GET api/v1/admin/pagina</code></p>
+<p><code>HEAD api/v1/admin/pagina</code></p>
+<!-- END_f7a0ef7009e5dde51b815eb746e7dc03 -->
+<!-- START_6f5f4cdfbf52d4e99851a3b304e4c137 -->
+<h2>Cadastrar Página</h2>
+<p>Endpoint para cadastrar página</p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/admin/pagina" \
+-H "Accept: application/json" \
+    -d "id"="5249690" \
+    -d "titulo"="quo" \
+    -d "slug"="quo" \
+    -d "descricao"="quo" \
+    -d "resumo"="quo" \
+    -d "status"="0" \
+    -d "parent_id"="5249690" \
+</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/admin/pagina",
+    "method": "POST",
+    "data": {
+        "id": 5249690,
+        "titulo": "quo",
+        "slug": "quo",
+        "descricao": "quo",
+        "resumo": "quo",
+        "status": "0",
+        "parent_id": 5249690
+},
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<h3>HTTP Request</h3>
+<p><code>POST api/v1/admin/pagina</code></p>
+<h4>Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>integer</td>
+<td>optional</td>
+</tr>
+<tr>
+<td>titulo</td>
+<td>string</td>
+<td>required</td>
+<td>Maximum: <code>255</code></td>
+</tr>
+<tr>
+<td>slug</td>
+<td>string</td>
+<td>optional</td>
+<td>Maximum: <code>255</code></td>
+</tr>
+<tr>
+<td>descricao</td>
+<td>string</td>
+<td>required</td>
+</tr>
+<tr>
+<td>resumo</td>
+<td>string</td>
+<td>optional</td>
+<td>Maximum: <code>500</code></td>
+</tr>
+<tr>
+<td>status</td>
+<td>boolean</td>
+<td>required</td>
+<td><code>1</code> or <code>0</code></td>
+</tr>
+<tr>
+<td>parent_id</td>
+<td>integer</td>
+<td>optional</td>
+</tr>
+</tbody>
+</table>
+<!-- END_6f5f4cdfbf52d4e99851a3b304e4c137 -->
+<!-- START_286bab265bf05759e421da352c0ed2b2 -->
+<h2>Consulta Página por ID</h2>
+<p>Endpoint para consulta página passando o ID como parametro</p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/admin/pagina/{pagina}" \
+-H "Accept: application/json"</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/admin/pagina/{pagina}",
+    "method": "GET",
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<blockquote>
+<p>Example response:</p>
+</blockquote>
+<pre><code class="language-json">{
+    "error": "Unauthenticated."
+}</code></pre>
+<h3>HTTP Request</h3>
+<p><code>GET api/v1/admin/pagina/{pagina}</code></p>
+<p><code>HEAD api/v1/admin/pagina/{pagina}</code></p>
+<!-- END_286bab265bf05759e421da352c0ed2b2 -->
+<!-- START_404b5f1cdfc3c551792b1caee7385310 -->
+<h2>Alterar Página</h2>
+<p>Endpoint para alterar página</p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/admin/pagina/{pagina}" \
+-H "Accept: application/json" \
+    -d "id"="92" \
+    -d "titulo"="quia" \
+    -d "slug"="quia" \
+    -d "descricao"="quia" \
+    -d "resumo"="quia" \
+    -d "status"="1" \
+    -d "parent_id"="92" \
+</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/admin/pagina/{pagina}",
+    "method": "PUT",
+    "data": {
+        "id": 92,
+        "titulo": "quia",
+        "slug": "quia",
+        "descricao": "quia",
+        "resumo": "quia",
+        "status": "1",
+        "parent_id": 92
+},
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<h3>HTTP Request</h3>
+<p><code>PUT api/v1/admin/pagina/{pagina}</code></p>
+<p><code>PATCH api/v1/admin/pagina/{pagina}</code></p>
+<h4>Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>integer</td>
+<td>optional</td>
+</tr>
+<tr>
+<td>titulo</td>
+<td>string</td>
+<td>required</td>
+<td>Maximum: <code>255</code></td>
+</tr>
+<tr>
+<td>slug</td>
+<td>string</td>
+<td>optional</td>
+<td>Maximum: <code>255</code></td>
+</tr>
+<tr>
+<td>descricao</td>
+<td>string</td>
+<td>required</td>
+</tr>
+<tr>
+<td>resumo</td>
+<td>string</td>
+<td>optional</td>
+<td>Maximum: <code>500</code></td>
+</tr>
+<tr>
+<td>status</td>
+<td>boolean</td>
+<td>required</td>
+<td><code>1</code> or <code>0</code></td>
+</tr>
+<tr>
+<td>parent_id</td>
+<td>integer</td>
+<td>optional</td>
+</tr>
+</tbody>
+</table>
+<!-- END_404b5f1cdfc3c551792b1caee7385310 -->
+<!-- START_0807f279d14bb37ded4552661845eac1 -->
+<h2>Deletar Página</h2>
+<p>Endpoint para deletar página passando o ID</p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/admin/pagina/{pagina}" \
+-H "Accept: application/json"</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/admin/pagina/{pagina}",
+    "method": "DELETE",
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<h3>HTTP Request</h3>
+<p><code>DELETE api/v1/admin/pagina/{pagina}</code></p>
+<!-- END_0807f279d14bb37ded4552661845eac1 -->
+<h1>API Página - Frontend</h1>
+<p>Essa API é responsável pelo gerenciamento de Página no portal qImob.
+Os próximos tópicos apresentara os endpoints de Consulta, Cadastro, Edição e Deleção.</p>
+<!-- START_f5af7dd636deaedcc6cb5cce8fa6de9c -->
+<h2>Consulta Página por SLUG</h2>
+<p>Endpoint para consulta página passando o SLUG como parametro</p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/front/pagina/conteudo/{slug}" \
+-H "Accept: application/json"</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/front/pagina/conteudo/{slug}",
+    "method": "GET",
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<blockquote>
+<p>Example response:</p>
+</blockquote>
+<pre><code class="language-json">{
+    "error": "Unauthenticated."
+}</code></pre>
+<h3>HTTP Request</h3>
+<p><code>GET api/v1/front/pagina/conteudo/{slug}</code></p>
+<p><code>HEAD api/v1/front/pagina/conteudo/{slug}</code></p>
+<!-- END_f5af7dd636deaedcc6cb5cce8fa6de9c -->
+<h1>API Regras de Acesso - Backend</h1>
+<p>Essa API é responsável pelo gerenciamento de regras de Usuários no portal qImob.
+Os próximos tópicos apresenta os endpoints de Consulta, Cadastro, Edição e Deleção.</p>
+<!-- START_5c8d868fd6c76c794eb056308cfdf85b -->
+<h2>Remover Todas Regras Usuário</h2>
+<p>Revogar todas as regras de um usuário</p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/admin/regra/revogar_todas_regras_usuario/{id}" \
+-H "Accept: application/json"</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/admin/regra/revogar_todas_regras_usuario/{id}",
+    "method": "GET",
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<blockquote>
+<p>Example response:</p>
+</blockquote>
+<pre><code class="language-json">{
+    "error": "Unauthenticated."
+}</code></pre>
+<h3>HTTP Request</h3>
+<p><code>GET api/v1/admin/regra/revogar_todas_regras_usuario/{id}</code></p>
+<p><code>HEAD api/v1/admin/regra/revogar_todas_regras_usuario/{id}</code></p>
+<!-- END_5c8d868fd6c76c794eb056308cfdf85b -->
+<!-- START_941682ae8bf6fac66c31b5777d5dc85b -->
+<h2>Sicronizar Permissões p/ Regra</h2>
+<p>Sicronizar todas as permissões para um role(perfil)</p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/admin/regra/sincronizar_regra_permissoes" \
+-H "Accept: application/json"</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/admin/regra/sincronizar_regra_permissoes",
+    "method": "POST",
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<h3>HTTP Request</h3>
+<p><code>POST api/v1/admin/regra/sincronizar_regra_permissoes</code></p>
+<!-- END_941682ae8bf6fac66c31b5777d5dc85b -->
+<!-- START_c45f5ad0d65ba794b8c60534a6178ea6 -->
+<h2>Remover Regra</h2>
+<p>Revogar todas as regras</p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/admin/regra/revogar_regra_usuario" \
+-H "Accept: application/json"</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/admin/regra/revogar_regra_usuario",
+    "method": "POST",
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<h3>HTTP Request</h3>
+<p><code>POST api/v1/admin/regra/revogar_regra_usuario</code></p>
+<!-- END_c45f5ad0d65ba794b8c60534a6178ea6 -->
+<!-- START_c509f3c67ab354c8d17e2a312815a608 -->
+<h2>Associar Regra ao Usuário</h2>
+<p>Endpoint para associar um regra a um usuário</p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/admin/regra/associar_regra_usuario" \
+-H "Accept: application/json"</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/admin/regra/associar_regra_usuario",
+    "method": "POST",
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<h3>HTTP Request</h3>
+<p><code>POST api/v1/admin/regra/associar_regra_usuario</code></p>
+<!-- END_c509f3c67ab354c8d17e2a312815a608 -->
+<!-- START_703dac6b1b1af6d804f192984c8949ac -->
+<h2>Consultar Regras</h2>
+<p>Endpoint para consulta de regras cadastrados paginadas</p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/admin/regra" \
+-H "Accept: application/json"</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/admin/regra",
+    "method": "GET",
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<blockquote>
+<p>Example response:</p>
+</blockquote>
+<pre><code class="language-json">{
+    "error": "Unauthenticated."
+}</code></pre>
+<h3>HTTP Request</h3>
+<p><code>GET api/v1/admin/regra</code></p>
+<p><code>HEAD api/v1/admin/regra</code></p>
+<!-- END_703dac6b1b1af6d804f192984c8949ac -->
+<!-- START_e1f8271725d941d8d8eb0b3307f837b1 -->
+<h2>Cadastrar Regra</h2>
+<p>Endpoint para cadastrar regra de usuário</p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/admin/regra" \
+-H "Accept: application/json" \
+    -d "name"="neque" \
+    -d "slug"="neque" \
+</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/admin/regra",
+    "method": "POST",
+    "data": {
+        "name": "neque",
+        "slug": "neque"
+},
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<h3>HTTP Request</h3>
+<p><code>POST api/v1/admin/regra</code></p>
+<h4>Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td>string</td>
+<td>required</td>
+</tr>
+<tr>
+<td>slug</td>
+<td>string</td>
+<td>required</td>
+</tr>
+</tbody>
+</table>
+<!-- END_e1f8271725d941d8d8eb0b3307f837b1 -->
+<!-- START_0c1fd4368a5725c2149a0e09a8fe1b03 -->
+<h2>Consultar Regra por ID</h2>
+<p>Endpoint para consultar regras passando o ID como parametro</p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/admin/regra/{regra}" \
+-H "Accept: application/json"</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/admin/regra/{regra}",
+    "method": "GET",
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<blockquote>
+<p>Example response:</p>
+</blockquote>
+<pre><code class="language-json">{
+    "error": "Unauthenticated."
+}</code></pre>
+<h3>HTTP Request</h3>
+<p><code>GET api/v1/admin/regra/{regra}</code></p>
+<p><code>HEAD api/v1/admin/regra/{regra}</code></p>
+<!-- END_0c1fd4368a5725c2149a0e09a8fe1b03 -->
+<!-- START_c7b5f1b1151bfdd3898bcd779ae073dd -->
+<h2>Alterar Regra por ID</h2>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/admin/regra/{regra}" \
+-H "Accept: application/json" \
+    -d "name"="dolorem" \
+    -d "slug"="dolorem" \
+</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/admin/regra/{regra}",
+    "method": "PUT",
+    "data": {
+        "name": "dolorem",
+        "slug": "dolorem"
+},
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<h3>HTTP Request</h3>
+<p><code>PUT api/v1/admin/regra/{regra}</code></p>
+<p><code>PATCH api/v1/admin/regra/{regra}</code></p>
+<h4>Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td>string</td>
+<td>required</td>
+</tr>
+<tr>
+<td>slug</td>
+<td>string</td>
+<td>required</td>
+</tr>
+</tbody>
+</table>
+<!-- END_c7b5f1b1151bfdd3898bcd779ae073dd -->
+<!-- START_f33ac83a93535afae3668add35852ac2 -->
+<h2>Deletar Regra</h2>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/admin/regra/{regra}" \
+-H "Accept: application/json"</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/admin/regra/{regra}",
+    "method": "DELETE",
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<h3>HTTP Request</h3>
+<p><code>DELETE api/v1/admin/regra/{regra}</code></p>
+<!-- END_f33ac83a93535afae3668add35852ac2 -->
+<!-- START_cc5575cc1bbfa4b79c4de6cf37078000 -->
+<h2>Regra do Usuário</h2>
+<p>Busca todos os perfis do usuário</p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/admin/regra/regras_do_usuario/{id}" \
+-H "Accept: application/json"</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/admin/regra/regras_do_usuario/{id}",
+    "method": "GET",
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<blockquote>
+<p>Example response:</p>
+</blockquote>
+<pre><code class="language-json">{
+    "error": "Unauthenticated."
+}</code></pre>
+<h3>HTTP Request</h3>
+<p><code>GET api/v1/admin/regra/regras_do_usuario/{id}</code></p>
+<p><code>HEAD api/v1/admin/regra/regras_do_usuario/{id}</code></p>
+<!-- END_cc5575cc1bbfa4b79c4de6cf37078000 -->
+<h1>API Usuário - Backend</h1>
+<p>Essa API é responsável pelo gerenciamento de Usuários no portal qImob.
+Os próximos tópicos apresenta os endpoints de Consulta, Cadastro, Edição e Deleção.</p>
+<!-- START_fe194054ff0707a4f414fc4784856959 -->
+<h2>Alterar Senha</h2>
+<p>Enviar dados para alterar a senha</p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/admin/user/password/change" \
+-H "Accept: application/json" \
+    -d "old_password"="expedita" \
+    -d "new_password"="expedita" \
+    -d "new_password_confirmation"="expedita" \
+</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/admin/user/password/change",
+    "method": "PATCH",
+    "data": {
+        "old_password": "expedita",
+        "new_password": "expedita",
+        "new_password_confirmation": "expedita"
+},
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<h3>HTTP Request</h3>
+<p><code>PATCH api/v1/admin/user/password/change</code></p>
+<h4>Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>old_password</td>
+<td>string</td>
+<td>required</td>
+</tr>
+<tr>
+<td>new_password</td>
+<td>string</td>
+<td>required</td>
+<td>Minimum: <code>8</code></td>
+</tr>
+<tr>
+<td>new_password_confirmation</td>
+<td>string</td>
+<td>required</td>
+</tr>
+</tbody>
+</table>
+<!-- END_fe194054ff0707a4f414fc4784856959 -->
+<!-- START_12644025c84b0cfcae51a274bd988c25 -->
+<h2>Solicitar Nova Senha</h2>
+<p>Enviar email com link para usuário recuperar senha</p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/admin/user/password/reset" \
+-H "Accept: application/json" \
+    -d "email"="doyle.michele@example.com" \
+</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/admin/user/password/reset",
+    "method": "POST",
+    "data": {
+        "email": "doyle.michele@example.com"
+},
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<h3>HTTP Request</h3>
+<p><code>POST api/v1/admin/user/password/reset</code></p>
+<h4>Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>email</td>
+<td>email</td>
+<td>required</td>
+</tr>
+</tbody>
+</table>
+<!-- END_12644025c84b0cfcae51a274bd988c25 -->
+<!-- START_d306844a0e0ad535a93450ffbed15a63 -->
+<h2>Criar Nova Senha</h2>
+<p>Enviar dados para criar a nova senha solicitada pelo usuário</p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/admin/user/password/reset/change" \
+-H "Accept: application/json" \
+    -d "token"="deleniti" \
+    -d "email"="francisco.nitzsche@example.org" \
+    -d "password"="deleniti" \
+    -d "password_confirmation"="deleniti" \
+</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/admin/user/password/reset/change",
+    "method": "POST",
+    "data": {
+        "token": "deleniti",
+        "email": "francisco.nitzsche@example.org",
+        "password": "deleniti",
+        "password_confirmation": "deleniti"
+},
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<h3>HTTP Request</h3>
+<p><code>POST api/v1/admin/user/password/reset/change</code></p>
+<h4>Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>token</td>
+<td>string</td>
+<td>required</td>
+</tr>
+<tr>
+<td>email</td>
+<td>email</td>
+<td>required</td>
+</tr>
+<tr>
+<td>password</td>
+<td>string</td>
+<td>required</td>
+<td>Minimum: <code>8</code></td>
+</tr>
+<tr>
+<td>password_confirmation</td>
+<td>string</td>
+<td>required</td>
+</tr>
+</tbody>
+</table>
+<!-- END_d306844a0e0ad535a93450ffbed15a63 -->
+<!-- START_f5f22ae9e44c966f3c7e3f04151335f0 -->
+<h2>Consultar Usuários</h2>
+<p>Endpoint para consulta de usuários cadastrados</p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/admin/user" \
+-H "Accept: application/json"</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/admin/user",
+    "method": "GET",
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<blockquote>
+<p>Example response:</p>
+</blockquote>
+<pre><code class="language-json">{
+    "error": "Unauthenticated."
+}</code></pre>
+<h3>HTTP Request</h3>
+<p><code>GET api/v1/admin/user</code></p>
+<p><code>HEAD api/v1/admin/user</code></p>
+<!-- END_f5f22ae9e44c966f3c7e3f04151335f0 -->
+<!-- START_a8f2cd73f7f241bac59f75ba0b3cb4bd -->
+<h2>Cadastrar Usuário</h2>
+<p>Endpoint para cadastrar página usuário</p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/admin/user" \
+-H "Accept: application/json" \
+    -d "name"="odit" \
+    -d "email"="nikolaus.omari@example.com" \
+    -d "email_confirmation"="nikolaus.omari@example.com" \
+    -d "email_alternativo"="nikolaus.omari@example.com" \
+    -d "password"="odit" \
+    -d "password_confirmation"="odit" \
+    -d "sexo"="odit" \
+    -d "imagem"="odit" \
+    -d "chk_newsletter"="1" \
+</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/admin/user",
+    "method": "POST",
+    "data": {
+        "name": "odit",
+        "email": "nikolaus.omari@example.com",
+        "email_confirmation": "nikolaus.omari@example.com",
+        "email_alternativo": "nikolaus.omari@example.com",
+        "password": "odit",
+        "password_confirmation": "odit",
+        "sexo": "odit",
+        "imagem": "odit",
+        "chk_newsletter": true
+},
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<h3>HTTP Request</h3>
+<p><code>POST api/v1/admin/user</code></p>
+<h4>Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td>string</td>
+<td>required</td>
+<td>Minimum: <code>2</code></td>
+</tr>
+<tr>
+<td>email</td>
+<td>email</td>
+<td>required</td>
+</tr>
+<tr>
+<td>email_confirmation</td>
+<td>email</td>
+<td>required</td>
+</tr>
+<tr>
+<td>email_alternativo</td>
+<td>email</td>
+<td>optional</td>
+</tr>
+<tr>
+<td>password</td>
+<td>string</td>
+<td>required</td>
+<td>Minimum: <code>8</code></td>
+</tr>
+<tr>
+<td>password_confirmation</td>
+<td>string</td>
+<td>required</td>
+</tr>
+<tr>
+<td>sexo</td>
+<td>string</td>
+<td>required</td>
+</tr>
+<tr>
+<td>imagem</td>
+<td>string</td>
+<td>optional</td>
+<td>Allowed mime types: <code>jpg</code>, <code>jpeg</code>, <code>bmp</code> or <code>png</code></td>
+</tr>
+<tr>
+<td>chk_newsletter</td>
+<td>boolean</td>
+<td>required</td>
+</tr>
+</tbody>
+</table>
+<!-- END_a8f2cd73f7f241bac59f75ba0b3cb4bd -->
+<!-- START_fc0a1657760526f0d0ae3e27f3841175 -->
+<h2>Consultar Usuário por ID</h2>
+<p>Endpoint para consultar usuário passando o ID como parametro</p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/admin/user/{user}" \
+-H "Accept: application/json"</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/admin/user/{user}",
+    "method": "GET",
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<blockquote>
+<p>Example response:</p>
+</blockquote>
+<pre><code class="language-json">{
+    "error": "Unauthenticated."
+}</code></pre>
+<h3>HTTP Request</h3>
+<p><code>GET api/v1/admin/user/{user}</code></p>
+<p><code>HEAD api/v1/admin/user/{user}</code></p>
+<!-- END_fc0a1657760526f0d0ae3e27f3841175 -->
+<!-- START_c71eaa496598da79351787e83c914857 -->
+<h2>Alterar Usuário por ID</h2>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/admin/user/{user}" \
+-H "Accept: application/json" \
+    -d "name"="aperiam" \
+    -d "email"="hirthe.kaley@example.net" \
+    -d "email_confirmation"="hirthe.kaley@example.net" \
+    -d "email_alternativo"="hirthe.kaley@example.net" \
+    -d "password"="aperiam" \
+    -d "password_confirmation"="aperiam" \
+    -d "sexo"="aperiam" \
+    -d "imagem"="aperiam" \
+    -d "chk_newsletter"="1" \
+</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/admin/user/{user}",
+    "method": "PUT",
+    "data": {
+        "name": "aperiam",
+        "email": "hirthe.kaley@example.net",
+        "email_confirmation": "hirthe.kaley@example.net",
+        "email_alternativo": "hirthe.kaley@example.net",
+        "password": "aperiam",
+        "password_confirmation": "aperiam",
+        "sexo": "aperiam",
+        "imagem": "aperiam",
+        "chk_newsletter": true
+},
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<h3>HTTP Request</h3>
+<p><code>PUT api/v1/admin/user/{user}</code></p>
+<p><code>PATCH api/v1/admin/user/{user}</code></p>
+<h4>Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td>string</td>
+<td>required</td>
+<td>Minimum: <code>2</code></td>
+</tr>
+<tr>
+<td>email</td>
+<td>email</td>
+<td>required</td>
+</tr>
+<tr>
+<td>email_confirmation</td>
+<td>email</td>
+<td>required</td>
+</tr>
+<tr>
+<td>email_alternativo</td>
+<td>email</td>
+<td>optional</td>
+</tr>
+<tr>
+<td>password</td>
+<td>string</td>
+<td>required</td>
+<td>Minimum: <code>8</code></td>
+</tr>
+<tr>
+<td>password_confirmation</td>
+<td>string</td>
+<td>required</td>
+</tr>
+<tr>
+<td>sexo</td>
+<td>string</td>
+<td>required</td>
+</tr>
+<tr>
+<td>imagem</td>
+<td>string</td>
+<td>optional</td>
+<td>Allowed mime types: <code>jpg</code>, <code>jpeg</code>, <code>bmp</code> or <code>png</code></td>
+</tr>
+<tr>
+<td>chk_newsletter</td>
+<td>boolean</td>
+<td>required</td>
+</tr>
+</tbody>
+</table>
+<!-- END_c71eaa496598da79351787e83c914857 -->
+<!-- START_39030d4123dd93a737e9138267bccff9 -->
+<h2>Deletar Usuário</h2>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/admin/user/{user}" \
+-H "Accept: application/json"</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/admin/user/{user}",
+    "method": "DELETE",
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<h3>HTTP Request</h3>
+<p><code>DELETE api/v1/admin/user/{user}</code></p>
+<!-- END_39030d4123dd93a737e9138267bccff9 -->
+<!-- START_18c0daaa944277731d963421fa03222e -->
+<h2>Alterar Imagem Usuário logado</h2>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/admin/user/alterar_imagem" \
+-H "Accept: application/json"</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/admin/user/alterar_imagem",
+    "method": "POST",
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<h3>HTTP Request</h3>
+<p><code>POST api/v1/admin/user/alterar_imagem</code></p>
+<!-- END_18c0daaa944277731d963421fa03222e -->
+<!-- START_74bafbfc9f0c8de5b39ff70fb1c92f01 -->
+<h2>Alterar Imagem Administrativo</h2>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/admin/user/alterar_imagem_admin/{id}" \
+-H "Accept: application/json"</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/admin/user/alterar_imagem_admin/{id}",
+    "method": "POST",
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<h3>HTTP Request</h3>
+<p><code>POST api/v1/admin/user/alterar_imagem_admin/{id}</code></p>
+<!-- END_74bafbfc9f0c8de5b39ff70fb1c92f01 -->
+<h1>API Usuário - Frontend</h1>
+<p>Essa API é responsável pelo gerenciamento de Usuários no portal qImob.
+Os próximos tópicos apresenta os endpoints de Consulta, Cadastro, Edição e Deleção.</p>
+<!-- START_88b3c3f6ff8e5ad60333c8c566fd3a5b -->
+<h2>Consultar Perfil Usuário</h2>
+<p>Endpoint para consultar perfil do usuário passando o ID como parametro</p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/front/user/perfil" \
+-H "Accept: application/json"</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/front/user/perfil",
+    "method": "GET",
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<blockquote>
+<p>Example response:</p>
+</blockquote>
+<pre><code class="language-json">{
+    "error": "Unauthenticated."
+}</code></pre>
+<h3>HTTP Request</h3>
+<p><code>GET api/v1/front/user/perfil</code></p>
+<p><code>HEAD api/v1/front/user/perfil</code></p>
+<!-- END_88b3c3f6ff8e5ad60333c8c566fd3a5b -->
+<!-- START_b9f88368d38464eaead1aeff2b56b4b8 -->
+<h2>Alterar Imagem Anunciante logado</h2>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/front/user/alterar_imagem" \
+-H "Accept: application/json"</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/front/user/alterar_imagem",
+    "method": "POST",
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<h3>HTTP Request</h3>
+<p><code>POST api/v1/front/user/alterar_imagem</code></p>
+<!-- END_b9f88368d38464eaead1aeff2b56b4b8 -->
+<!-- START_8bd10fb95bd577211a7fd4a183a2bbc3 -->
+<h2>Alterar Senha</h2>
+<p>Enviar dados para alterar a senha</p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/front/user/password/change" \
+-H "Accept: application/json" \
+    -d "old_password"="doloremque" \
+    -d "new_password"="doloremque" \
+    -d "new_password_confirmation"="doloremque" \
+</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/front/user/password/change",
+    "method": "PATCH",
+    "data": {
+        "old_password": "doloremque",
+        "new_password": "doloremque",
+        "new_password_confirmation": "doloremque"
+},
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<h3>HTTP Request</h3>
+<p><code>PATCH api/v1/front/user/password/change</code></p>
+<h4>Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>old_password</td>
+<td>string</td>
+<td>required</td>
+</tr>
+<tr>
+<td>new_password</td>
+<td>string</td>
+<td>required</td>
+<td>Minimum: <code>8</code></td>
+</tr>
+<tr>
+<td>new_password_confirmation</td>
+<td>string</td>
+<td>required</td>
+</tr>
+</tbody>
+</table>
+<!-- END_8bd10fb95bd577211a7fd4a183a2bbc3 -->
+<!-- START_92a4e91df78f75c83aa0d15fbafa0f07 -->
+<h2>Cadastrar Anunciante</h2>
+<p>Endpoint para cadastrar página Anunciante</p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/front/user/registrar" \
+-H "Accept: application/json" \
+    -d "name"="quae" \
+    -d "email"="bednar.yasmine@example.com" \
+    -d "email_confirmation"="bednar.yasmine@example.com" \
+    -d "email_alternativo"="bednar.yasmine@example.com" \
+    -d "password"="quae" \
+    -d "password_confirmation"="quae" \
+    -d "sexo"="quae" \
+    -d "imagem"="quae" \
+    -d "chk_newsletter"="1" \
+</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/front/user/registrar",
+    "method": "POST",
+    "data": {
+        "name": "quae",
+        "email": "bednar.yasmine@example.com",
+        "email_confirmation": "bednar.yasmine@example.com",
+        "email_alternativo": "bednar.yasmine@example.com",
+        "password": "quae",
+        "password_confirmation": "quae",
+        "sexo": "quae",
+        "imagem": "quae",
+        "chk_newsletter": true
+},
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<h3>HTTP Request</h3>
+<p><code>POST api/v1/front/user/registrar</code></p>
+<h4>Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td>string</td>
+<td>required</td>
+<td>Minimum: <code>2</code></td>
+</tr>
+<tr>
+<td>email</td>
+<td>email</td>
+<td>required</td>
+</tr>
+<tr>
+<td>email_confirmation</td>
+<td>email</td>
+<td>required</td>
+</tr>
+<tr>
+<td>email_alternativo</td>
+<td>email</td>
+<td>optional</td>
+</tr>
+<tr>
+<td>password</td>
+<td>string</td>
+<td>required</td>
+<td>Minimum: <code>8</code></td>
+</tr>
+<tr>
+<td>password_confirmation</td>
+<td>string</td>
+<td>required</td>
+</tr>
+<tr>
+<td>sexo</td>
+<td>string</td>
+<td>required</td>
+</tr>
+<tr>
+<td>imagem</td>
+<td>string</td>
+<td>optional</td>
+<td>Allowed mime types: <code>jpg</code>, <code>jpeg</code>, <code>bmp</code> or <code>png</code></td>
+</tr>
+<tr>
+<td>chk_newsletter</td>
+<td>boolean</td>
+<td>required</td>
+</tr>
+</tbody>
+</table>
+<!-- END_92a4e91df78f75c83aa0d15fbafa0f07 -->
+<!-- START_1b5885f19c805758488ca08b2677d6e0 -->
+<h2>Solicitar Nova Senha</h2>
+<p>Enviar email com link para Anunciante recuperar senha</p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/front/user/password/reset" \
+-H "Accept: application/json" \
+    -d "email"="cummings.nyasia@example.com" \
+</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/front/user/password/reset",
+    "method": "POST",
+    "data": {
+        "email": "cummings.nyasia@example.com"
+},
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<h3>HTTP Request</h3>
+<p><code>POST api/v1/front/user/password/reset</code></p>
+<h4>Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>email</td>
+<td>email</td>
+<td>required</td>
+</tr>
+</tbody>
+</table>
+<!-- END_1b5885f19c805758488ca08b2677d6e0 -->
+<!-- START_1821cba24c89c339d3f8564e16fd53af -->
+<h2>Criar Nova Senha</h2>
+<p>Enviar dados para criar a nova senha solicitada pelo Anunciante</p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/front/user/password/reset/change" \
+-H "Accept: application/json" \
+    -d "token"="qui" \
+    -d "email"="kenyon.haag@example.com" \
+    -d "password"="qui" \
+    -d "password_confirmation"="qui" \
+</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/front/user/password/reset/change",
+    "method": "POST",
+    "data": {
+        "token": "qui",
+        "email": "kenyon.haag@example.com",
+        "password": "qui",
+        "password_confirmation": "qui"
+},
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<h3>HTTP Request</h3>
+<p><code>POST api/v1/front/user/password/reset/change</code></p>
+<h4>Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>token</td>
+<td>string</td>
+<td>required</td>
+</tr>
+<tr>
+<td>email</td>
+<td>email</td>
+<td>required</td>
+</tr>
+<tr>
+<td>password</td>
+<td>string</td>
+<td>required</td>
+<td>Minimum: <code>8</code></td>
+</tr>
+<tr>
+<td>password_confirmation</td>
+<td>string</td>
+<td>required</td>
+</tr>
+</tbody>
+</table>
+<!-- END_1821cba24c89c339d3f8564e16fd53af -->
+<h1>general</h1>
+<!-- START_d298d929f54b176615acf9017a72d25a -->
+<h2>Authorize a client to access the user&#039;s account.</h2>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/oauth/authorize" \
+-H "Accept: application/json"</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/oauth/authorize",
+    "method": "GET",
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<blockquote>
+<p>Example response:</p>
+</blockquote>
+<pre><code class="language-json">{
+    "error": "unsupported_grant_type",
+    "message": "The authorization grant type is not supported by the authorization server.",
+    "hint": "Check the `grant_type` parameter"
+}</code></pre>
+<h3>HTTP Request</h3>
+<p><code>GET api/v1/oauth/authorize</code></p>
+<p><code>HEAD api/v1/oauth/authorize</code></p>
+<!-- END_d298d929f54b176615acf9017a72d25a -->
+<!-- START_6b403095ecffdbbf500e4223269d0984 -->
+<h2>Approve the authorization request.</h2>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/oauth/authorize" \
+-H "Accept: application/json"</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/oauth/authorize",
+    "method": "POST",
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<h3>HTTP Request</h3>
+<p><code>POST api/v1/oauth/authorize</code></p>
+<!-- END_6b403095ecffdbbf500e4223269d0984 -->
+<!-- START_2b99f43bcd080588f98474ee696ace74 -->
+<h2>Deny the authorization request.</h2>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/oauth/authorize" \
+-H "Accept: application/json"</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/oauth/authorize",
+    "method": "DELETE",
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<h3>HTTP Request</h3>
+<p><code>DELETE api/v1/oauth/authorize</code></p>
+<!-- END_2b99f43bcd080588f98474ee696ace74 -->
+<!-- START_082270de255b970cfc68ebc1ca1261c7 -->
+<h2>Authorize a client to access the user&#039;s account.</h2>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/oauth/token" \
+-H "Accept: application/json"</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/oauth/token",
+    "method": "POST",
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<h3>HTTP Request</h3>
+<p><code>POST api/v1/oauth/token</code></p>
+<!-- END_082270de255b970cfc68ebc1ca1261c7 -->
+<!-- START_f7c889d2010652778bba402c86821bed -->
+<h2>Get all of the authorized tokens for the authenticated user.</h2>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/oauth/tokens" \
+-H "Accept: application/json"</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/oauth/tokens",
+    "method": "GET",
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<blockquote>
+<p>Example response:</p>
+</blockquote>
+<pre><code class="language-json">{
+    "error": "Unauthenticated."
+}</code></pre>
+<h3>HTTP Request</h3>
+<p><code>GET api/v1/oauth/tokens</code></p>
+<p><code>HEAD api/v1/oauth/tokens</code></p>
+<!-- END_f7c889d2010652778bba402c86821bed -->
+<!-- START_4e1d8ca8cf7990aa05930bdaf2b73a9a -->
+<h2>Delete the given token.</h2>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/oauth/tokens/{token_id}" \
+-H "Accept: application/json"</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/oauth/tokens/{token_id}",
+    "method": "DELETE",
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<h3>HTTP Request</h3>
+<p><code>DELETE api/v1/oauth/tokens/{token_id}</code></p>
+<!-- END_4e1d8ca8cf7990aa05930bdaf2b73a9a -->
+<!-- START_30389561b7c7ec6b1f6a55aa378412b3 -->
+<h2>Get a fresh transient token cookie for the authenticated user.</h2>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/oauth/token/refresh" \
+-H "Accept: application/json"</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/oauth/token/refresh",
+    "method": "POST",
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<h3>HTTP Request</h3>
+<p><code>POST api/v1/oauth/token/refresh</code></p>
+<!-- END_30389561b7c7ec6b1f6a55aa378412b3 -->
+<!-- START_a75109045a9890deba4290040b3702b8 -->
+<h2>Get all of the clients for the authenticated user.</h2>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/oauth/clients" \
+-H "Accept: application/json"</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/oauth/clients",
+    "method": "GET",
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<blockquote>
+<p>Example response:</p>
+</blockquote>
+<pre><code class="language-json">{
+    "error": "Unauthenticated."
+}</code></pre>
+<h3>HTTP Request</h3>
+<p><code>GET api/v1/oauth/clients</code></p>
+<p><code>HEAD api/v1/oauth/clients</code></p>
+<!-- END_a75109045a9890deba4290040b3702b8 -->
+<!-- START_70b60149da1587bf078ad3a8505f4b54 -->
+<h2>Store a new client.</h2>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/oauth/clients" \
+-H "Accept: application/json"</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/oauth/clients",
+    "method": "POST",
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<h3>HTTP Request</h3>
+<p><code>POST api/v1/oauth/clients</code></p>
+<!-- END_70b60149da1587bf078ad3a8505f4b54 -->
+<!-- START_c1b686a35009ac85fab096e598f5c4b3 -->
+<h2>Update the given client.</h2>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/oauth/clients/{client_id}" \
+-H "Accept: application/json"</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/oauth/clients/{client_id}",
+    "method": "PUT",
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<h3>HTTP Request</h3>
+<p><code>PUT api/v1/oauth/clients/{client_id}</code></p>
+<!-- END_c1b686a35009ac85fab096e598f5c4b3 -->
+<!-- START_9cbd37fbef6fa18e0630d9613222a7a7 -->
+<h2>Delete the given client.</h2>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/oauth/clients/{client_id}" \
+-H "Accept: application/json"</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/oauth/clients/{client_id}",
+    "method": "DELETE",
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<h3>HTTP Request</h3>
+<p><code>DELETE api/v1/oauth/clients/{client_id}</code></p>
+<!-- END_9cbd37fbef6fa18e0630d9613222a7a7 -->
+<!-- START_1ee5ecce1140d3351636eeb52d07977b -->
+<h2>Get all of the available scopes for the application.</h2>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/oauth/scopes" \
+-H "Accept: application/json"</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/oauth/scopes",
+    "method": "GET",
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<blockquote>
+<p>Example response:</p>
+</blockquote>
+<pre><code class="language-json">{
+    "error": "Unauthenticated."
+}</code></pre>
+<h3>HTTP Request</h3>
+<p><code>GET api/v1/oauth/scopes</code></p>
+<p><code>HEAD api/v1/oauth/scopes</code></p>
+<!-- END_1ee5ecce1140d3351636eeb52d07977b -->
+<!-- START_c48387272661e6169062399666856bc0 -->
+<h2>Get all of the personal access tokens for the authenticated user.</h2>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/oauth/personal-access-tokens" \
+-H "Accept: application/json"</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/oauth/personal-access-tokens",
+    "method": "GET",
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<blockquote>
+<p>Example response:</p>
+</blockquote>
+<pre><code class="language-json">{
+    "error": "Unauthenticated."
+}</code></pre>
+<h3>HTTP Request</h3>
+<p><code>GET api/v1/oauth/personal-access-tokens</code></p>
+<p><code>HEAD api/v1/oauth/personal-access-tokens</code></p>
+<!-- END_c48387272661e6169062399666856bc0 -->
+<!-- START_daadea0d7a284c73cbae122ca9c9b1a4 -->
+<h2>Create a new personal access token for the user.</h2>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/oauth/personal-access-tokens" \
+-H "Accept: application/json"</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/oauth/personal-access-tokens",
+    "method": "POST",
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<h3>HTTP Request</h3>
+<p><code>POST api/v1/oauth/personal-access-tokens</code></p>
+<!-- END_daadea0d7a284c73cbae122ca9c9b1a4 -->
+<!-- START_04ccd4592f8f76c24fb02ebdec805ce2 -->
+<h2>Delete the given token.</h2>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/oauth/personal-access-tokens/{token_id}" \
+-H "Accept: application/json"</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/oauth/personal-access-tokens/{token_id}",
+    "method": "DELETE",
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<h3>HTTP Request</h3>
+<p><code>DELETE api/v1/oauth/personal-access-tokens/{token_id}</code></p>
+<!-- END_04ccd4592f8f76c24fb02ebdec805ce2 --><h1>API Oauth</h1>
+<p>*Essa API é responsável pelo gerenciamento de geração de token no portal qImob.</p>
+<!-- START_e93b905843b0e8e829d334bb917c389f12 -->
+<h2>Gerar Token de Acesso</h2>
+<p>Endpoint para gerar token de acesso</p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/admin/plano/tabela_preco" \
+-H "Accept: application/json" \
+    -d "grant_type"="password" \
+    -d "username"="user1@teste.com" \
+    -d "password"="secret" \
+    -d "client_id"= 1 \
+    -d "client_secret"="2CcBq8WSjeHb5IZj5y9lngVxSumInevAd1TemAeJ" \
+</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/admin/plano/tabela_preco",
+    "method": "POST",
+    "data": {
+        "grant_type": "password",
+        "username": "user1@teste.com",
+        "password": "secret",
+        "client_id": 1,
+        "client_secret": "2CcBq8WSjeHb5IZj5y9lngVxSumInevAd1TemAeJ"
+},
+    "headers": {
+        "accept": "application/json"
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});</code></pre>
+<h3>HTTP Request</h3>
+<p><code>POST api/v1/oauth/authorize</code></p>
+<h4>Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>grant_type</td>
+<td>string</td>
+<td>required</td>
+</tr>
+<tr>
+<td>username</td>
+<td>string</td>
+<td>required</td>
+</tr>
+<tr>
+<td>password</td>
+<td>string</td>
+<td>required</td>
+</tr>
+<tr>
+<td>client_id</td>
+<td>integer</td>
+<td>required</td>
+</tr>
+<tr>
+<td>client_secret</td>
+<td>string</td>
+<td>required</td>
+</tr>
+</tbody>
+</table>
+<!-- END_e93b905843b0e8e829d334bb917c389f12 -->
+<!-- START_e93b905843b0e8e829d334bb917c389f121 -->
+<h2>Autenticação com Token</h2>
+<p>Endpoint descrevendo como fazer a autenticação para realizar uma requisição.</p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl "http://localhost:8000/api/v1/front/plano/consulta/anunciante/TO/Palmas" \
+-H "Accept: application/json Authorization: Bearer {Token} Content-Type: application/x-www-form-urlencoded"
+</code></pre>
+<pre><code class="language-javascript">var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8000/api/v1/front/plano/consulta/anunciante/TO/Palmas",
+    "method": "GET",
+    "headers": {
+        "Accept": "application/json",
+        "Authorization": "Bearer {Token}",
+        "Content-Type": "application/x-www-form-urlencoded",
+    }
+}
+
+$.ajax(settings).done(function (response) {
+    console.log(response);
+});
+</code></pre>
+<h3>HTTP Request</h3>
+<p><code>http://localhost:8000/api/v1/front/plano/consulta/anunciante/TO/Palmas</code></p>
+<h4>Parameters Headers</h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Status</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Accept</td>
+<td>string</td>
+<td>required</td>
+<td>application/json</td>
+</tr>
+<tr>
+<td>Authorization</td>
+<td>string</td>
+<td>required</td>
+<td>Bearer {Token}</td>
+</tr>
+<tr>
+<td>Content-Type</td>
+<td>integer</td>
+<td>required</td>
+<td>application/x-www-form-urlencoded</td>
+</tr>
+</tbody>
+</table>
+<!-- END_e93b905843b0e8e829d334bb917c389f121 --><h1>Releases</h1>
+<p>Este documento descreve de forma resumida todas as alterações que contemplam a build atual.
+Este documento é elaborado pela equipe de desenvolvimento e destinado à todos os Stakeholders
+do projeto.</p>
+<h2>Release 0.1.0</h2>
+<p>Criação de endpoints de segurança da API e cadastro de páginas e configurações
+globais do portal.</p>
+<h3>Novas Funcionalidades</h3>
+<ol>
+<li>
+<p><strong>Criação endpoint para gerenciamento de Usuários:</strong></p>
+<ol>
+<li>Consultar usuários;</li>
+<li>Buscar usuário por ID;</li>
+<li>Cadastrar usuário;</li>
+<li>Alterar usuário</li>
+<li>Deletar usuário;</li>
+<li>Solicitar nova senha;</li>
+<li>Criar nova senha;</li>
+<li>Alterar senha;</li>
+<li>Documentação da API;    </li>
+</ol>
+</li>
+<li>
+<p><strong>Criação endpoint para gerenciamento de Regras de Usuários:</strong></p>
+<ol>
+<li>Consultar regras;</li>
+<li>Buscar regra por ID;</li>
+<li>Cadastrar regra;</li>
+<li>Alterar regra;</li>
+<li>Deletar regra;</li>
+<li>Associar regra a um usuário;</li>
+<li>Busca regra por usuário;</li>
+<li>Remove regra do usuário;</li>
+<li>Remove todas as regras do usuário;</li>
+<li>Sicronizar permissões da regra;</li>
+<li>Sicronizar regra;</li>
+<li>Documentação da API;</li>
+</ol>
+</li>
+<li>
+<p><strong>Criação endpoint para gerenciamento de Permissões de Usuários:</strong></p>
+<ol>
+<li>Consultar permissões;</li>
+<li>Buscar permissão por ID;</li>
+<li>Cadastrar permissão;</li>
+<li>Alterar permissão;</li>
+<li>Deletar permissão;</li>
+<li>Associar permissão a um grupo;</li>
+<li>Associar permissão a um usuário;</li>
+<li>Busca permissão por grupo;</li>
+<li>Busca permissão por usuário;</li>
+<li>Remove todas as permissões de um usuário;</li>
+<li>Remove uma permissão de usuário;</li>
+<li>Lista de Slugs(das permissões) padrões;</li>
+<li>Documentação da API;</li>
+</ol>
+</li>
+<li>
+<p><strong>Criação endpoint para gerenciamento de Páginas:</strong></p>
+<ol>
+<li>Consultar paginas;</li>
+<li>Buscar página por ID;</li>
+<li>Cadastrar página;</li>
+<li>Alterar página</li>
+<li>Deletar página;</li>
+<li>Busca página por slug;</li>
+<li>Documentação da API; </li>
+</ol>
+</li>
+<li>
+<p><strong>Criação endpoint para gerenciamento de Configurações:</strong></p>
+<ol>
+<li>Buscar configuração;</li>
+<li>Alterar configuração;</li>
+<li>Documentação da API;   </li>
+</ol>
+</li>
+</ol>
+<h2>Release 0.2.0</h2>
+<p>Criação de endpoints de cadastro de  Planos e Anunciantes da API.</p>
+<h3>Novas Funcionalidades</h3>
+<ol>
+<li>
+<p><strong>Criação endpoint para gerenciamento de Planos de Anúncio:</strong></p>
+<ol>
+<li>Consultar planos;</li>
+<li>Buscar plano por ID;</li>
+<li>Cadastrar plano;</li>
+<li>Alterar plano</li>
+<li>Deletar plano;</li>
+<li>Cadastrar Tabela de Preço;</li>
+<li>Alterar Tabela de Preço;</li>
+<li>Deletar Tabela de Preço;</li>
+<li>Consultar Tabela de Preço;</li>
+<li>Consultar Tabela de Preço;</li>
+</ol>
+</li>
+<li>
+<p><strong>Criação endpoint para gerenciamento de Anunciantes:</strong></p>
+<ol>
+<li>Consultar anunciante;</li>
+<li>Buscar anunciante por ID;</li>
+<li>Cadastrar anunciante;</li>
+<li>Enviar email de confirmação de Cadastro;</li>
+<li>Alterar anunciante;</li>
+<li>Deletar anunciante;</li>
+<li>Consultar Perfil;</li>
+<li>Alterar Imagem Anunciante logado;</li>
+<li>Solicitar Nova Senha;</li>
+<li>Criar Nova Senha;</li>
+<li>Alterar Senha;</li>
+</ol>
+</li>
+</ol><h1>Erros</h1>
+<p>A API Portal qImob usa os seguintes códigos de erro:</p>
+<table>
+<thead>
+<tr>
+<th>Error Code</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>400</td>
+<td>Bad Request -- Your request sucks</td>
+</tr>
+<tr>
+<td>401</td>
+<td>Unauthorized -- Your API key is wrong</td>
+</tr>
+<tr>
+<td>403</td>
+<td>Forbidden -- The kitten requested is hidden for administrators only</td>
+</tr>
+<tr>
+<td>404</td>
+<td>Not Found -- The specified kitten could not be found</td>
+</tr>
+<tr>
+<td>405</td>
+<td>Method Not Allowed -- You tried to access a kitten with an invalid method</td>
+</tr>
+<tr>
+<td>406</td>
+<td>Not Acceptable -- You requested a format that isn't json</td>
+</tr>
+<tr>
+<td>410</td>
+<td>Gone -- The kitten requested has been removed from our servers</td>
+</tr>
+<tr>
+<td>418</td>
+<td>I'm a teapot</td>
+</tr>
+<tr>
+<td>429</td>
+<td>Too Many Requests -- You're requesting too many kittens! Slow down!</td>
+</tr>
+<tr>
+<td>500</td>
+<td>Internal Server Error -- We had a problem with our server. Try again later.</td>
+</tr>
+<tr>
+<td>503</td>
+<td>Service Unavailable -- We're temporarially offline for maintanance. Please try again later.</td>
+</tr>
+</tbody>
+</table>
+      </div>
+      <div class="dark-box">
+                        <div class="lang-selector">
+                                    <a href="#" data-language-name="bash">bash</a>
+                                    <a href="#" data-language-name="javascript">javascript</a>
+                              </div>
+                </div>
+    </div>
+  </body>
+</html>

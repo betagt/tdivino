@@ -1,0 +1,16 @@
+{
+    "name": "GeoPosition",
+    "alias": "geoposition",
+    "description": "",
+    "keywords": [],
+    "active": 1,
+    "order": 0,
+    "providers": [
+        "Modules\\GeoPosition\\Providers\\GeoPositionServiceProvider"
+    ],
+    "aliases": {},
+    "files": [
+        "start.php"
+    ],
+    "requires": []
+}
