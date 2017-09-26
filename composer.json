@@ -24,7 +24,7 @@
         "betagt/cep-location-viacep": "0.0.3",
         "michael/laravelpagseguro": "1.0",
         "pagseguro/php": "2.7.1",
-        "laravel/passport": "1.0.17",
+        "laravel/passport": "1.0.x-dev",
         "nwidart/laravel-modules": "^1.27.2",
         "browner12/helpers": "^1.1",
         "folklore/image": "^0.3.20"
