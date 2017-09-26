@@ -1,1 +1,1 @@
-Procfile
+web: sh app_boot.sh
