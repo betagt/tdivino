@@ -36,8 +36,11 @@ class User extends Authenticatable implements Transformable
     public function findForPassport($username)
     {
         $return = $this->where('email', $username)->first();
+        if(is_null($return)){
+            return false;
+        }
         if ($return->status != self::ATIVO) {
-            return;
+            return false;
         }
         return $return;
     }

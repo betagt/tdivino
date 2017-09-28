@@ -7,6 +7,8 @@ use Modules\Transporte\Repositories\ChamadaRepository;
 use Modules\Transporte\Repositories\ChamadaRepositoryEloquent;
 use Modules\Transporte\Repositories\DocumentoRepository;
 use Modules\Transporte\Repositories\DocumentoRepositoryEloquent;
+use Modules\Transporte\Repositories\GeoPosicaoRepository;
+use Modules\Transporte\Repositories\GeoPosicaoRepositoryEloquent;
 use Modules\Transporte\Repositories\MarcaCarroRepository;
 use Modules\Transporte\Repositories\MarcaCarroRepositoryEloquent;
 use Modules\Transporte\Repositories\ModeloCarroRepository;
@@ -54,6 +56,10 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             ModeloCarroRepository::class,
             ModeloCarroRepositoryEloquent::class
+        );
+        $this->app->bind(
+            GeoPosicaoRepository::class,
+            GeoPosicaoRepositoryEloquent::class
         );
     }
 }

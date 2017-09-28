@@ -2,18 +2,16 @@
 
 namespace Modules\Transporte\Repositories;
 
-use Modules\Transporte\Presenters\ChamadaPresenter;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
-use Modules\Transporte\Repositories\chamadaRepository;
-use Modules\Transporte\Models\Chamada;
-use Portal\Validators\ChamadaValidator;
+use Modules\Transporte\Repositories\GeoPosicaoRepository;
+use Modules\Transporte\Models\GeoPosicao;
 
 /**
- * Class ChamadaRepositoryEloquent
+ * Class GeoPosicaoRepositoryEloquent
  * @package namespace Portal\Repositories;
  */
-class ChamadaRepositoryEloquent extends BaseRepository implements ChamadaRepository
+class GeoPosicaoRepositoryEloquent extends BaseRepository implements GeoPosicaoRepository
 {
     /**
      * Specify Model class name
@@ -22,7 +20,7 @@ class ChamadaRepositoryEloquent extends BaseRepository implements ChamadaReposit
      */
     public function model()
     {
-        return Chamada::class;
+        return GeoPosicao::class;
     }
 
     
@@ -33,11 +31,5 @@ class ChamadaRepositoryEloquent extends BaseRepository implements ChamadaReposit
     public function boot()
     {
         $this->pushCriteria(app(RequestCriteria::class));
-    }
-
-
-    public function presenter()
-    {
-        return ChamadaPresenter::class;
     }
 }

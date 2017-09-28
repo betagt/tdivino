@@ -13,6 +13,10 @@ class Chamada extends Model implements Transformable
     const TIPO_SOLICITACAO = 'solicitacao';
     const TIPO_ATENDIMENTO = 'atendimento';
 
+    const STATUS_PENDENTE = 'pendente';
+    const STATUS_PAGO = 'pago';
+    const STATUS_CANCELADO = 'cancelado';
+
     protected $table = "transporte_chamadas";
 
     protected $fillable = [
