@@ -23,7 +23,12 @@ class ChamadaRoute implements ICustomRoute
                     'uses' => 'ChamadaController@iniciarChamada'
                 ]);
             });
-            Route::group(['middleware' => ['acl'],'is' => 'administrador|fornecedor', 'protect_alias'  => 'user'],function (){});
+            Route::group(['middleware' => ['acl'],'is' => 'administrador|fornecedor', 'protect_alias'  => 'user'],function (){
+                Route::post('chamda/atender', [
+                    'as' => 'chamda.atender',
+                    'uses' => 'ChamadaController@atender'
+                ]);
+            });
             Route::group(['middleware' => ['acl'],'is' => 'administrador|moderador,or', 'protect_alias'  => 'user'],function (){
                 Route::resource('veiculo', 'VeiculoController',
                     [

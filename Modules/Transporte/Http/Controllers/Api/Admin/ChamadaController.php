@@ -10,6 +10,7 @@ use Modules\Transporte\Criteria\ChamadaCriteria;
 use Modules\Transporte\Http\Requests\ChamadaRequest;
 use Modules\Transporte\Repositories\ChamadaRepository;
 use Modules\Transporte\Repositories\GeoPosicaoRepository;
+use Portal\Criteria\OrderCriteria;
 use Portal\Http\Controllers\BaseController;
 
 use Modules\Transporte\Models\Chamada;
@@ -54,14 +55,21 @@ class ChamadaController extends BaseController
         return $this->validator;
     }
 
-    function listarCliente()
-    {
-        //todo listar chamas realizadas pelo cliente
-    }
-
-    function listarFornecedor()
-    {
-        //todo listar chamas realizadas pelo cliente
+    function listarByUser(Request $request){
+        try{
+            return $this->chamadaRepository
+                ->pushCriteria(new ChamadaCriteria($request, $this->getUserId()))
+                ->pushCriteria(new OrderCriteria($request))
+                ->paginate(self::$_PAGINATION_COUNT);
+        }catch (ModelNotFoundException $e){
+            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
+        }
+        catch (RepositoryException $e){
+            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
+        }
+        catch (\Exception $e){
+            return self::responseError(self::HTTP_CODE_BAD_REQUEST, trans('errors.undefined', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
+        }
     }
 
     /**8
@@ -147,7 +155,7 @@ class ChamadaController extends BaseController
 
     function atender(Request $request, $idChamada)
     {
-        $data = $request->only(['origem', 'destino', 'forma_pagamento_id', 'endereco_origem', 'endereco_destino']);
+        $data = $request->only(['origem', 'endereco_origem']);
         $chamada = $this->chamadaRepository->find($idChamada);
         if(empty($chamada['data'])){
             return parent::responseError(self::HTTP_CODE_BAD_REQUEST, 'Chamada inválida');
@@ -161,12 +169,11 @@ class ChamadaController extends BaseController
         ])->validate();
         $data['fornecedor_id'] = $this->getUserId();
         $data['tipo'] = Chamada::TIPO_ATENDIMENTO;
-        $data['valor'] = $this->geoService->distanceCalculate($data['origem'], $data['destino']);
         try {
             \DB::beginTransaction();
             $chamada = $this->chamadaRepository->update($data, $idChamada);
             $this->geoPosicaoRepository->create([
-                'user_id' => $data['cliente_id'],
+                'user_id' => $data['fornecedor_id'],
                 'endereco' => $data['endereco_origem'],
                 'transporte_geo_posicaotable_id' => $idChamada,
                 'transporte_geo_posicaotable_type' => Chamada::class,
@@ -174,7 +181,6 @@ class ChamadaController extends BaseController
                 'lng' => $data['origem']['lng'],
                 'passageiro' => false
             ]);
-            //$chamada->geoPosition()
             \DB::commit();
             return $chamada;
         } catch (ModelNotFoundException $e) {
