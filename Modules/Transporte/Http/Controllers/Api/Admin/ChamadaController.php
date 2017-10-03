@@ -28,10 +28,12 @@ class ChamadaController extends BaseController
      * @var ChamadaRepository
      */
     private $chamadaRepository;
+
     /**
      * @var GeoService
      */
     private $geoService;
+
     /**
      * @var GeoPosicaoRepository
      */
@@ -55,20 +57,19 @@ class ChamadaController extends BaseController
         return $this->validator;
     }
 
-    function listarByUser(Request $request){
-        try{
+    function listarByUser(Request $request)
+    {
+        try {
             return $this->chamadaRepository
                 ->pushCriteria(new ChamadaCriteria($request, $this->getUserId()))
                 ->pushCriteria(new OrderCriteria($request))
                 ->paginate(self::$_PAGINATION_COUNT);
-        }catch (ModelNotFoundException $e){
-            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
-        }
-        catch (RepositoryException $e){
-            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
-        }
-        catch (\Exception $e){
-            return self::responseError(self::HTTP_CODE_BAD_REQUEST, trans('errors.undefined', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
+        } catch (ModelNotFoundException $e) {
+            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code' => $e->getCode(), 'message' => $e->getMessage()]));
+        } catch (RepositoryException $e) {
+            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code' => $e->getCode(), 'message' => $e->getMessage()]));
+        } catch (\Exception $e) {
+            return self::responseError(self::HTTP_CODE_BAD_REQUEST, trans('errors.undefined', ['status_code' => $e->getCode(), 'message' => $e->getMessage()]));
         }
     }
 
@@ -134,7 +135,7 @@ class ChamadaController extends BaseController
     function visualizar($idChamada)
     {
         $data = ['chamada_id' => $idChamada];
-        \Validator::make($data, ['chamada_id' => '']);
+        \Validator::make($data, ['chamada_id' => 'required|exists:transporte_chamadas,id']);
         try {
             $chamada = $this->chamadaRepository->find($data['chamada_id']);
             if (is_null($chamada['data'])) {
@@ -153,14 +154,42 @@ class ChamadaController extends BaseController
         }
     }
 
+    function visualizarFornecedor($idChamada)
+    {
+        $data = ['chamada_id' => $idChamada];
+        \Validator::make($data, ['chamada_id' => 'required|exists:transporte_chamadas,id']);
+        try {
+            $chamada = $this->chamadaRepository->find($data['chamada_id']);
+            if (is_null($chamada['data'])) {
+                throw new \Exception('chamada invalida');
+            }
+            if (!($chamada['data']['fornecedor_id'] == $this->getUserId())) {
+                throw new \Exception('chamada não pertence a você');
+            }
+            return $chamada;
+        } catch (ModelNotFoundException $e) {
+            return parent::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code' => $e->getCode(), 'message' => $e->getMessage()]));
+        } catch (RepositoryException $e) {
+            return parent::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code' => $e->getCode(), 'message' => $e->getMessage()]));
+        } catch (\Exception $e) {
+            return parent::responseError(self::HTTP_CODE_BAD_REQUEST, trans('errors.undefined', ['status_code' => $e->getCode(), 'message' => $e->getMessage()]));
+        }
+    }
+
     function atender(Request $request, $idChamada)
     {
         $data = $request->only(['origem', 'endereco_origem']);
+        $data['chamada_id'] = $idChamada;
+        \Validator::make($data, [
+            'endereco_origem' => 'required|string',
+            'origem' => 'required|array',
+            'chamada_id'=>'required|exists:transporte_chamadas,id'
+        ])->validate();
         $chamada = $this->chamadaRepository->find($idChamada);
-        if(empty($chamada['data'])){
+        if (empty($chamada['data'])) {
             return parent::responseError(self::HTTP_CODE_BAD_REQUEST, 'Chamada inválida');
         }
-        if($chamada['data']['tipo'] ==  Chamada::TIPO_ATENDIMENTO){
+        if ($chamada['data']['tipo'] == Chamada::TIPO_ATENDIMENTO) {
             return parent::responseError(self::HTTP_CODE_BAD_REQUEST, 'Está chamada já está em atendimento.');
         }
         \Validator::make($data, [
@@ -168,7 +197,10 @@ class ChamadaController extends BaseController
             'origem' => 'required|array',
         ])->validate();
         $data['fornecedor_id'] = $this->getUserId();
+        $data['datahora_comfirmação'] = Carbon::now();
         $data['tipo'] = Chamada::TIPO_ATENDIMENTO;
+        $this->getUser()->disponivel = false;
+        $this->getUser()->save();
         try {
             \DB::beginTransaction();
             $chamada = $this->chamadaRepository->update($data, $idChamada);
@@ -198,7 +230,119 @@ class ChamadaController extends BaseController
     function cancelar($idChamada)
     {
         $data = ['chamada_id' => $idChamada];
+        \Validator::make($data, [
+            'chamada_id'=>'required|exists:transporte_chamadas,id'
+        ])->validate();
+        try {
+            $chamada = $this->chamadaRepository->find($data['chamada_id']);
+            if ($chamada['data']['status'] == Chamada::STATUS_CANCELADO) {
+                throw new \Exception('chamada já cancelada');
+            }
+            if (is_null($chamada['data'])) {
+                throw new \Exception('chamada invalida');
+            }
+            if (!($chamada['data']['cliente_id'] == $this->getUserId())) {
+                throw new \Exception('chamada não pertence a você');
+            }
+            $chamada['status'] = Chamada::STATUS_CANCELADO;
+            return $this->chamadaRepository->update($chamada, $idChamada);
+        } catch (ModelNotFoundException $e) {
+            return parent::responseError(self::HTTP_CODE_NOT_FOUND, $e->getMessage());
+        } catch (RepositoryException $e) {
+            return parent::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code' => $e->getCode(), 'message' => $e->getMessage()]));
+        } catch (\Exception $e) {
+            return parent::responseError(self::HTTP_CODE_BAD_REQUEST, $e->getMessage());
+        }
+    }
+
+    function cancelarForcedor($idChamada)
+    {
+        $data = ['chamada_id' => $idChamada];
         \Validator::make($data, ['chamada_id' => 'required']);
+        try {
+            $chamada = $this->chamadaRepository->find($data['chamada_id']);
+            if ($chamada['data']['status'] == Chamada::STATUS_CANCELADO) {
+                throw new \Exception('chamada já cancelada');
+            }
+            if (is_null($chamada['data'])) {
+                throw new \Exception('chamada invalida');
+            }
+            if (!($chamada['data']['fornecedor_id'] == $this->getUserId())) {
+                throw new \Exception('chamada não pertence a você');
+            }
+            $chamada['status'] = Chamada::STATUS_CANCELADO;
+            $this->chamadaRepository->update($chamada, $idChamada);
+            return $chamada;
+        } catch (ModelNotFoundException $e) {
+            return parent::responseError(self::HTTP_CODE_NOT_FOUND, $e->getMessage());
+        } catch (RepositoryException $e) {
+            return parent::responseError(self::HTTP_CODE_NOT_FOUND, $e->getMessage());
+        } catch (\Exception $e) {
+            return parent::responseError(self::HTTP_CODE_BAD_REQUEST, trans('errors.undefined', ['status_code' => $e->getCode(), 'message' => $e->getMessage()]));
+        }
+    }
+
+    function embarquePassageiro(Request $request, $idChamada){
+        $data = ['chamada_id' => $idChamada];
+        \Validator::make($data, [
+            'chamada_id'=>'required|exists:transporte_chamadas,id'
+        ])->validate();
+        try {
+            $chamada = $this->chamadaRepository->find($data['chamada_id']);
+
+            if (is_null($chamada['data'])) {
+                throw new \Exception('chamada invalida');
+            }
+            if (!($chamada['data']['fornecedor_id'] == $this->getUserId())) {
+                throw new \Exception('chamada não pertence a você');
+            }
+            $chamada['data']['datahora_embarque'] = Carbon::now();
+            return $this->chamadaRepository->update($chamada['data'], $idChamada);
+        } catch (ModelNotFoundException $e) {
+            return parent::responseError(self::HTTP_CODE_NOT_FOUND, $e->getMessage());
+        } catch (RepositoryException $e) {
+            return parent::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code' => $e->getCode(), 'message' => $e->getMessage()]));
+        } catch (\Exception $e) {
+            return parent::responseError(self::HTTP_CODE_BAD_REQUEST, $e->getMessage());
+        }
+    }
+
+    function desembarquePassageiro(Request $request, $idChamada){
+        $data = ['chamada_id' => $idChamada];
+        \Validator::make($data, [
+            'chamada_id'=>'required|exists:transporte_chamadas,id'
+        ])->validate();
+        try {
+            $chamada = $this->chamadaRepository->find($data['chamada_id']);
+
+            if (is_null($chamada['data'])) {
+                throw new \Exception('chamada invalida');
+            }
+            if (!($chamada['data']['fornecedor_id'] == $this->getUserId())) {
+                throw new \Exception('chamada não pertence a você');
+            }
+            $chamada['data']['datahora_desembarcou'] = Carbon::now();
+            $chamada['data']['tipo'] = Chamada::TIPO_FINALIZADO;
+            $this->getUser()->disponivel = true;
+            $this->getUser()->save();
+            return $this->chamadaRepository->update($chamada['data'], $idChamada);
+        } catch (ModelNotFoundException $e) {
+            return parent::responseError(self::HTTP_CODE_NOT_FOUND, $e->getMessage());
+        } catch (RepositoryException $e) {
+            return parent::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code' => $e->getCode(), 'message' => $e->getMessage()]));
+        } catch (\Exception $e) {
+            return parent::responseError(self::HTTP_CODE_BAD_REQUEST, $e->getMessage());
+        }
+    }
+
+    function avaliacao(Request $request, $idChamada)
+    {
+        $data = $request->only(['avaliacao']);
+        $data['chamada_id'] = $idChamada;
+        \Validator::make($data, [
+            'avaliacao' => 'required|integer|max:5|min:0',
+            'chamada_id'=>'exists:transporte_chamadas,id'
+        ])->validate();
         try {
             $chamada = $this->chamadaRepository->find($data['chamada_id']);
             if (is_null($chamada['data'])) {
@@ -207,18 +351,23 @@ class ChamadaController extends BaseController
             if (!($chamada['data']['cliente_id'] == $this->getUserId())) {
                 throw new \Exception('chamada não pertence a você');
             }
-            $chamada['status'] = Chamada::STATUS_CANCELADO;
-            $this->chamadaRepository->update($chamada, $idChamada);
+            $chamada['data']['tipo'] = Chamada::TIPO_FINALIZADO;
+            $chamada['data']['avaliacao'] = $data['avaliacao'];
+            $this->chamadaRepository->update($chamada, $data['chamada_id']);
             return $chamada;
         } catch (ModelNotFoundException $e) {
-            return parent::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code' => $e->getCode(), 'message' => $e->getMessage()]));
+            return parent::responseError(self::HTTP_CODE_NOT_FOUND, $e->getMessage());
         } catch (RepositoryException $e) {
-            return parent::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code' => $e->getCode(), 'message' => $e->getMessage()]));
+            return parent::responseError(self::HTTP_CODE_NOT_FOUND, $e->getMessage());
         } catch (\Exception $e) {
-            return parent::responseError(self::HTTP_CODE_BAD_REQUEST, trans('errors.undefined', ['status_code' => $e->getCode(), 'message' => $e->getMessage()]));
+            return parent::responseError(self::HTTP_CODE_BAD_REQUEST,  $e->getMessage());
         }
     }
 
+    /**
+     * @param Request $request
+     * @return array
+     */
     function calcularRota(Request $request)
     {
         $data = $request->only(['origem', 'destino']);

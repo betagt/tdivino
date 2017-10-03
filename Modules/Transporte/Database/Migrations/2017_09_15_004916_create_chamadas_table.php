@@ -31,6 +31,7 @@ class CreateChamadasTable extends Migration
             $table->double('valor');
             $table->string('observacao')->nullable();
             $table->integer('porta_mala')->nullable();
+            $table->integer('avaliacao')->nullable();
             $table->string('cupon')->nullable();
             $table->dateTime('data_inicial')->nullable();
             $table->dateTime('data_final')->nullable();

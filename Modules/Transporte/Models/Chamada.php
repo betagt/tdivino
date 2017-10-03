@@ -12,6 +12,7 @@ class Chamada extends Model implements Transformable
 
     const TIPO_SOLICITACAO = 'solicitacao';
     const TIPO_ATENDIMENTO = 'atendimento';
+    const TIPO_FINALIZADO= 'finalizado';
 
     const STATUS_PENDENTE = 'pendente';
     const STATUS_PAGO = 'pago';
@@ -31,6 +32,7 @@ class Chamada extends Model implements Transformable
         'datahora_embarque',
         'datahora_desembarcou',
         'valor',
+        'avaliacao',
         'observacao',
         'porta_mala',
         'cupon',
