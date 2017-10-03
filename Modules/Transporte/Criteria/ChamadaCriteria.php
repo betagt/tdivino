@@ -2,6 +2,7 @@
 
 namespace Modules\Transporte\Criteria;
 
+use Illuminate\Http\Request;
 use Portal\Criteria\BaseCriteria;
 use Prettus\Repository\Contracts\CriteriaInterface;
 use Prettus\Repository\Contracts\RepositoryInterface;
@@ -12,5 +13,18 @@ use Prettus\Repository\Contracts\RepositoryInterface;
  */
 class ChamadaCriteria extends BaseCriteria
 {
-    protected $filterCriteria = [];
+    /**
+     * @var null
+     */
+    private $id;
+
+    public function __construct(Request $request, $id=null)
+    {
+        parent::__construct($request);
+
+        $this->id = $id;
+    }
+    protected $filterCriteria = [
+        'user_id' => '='
+    ];
 }

@@ -7,4 +7,5 @@ Route::group(['prefix'=>'v1','middleware' => ['cors']], function () {
     \Modules\Transporte\Rotas\VeiculoRoute::run();
     \Modules\Transporte\Rotas\MarcaCarroRoute::run();
     \Modules\Transporte\Rotas\ModeloCarroRoute::run();
+    \Modules\Transporte\Rotas\ChamadaRoute::run();
 });
