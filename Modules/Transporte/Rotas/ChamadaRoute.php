@@ -34,6 +34,10 @@ class ChamadaRoute implements ICustomRoute
                     'as' => 'chamda.avaliacao',
                     'uses' => 'ChamadaController@avaliacao'
                 ]);
+                Route::post('chamada/calcular-rota', [
+                    'as' => 'chamda.cancelar',
+                    'uses' => 'ChamadaController@calcularRota'
+                ]);
             });
             Route::group(['middleware' => ['acl'],'is' => 'administrador|fornecedor', 'protect_alias'  => 'user'],function (){
                 Route::post('chamada/atender/{idChamada}', [
@@ -43,6 +47,10 @@ class ChamadaRoute implements ICustomRoute
                 Route::get('chamada/embarque/{idChamada}', [
                     'as' => 'chamda.atender',
                     'uses' => 'ChamadaController@embarquePassageiro'
+                ]);
+                Route::get('chamada/minhas-chamadas', [
+                    'as' => 'chamda.atender',
+                    'uses' => 'ChamadaController@listarByUser'
                 ]);
                 Route::get('chamada/desembarque/{idChamada}', [
                     'as' => 'chamda.atender',

@@ -370,10 +370,11 @@ class ChamadaController extends BaseController
      */
     function calcularRota(Request $request)
     {
-        $data = $request->only(['origem', 'destino']);
+        $data = $request->only(['origem', 'destino', 'forma_pagamento_id']);
         \Validator::make($data, [
             'origem' => 'required|array',
             'destino' => 'required|array',
+            'forma_pagamento_id' => 'required|integer|min:1',
         ])->validate();
         return ['data' => ['valor' => $this->geoService->distanceCalculate($data['origem'], $data['destino'])]];
     }

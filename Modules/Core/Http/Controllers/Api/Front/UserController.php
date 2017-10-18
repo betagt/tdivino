@@ -114,9 +114,9 @@ class UserController extends BaseController
         ])->validate();
         try {
             $data = $this->userRepository->skipPresenter(true)->create($data);
-            $data->assignRole('anunciante');
+            $data->assignRole('cliente');
             $user = $this->userRepository->skipPresenter(false)->find($data->id);
-            event(new UsuarioCadastrado($this->userRepository->skipPresenter(true)->find($user['data']['id']),'anunciante'));
+            event(new UsuarioCadastrado($this->userRepository->skipPresenter(true)->find($user['data']['id']),'cliente'));
             return $user;
         } catch (ModelNotFoundException $e) {
             return self::responseError(self::HTTP_CODE_NOT_FOUND, $e->getMessage());

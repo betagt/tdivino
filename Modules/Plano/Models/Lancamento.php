@@ -12,7 +12,8 @@ class Lancamento extends Model implements Transformable
 
     protected $fillable = [
         'forma_pagamento_id',
-        'plano_contratacao_id',
+        'lancamentotable_id',
+        'lancamentotable_type',
         'valor',
         'desconto',
         'data_do_pagamento',

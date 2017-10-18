@@ -46,20 +46,20 @@ abstract class BaseController extends Controller implements ICustomController
     const MSG_REGISTRO_RESTAURADO = 'Registro restaurado com sucesso.';
 
     const HTTP_CODE_BAD_REQUEST = [
-        'status'=>301,
-        'code'=>'HTTP_CODE_BAD_REQUEST'
+        'status' => 301,
+        'code' => 'HTTP_CODE_BAD_REQUEST'
     ];
     const HTTP_CODE_NOT_FOUND = [
-        'status'=>404,
-        'code'=>'HTTP_CODE_NOT_FOUND'
+        'status' => 404,
+        'code' => 'HTTP_CODE_NOT_FOUND'
     ];
     const HTTP_CODE_OK = [
-        'status'=>200,
-        'code'=>'HTTP_CODE_OK'
+        'status' => 200,
+        'code' => 'HTTP_CODE_OK'
     ];
     const HTTP_CODE_CREATED = [
-        'status'=>201,
-        'code'=>'HTTP_CODE_CREATED'
+        'status' => 201,
+        'code' => 'HTTP_CODE_CREATED'
     ];
 
     private $pathFile = null;
@@ -80,19 +80,22 @@ abstract class BaseController extends Controller implements ICustomController
         $this->defaultCriteria = $defaultCriteria;
     }
 
-    protected function getUserId(){
+    protected function getUserId()
+    {
         $user = app(Request::class)->user();
-        if(isset($user->id)){
+        if (isset($user->id)) {
             return $user->id;
         }
         return null;
     }
 
-    protected function getUser(){
+    protected function getUser()
+    {
         return app(Request::class)->user();
     }
 
-    protected function getRequest(){
+    protected function getRequest()
+    {
         return app(Request::class);
     }
 
@@ -112,26 +115,28 @@ abstract class BaseController extends Controller implements ICustomController
         $this->pathFile = $pathFile;
     }
 
-    protected function responseSuccess (array $status_code,string $message = null){
+    protected function responseSuccess(array $status_code, string $message = null)
+    {
 
-       return  response()->json([
-            "success"=> [
-                "status_code"=>  $status_code['status'],
-                "code"=> $status_code['code'],
-                "description"=> $message
+        return response()->json([
+            "success" => [
+                "status_code" => $status_code['status'],
+                "code" => $status_code['code'],
+                "description" => $message
             ]
-       ], $status_code['status']);
+        ], $status_code['status']);
     }
 
-    protected function responseError (array $status_code, string $message = null){
+    protected function responseError(array $status_code, string $message = null)
+    {
 
-       return response()->json([
-           "error"=> [
-               "status_code"=>  $status_code['status'],
-               "code"=> $status_code['code'],
-               "description"=> $message
-           ]
-       ], $status_code['status']);
+        return response()->json([
+            "error" => [
+                "status_code" => $status_code['status'],
+                "code" => $status_code['code'],
+                "description" => $message
+            ]
+        ], $status_code['status']);
 
     }
 

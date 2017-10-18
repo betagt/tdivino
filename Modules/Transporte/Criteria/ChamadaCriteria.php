@@ -24,6 +24,7 @@ class ChamadaCriteria extends BaseCriteria
 
         $this->id = $id;
     }
+
     protected $filterCriteria = [
         'user_id' => '='
     ];

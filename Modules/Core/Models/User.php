@@ -30,7 +30,7 @@ class User extends Authenticatable implements Transformable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'pagina_user', 'email_alternativo', 'imagem', 'chk_newsletter', 'status', 'remember_token', 'cep', 'pessoa_id', 'disponivel', 'lat', 'lng'
+        'name', 'email', 'password', 'pagina_user', 'email_alternativo', 'imagem', 'chk_newsletter', 'status', 'remember_token', 'cep', 'pessoa_id', 'disponivel', 'lat', 'lng', 'documentos_validate'
     ];
 
     public function findForPassport($username)

@@ -3,6 +3,7 @@
 namespace Modules\Localidade\Services;
 
 
+use Portal\Services\ConfiguracaoService;
 use Portal\Services\UtilService;
 
 class GeoService
@@ -12,10 +13,17 @@ class GeoService
      * @var UtilService
      */
     private $utilService;
+    /**
+     * @var ConfiguracaoService
+     */
+    private $configuracaoService;
 
-    public function __construct(UtilService $utilService)
+    public function __construct(
+        UtilService $utilService,
+        ConfiguracaoService $configuracaoService)
     {
         $this->utilService = $utilService;
+        $this->configuracaoService = $configuracaoService;
     }
 
     /**
@@ -23,7 +31,7 @@ class GeoService
      * @param array $destinos
      * @return null
      */
-    public function distanceCalculate(array $origens, array $destinos)
+    public function distanceCalculate(array $origens, array $destinos, $taxa = 0.4)
     {
         /*$cachePosition =  $this->geoPosition->skipPresenter(false)->getPosition($origens,$destinos);
         if($cachePosition){
@@ -67,8 +75,9 @@ class GeoService
             'lat_log_destinos'=>$destinos,
             'price' =>floatval($total)
         ]);*/
-        $total = ($distanciaTotal * 0.51875);
-        return ($total*0.4)+$total;
+        $configuracao = $this->configuracaoService->getConfiguracao();
+        $total = ($distanciaTotal * $configuracao['data']['gasolina_km']);
+        return ($total*$taxa)+$total;
     }
 
     private function formatLocation($location)

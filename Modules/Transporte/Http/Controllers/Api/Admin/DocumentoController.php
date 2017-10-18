@@ -68,12 +68,12 @@ class DocumentoController extends BaseController
             $validacao = [];
             foreach ($servico['data']['habilidades_values'] as $key => $item){
                 $arquivo = $this->documentoRepository->skipPresenter(true)->findWhere(['user_id' =>  $this->getUser()->id, 'transporte_tipo_documento_id' => $item]);
-                $label_arquivo = ($arquivo->count() > 0)?$arquivo->first():null;
+                $status = ($arquivo->count() > 0)?$arquivo->first()->status:null;
                 $validacao[] = [
                     'id' => $item,
                     'label' => $servico['data']['habilidades_labels'][$key],
-                    'ativo' => ($label_arquivo->status == 'aceito'),
-                    'status_label' => ($label_arquivo->status == 'aceito')?'Aceito':'Requerido'
+                    'ativo' => ($status == 'aceito'),
+                    'status_label' => ($status == 'aceito')?'Aceito':'Requerido'
 
                 ];
             }
@@ -81,11 +81,11 @@ class DocumentoController extends BaseController
             $retorno['validacao'] = $validacao;
             return $retorno;
         } catch (ModelNotFoundException $e) {
-            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code' => $e->getCode(), 'message' => $e->getMessage()]));
+            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code' => $e->getCode(), 'message' => $e->getMessage(). ' Linha: '. $e->getLine()]));
         } catch (RepositoryException $e) {
-            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code' => $e->getCode(), 'message' => $e->getMessage()]));
+            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code' => $e->getCode(), 'message' => $e->getMessage(). ' Linha: '. $e->getLine()]));
         } catch (\Exception $e) {
-            return self::responseError(self::HTTP_CODE_BAD_REQUEST, trans('errors.undefined', ['status_code' => $e->getCode(), 'message' => $e->getMessage()]));
+            return self::responseError(self::HTTP_CODE_BAD_REQUEST, trans('errors.undefined', ['status_code' => $e->getCode(), 'message' => $e->getMessage(). ' Linha: '. $e->getLine()]));
         }
     }
 

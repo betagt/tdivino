@@ -117,7 +117,7 @@ class FormaPgtoController extends BaseController
             'hash' => 'required_if:method,CREDIT_CARD',
             'token' => 'required_if:method,CREDIT_CARD',
         ])->validate();
-        $pagamento = $this->pagSeguroService->pagamentoByMethod($data);
+        $pagamento = $this->pagSeguroService->pagamentoByMethod($data, $this->getUser());
         if($pagamento['success']){
             return $pagamento;
         }

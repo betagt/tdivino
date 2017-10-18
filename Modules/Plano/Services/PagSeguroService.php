@@ -10,32 +10,35 @@ namespace Modules\Plano\Services;
 
 
 use Modules\Anuncio\Models\Anuncio;
+use Modules\Core\Models\User;
 use Modules\Plano\Models\PlanoContratacao;
 use Modules\Plano\Repositories\FormaPagamentoRepository;
 use Modules\Plano\Repositories\LancamentoRepository;
 use Modules\Plano\Repositories\PlanoContratacaoRepository;
+use Modules\Transporte\Models\Chamada;
+use Modules\Transporte\Repositories\ChamadaRepository;
 
 class PagSeguroService
 {
     private $formaPagamentoRepository;
     /**
-     * @var PlanoContratacaoRepository
-     */
-    private $planoContratacaoRepository;
-    /**
      * @var LancamentoRepository
      */
     private $lancamentoRepository;
+    /**
+     * @var ChamadaRepository
+     */
+    private $chamadaRepository;
 
     public function __construct(
         FormaPagamentoRepository $formaPagamentoRepository,
-        PlanoContratacaoRepository $planoContratacaoRepository,
-        LancamentoRepository $lancamentoRepository
+        LancamentoRepository $lancamentoRepository,
+        ChamadaRepository $chamadaRepository
     )
     {
         $this->formaPagamentoRepository = $formaPagamentoRepository;
-        $this->planoContratacaoRepository = $planoContratacaoRepository;
         $this->lancamentoRepository = $lancamentoRepository;
+        $this->chamadaRepository = $chamadaRepository;
     }
 
     public function getSessionId()
@@ -46,19 +49,16 @@ class PagSeguroService
         ];
     }
 
-    public function pagamentoByMethod($data)
+    public function pagamentoByMethod($data, User $user = null)
     {
-        $contratacao = $this->planoContratacaoRepository->skipPresenter(true)->find($data['code_contratacao']);
-        if($contratacao->anuncio->count() == 0)
+        $chamada = $this->chamadaRepository->skipPresenter(true)->find($data['code_chamada']);
+        if (is_null($chamada))
             throw new \Exception('Erro ao contratar anuncio!');
-        if($contratacao->valor == 0){
-            $contratacao->status = PlanoContratacao::STATUS_ATIVO;
-            $anuncio = $contratacao->anuncio->first();
-            $anuncio->status = Anuncio::STATUS_ATIVO;
-            $anuncio->save();
-            $contratacao->save();
+        if ($chamada->valor == 0) {
+            $chamada->status = Chamada::STATUS_PAGO;
+            $chamada->save();
             return [
-                'message' => 'o pagamente realizado com sucesso!',
+                'message' => 'o pagamento realizado com sucesso!',
                 'success' => true,
             ];
         }
@@ -76,39 +76,39 @@ class PagSeguroService
             $directPaymentRequest->addItem("00$key",$item['name'],1,$item['price']);
         }*/
 
-        $directPaymentRequest->addItem("001", $contratacao->plano->nome, 1, (double)$contratacao->total);
+        $directPaymentRequest->addItem("001", 'Corrida realizada', 1, (double)$chamada->valor);
         $directPaymentRequest->setSender(
-            'João Comprador',
-            'joao@sandbox.pagseguro.com.br',
-            '11',
-            '56273440',
+            $user->nome,
+            $user->email,
+            $user->telefone->ddd,
+            $user->telefone->numero,
             'CPF',
-            '156.009.442-76'
+            $user->cpf
         );
 
         $directPaymentRequest->setSenderHash($hash);
 
         $installments = new \PagSeguroDirectPaymentInstallment([
             'quantity' => 1,
-            'value' => (double)$contratacao->total
+            'value' => (double)$chamada->valor
         ]);
 
         //$sedexCode = \PagSeguroShippingType::getCodeByType('SEDEX');
         $sedexCode = \PagSeguroShippingType::getCodeByType('NOT_SPECIFIED');
         $directPaymentRequest->setShippingType($sedexCode);
         $directPaymentRequest->setShippingAddress(
-            '01452002',
-            'Av. Brig. Faria Lima',
-            '1384',
-            'apto. 114',
-            'Jardim Paulistano',
-            'São Paulo',
-            'SP',
+            $user->endereco->cep,
+            $user->endereco->rua,
+            $user->endereco->numero,
+            $user->endereco->complemento,
+            $user->endereco->bairro,
+            $user->endereco->cidade->titulo,
+            $user->endereco->estado->uf,
             'BRA'
         );
 
         if ($method == 'CREDIT_CARD') {
-            $this->cartaoDados($data['token'], $installments, $directPaymentRequest);
+            $this->cartaoDados($data['token'], $installments, $directPaymentRequest, $user);
         }
 
         try {
@@ -118,7 +118,8 @@ class PagSeguroService
 
             $retorno = [
                 'forma_pagamento_id' => $formaPagamento->id,
-                'plano_contratacao_id' => $contratacao->id,
+                'lancamentotable_id' => $chamada->id,
+                'lancamentotable_type' => Chamada::class,
                 'codigo' => $response->getCode(),
                 'metodo' => $method,
                 'valor_liquido' => $response->getNetAmount(),
@@ -133,7 +134,7 @@ class PagSeguroService
                     $this->lancamentoRepository->create(array_merge($retorno, ['link_externo' => $response->getPaymentLink()]));
                     return [
                         'message' => 'boleto gerado com sucesso',
-                        'link'=> $response->getPaymentLink(),
+                        'link' => $response->getPaymentLink(),
                         'success' => true,
                     ];
                     break;
@@ -154,17 +155,17 @@ class PagSeguroService
         }
     }
 
-    private function cartaoDados($token, $installments, &$directPaymentRequest, $user = null)
+    private function cartaoDados($token, $installments, &$directPaymentRequest,User $user = null)
     {
         $billingAddress = new \PagSeguroBilling(
             array(
-                'postalCode' => '01452002',
-                'street' => 'Av. Brig. Faria Lima',
-                'number' => '1384',
-                'complement' => 'apto. 114',
-                'district' => 'Jardim Paulistano',
-                'city' => 'São Paulo',
-                'state' => 'SP',
+                'postalCode' => $user->endereco->cep,
+                'street' => $user->endereco->rua,
+                'number' => $user->endereco->numero,
+                'complement' =>  $user->endereco->complemento,
+                'district' => $user->endereco->bairro,
+                'city' => $user->endereco->cidade->titulo,
+                'state' =>  $user->endereco->estado->uf,
                 'country' => 'BRA'
             )
         );
@@ -176,13 +177,13 @@ class PagSeguroService
                 'billing' => $billingAddress,
                 'holder' => new \PagSeguroCreditCardHolder(
                     array(
-                        'name' => 'João Comprador',
+                        'name' => $user->nome,
                         //'birthDate' => date('01/10/1979'),
-                        'areaCode' => '11',
-                        'number' => '56273440',
+                        'areaCode' => $user->telefone->ddd,
+                        'number' => $user->telefone->numero,
                         'documents' => array(
                             'type' => 'CPF',
-                            'value' => '156.009.442-76'
+                            'value' => $user->cpf
                         )
                     )
                 )

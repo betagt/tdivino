@@ -15,8 +15,8 @@ class CreateLancamentosTable extends Migration
 	{
 		Schema::create('lancamentos', function(Blueprint $table) {
             $table->increments('id');
-            $table->integer('plano_contratacao_id')->unsigned();
-            $table->foreign('plano_contratacao_id')->references('id')->on('plano_contratacaos');
+            $table->integer('lancamentotable_id')->nullable();
+            $table->string('lancamentotable_type')->nullable();
             $table->integer('forma_pagamento_id')->unsigned();
             $table->foreign('forma_pagamento_id')->references('id')->on('forma_pagamentos');
             $table->double('valor');

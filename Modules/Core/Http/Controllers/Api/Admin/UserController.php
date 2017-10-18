@@ -148,17 +148,37 @@ class UserController extends BaseController
             'data_nascimento'       => 'date|nullable',
             'sexo'                  => 'integer|in:1,2|nullable',
             'chk_newsletter'        => 'boolean|nullable',
+            'ddd'        => 'required|numeric|nullable',
+            'numero'        => 'required|numeric|nullable',
         ])->validate();
         try {
-            event(new Registered($user = $this->userRepository->skipPresenter(true)->create($data)));
-            $data = $user;
-            $data->assignRole('fornecedor');
-            return $this->userRepository->skipPresenter(false)->find($data->id);
+            \DB::beginTransaction();
+            $user = $this->userRepository->skipPresenter(true)->create($data);
+            $user->assignRole('fornecedor');
+            if(!empty($data['ddd']) && !empty($data['numero'])){
+                if(!is_null($user->telefone)){
+                    $user->telefone->ddd = $data['ddd'];
+                    $user->telefone->numero = $data['numero'];
+                    $user->telefone->save();
+                }else{
+                    $data['principal'] = true;
+                    $data['tipo'] = 'celular';
+                    /*$data['telefonetable_id'] = $user->id;
+                    $data['telefonetable_type'] = User::class;*/
+                    $user->telefone()->create($data);
+                }
+            }
+            \DB::commit();
+            event(new Registered($user));
+            return $this->userRepository->skipPresenter(false)->find($user->id);
         } catch (ModelNotFoundException $e) {
+            \DB::rollBack();
             return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code' => $e->getCode(), 'line' => $e->getLine()]));
         } catch (RepositoryException $e) {
+            \DB::rollBack();
             return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code' => $e->getCode(), 'line' => $e->getLine()]));
         } catch (\Exception $e) {
+            \DB::rollBack();
             return self::responseError(self::HTTP_CODE_BAD_REQUEST, trans('errors.undefined', ['status_code' => $e->getCode(), 'line' => $e->getLine()]));
         }
     }

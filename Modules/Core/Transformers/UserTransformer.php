@@ -33,6 +33,7 @@ class UserTransformer extends BaseTransformer
             'disponivel' => (boolean)$model->disponivel,
             'pagina_user' => (string)$model->pagina_user,
             'cep' => $model->cep,
+            'documentos_validate' => (boolean) $model->documentos_validate,
             'imagem' => (string) \URL::to('/').($model->imagem) ? url('/arquivos/img/user/' . $model->imagem) : null,
             'status' => (string)$model->status,
             'ddd' => (is_null($model->telefone))?null:$model->telefone->ddd,
