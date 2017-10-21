@@ -132,7 +132,7 @@ class VeiculoController extends BaseController
 
     function cores(){
         $path = module_path('Transporte');
-        return ['data'=>csv_load($path.'\Files\Cores\veiculo-cor.csv')];
+        return ['data'=>csv_load($path.'/Files/Cores/veiculo-cor.csv')];
     }
 
 }

@@ -36,7 +36,7 @@ class CreateChamadasTable extends Migration
             $table->dateTime('data_inicial')->nullable();
             $table->dateTime('data_final')->nullable();
             $table->dateTime('timedown')->description('contagem de tempo para finalização da chamada');
-            $table->enum('status',['pendente', 'pago', 'cancelado'])->default('solicitacao')->description('o tipo da chamada muda quando o taxista atende o chamado');
+            $table->enum('status',['pendente', 'pago', 'sacado', 'cancelado'])->default('solicitacao')->description('o tipo da chamada muda quando o taxista atende o chamado');
             $table->timestamps();
 		});
 	}

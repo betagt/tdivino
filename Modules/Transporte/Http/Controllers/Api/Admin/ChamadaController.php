@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Modules\Localidade\Services\GeoService;
 use Modules\Transporte\Criteria\ChamadaCriteria;
+use Modules\Transporte\Criteria\ChamadaFornecedorCriteria;
 use Modules\Transporte\Http\Requests\ChamadaRequest;
 use Modules\Transporte\Repositories\ChamadaRepository;
 use Modules\Transporte\Repositories\GeoPosicaoRepository;
@@ -57,13 +58,19 @@ class ChamadaController extends BaseController
         return $this->validator;
     }
 
-    function listarByUser(Request $request)
+    function listarByFornecedor(Request $request)
     {
         try {
-            return $this->chamadaRepository
-                ->pushCriteria(new ChamadaCriteria($request, $this->getUserId()))
+            $result = $this->chamadaRepository
+                ->pushCriteria(new ChamadaFornecedorCriteria($request, $this->getUserId()))
                 ->pushCriteria(new OrderCriteria($request))
                 ->paginate(self::$_PAGINATION_COUNT);
+
+            $result['meta']['financeiro']['total'] = $this->chamadaRepository->somaFornecedorTotais($this->getUserId());
+            $result['meta']['financeiro']['mes'] = $this->chamadaRepository->somaFornecedorMes($this->getUserId());
+            $result['meta']['financeiro']['semana'] = $this->chamadaRepository->somaFornecedorSemana($this->getUserId());
+            $result['meta']['financeiro']['hoje'] = $this->chamadaRepository->somaFornecedorHoje($this->getUserId());
+            return $result;
         } catch (ModelNotFoundException $e) {
             return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code' => $e->getCode(), 'message' => $e->getMessage()]));
         } catch (RepositoryException $e) {
@@ -82,14 +89,13 @@ class ChamadaController extends BaseController
      */
     function iniciarChamada(Request $request)
     {
-        $data = $request->only(['origem', 'destino', 'forma_pagamento_id', 'endereco_origem', 'endereco_destino']);
+        $data = $request->only(['origem', 'destino', 'endereco_origem', 'endereco_destino']);
 
         \Validator::make($data, [
             'endereco_origem' => 'required|string',
             'endereco_destino' => 'required|string',
             'origem' => 'required|array',
-            'destino' => 'required|array',
-            'forma_pagamento_id' => 'required|integer',
+            'destino' => 'required|array'
         ])->validate();
         $data['cliente_id'] = $this->getUserId();
         $data['tipo'] = Chamada::TIPO_SOLICITACAO;

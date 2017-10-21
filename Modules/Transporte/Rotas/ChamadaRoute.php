@@ -50,7 +50,7 @@ class ChamadaRoute implements ICustomRoute
                 ]);
                 Route::get('chamada/minhas-chamadas', [
                     'as' => 'chamda.atender',
-                    'uses' => 'ChamadaController@listarByUser'
+                    'uses' => 'ChamadaController@listarByFornecedor'
                 ]);
                 Route::get('chamada/desembarque/{idChamada}', [
                     'as' => 'chamda.atender',

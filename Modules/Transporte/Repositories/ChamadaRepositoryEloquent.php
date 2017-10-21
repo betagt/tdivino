@@ -40,4 +40,49 @@ class ChamadaRepositoryEloquent extends BaseRepository implements ChamadaReposit
     {
         return ChamadaPresenter::class;
     }
+
+    public function somaFornecedorTotais($userId)
+    {
+        return $this->model->where([
+            'fornecedor_id'=>$userId,
+        ])->where(function($query){
+            $query->whereOr(['status'=>'pago']);
+            $query->whereOr(['status'=>'sacado']);
+        })->sum('valor');
+    }
+
+    public function somaFornecedorMes($userId)
+    {
+        return $this->model->where([
+            'fornecedor_id'=>$userId
+        ])->where(function($query){
+            $query->whereOr(['status'=>'pago']);
+            $query->whereOr(['status'=>'sacado']);
+        })->whereBetween('created_at', [date('Y-m-01'), date("Y-m-t")])->sum('valor');
+    }
+
+    public function somaFornecedorSemana($userId)
+    {
+        $date = date("Y-m-d");
+        return $this->model->where([
+            'fornecedor_id'=>$userId,
+            'status'=>'pago'
+        ])->where(function($query){
+            $query->whereOr(['status'=>'pago']);
+            $query->whereOr(['status'=>'sacado']);
+        })->whereBetween('created_at', [
+            date("Y-m-d", strtotime('monday this week', strtotime($date))),
+            date("Y-m-d", strtotime('sunday this week', strtotime($date)))])->sum('valor');
+    }
+
+    public function somaFornecedorHoje($userId)
+    {
+        return $this->model->where([
+            'fornecedor_id'=>$userId,
+            'created_at'=>date("Y-m-d")
+        ])->where(function($query){
+            $query->whereOr(['status'=>'pago']);
+            $query->whereOr(['status'=>'sacado']);
+        })->sum('valor');
+    }
 }

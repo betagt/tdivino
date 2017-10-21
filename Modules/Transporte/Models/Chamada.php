@@ -3,6 +3,7 @@
 namespace Modules\Transporte\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Modules\Core\Models\User;
 use Modules\Plano\Models\Lancamento;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
@@ -24,7 +25,6 @@ class Chamada extends Model implements Transformable
     protected $fillable = [
         'fornecedor_id',
         'cliente_id',
-        'forma_pagamento_id',
         'tipo',
         'desolamento_km_com_passageiro',
         'desolamento_km_sem_passageiro',
@@ -46,6 +46,14 @@ class Chamada extends Model implements Transformable
     public function lancamentos()
     {
         return $this->morphMany(Lancamento::class, 'lancamentotable');
+    }
+
+    public function fornecedor(){
+        return $this->belongsTo(User::class, 'fornecedor_id');
+    }
+
+    public function cliente(){
+        return $this->belongsTo(User::class, 'cliente_id');
     }
 
 }

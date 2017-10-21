@@ -10,5 +10,8 @@ use Prettus\Repository\Contracts\RepositoryInterface;
  */
 interface ChamadaRepository extends RepositoryInterface
 {
-    //
+    public function somaFornecedorTotais($userId);
+    public function somaFornecedorMes($userId);
+    public function somaFornecedorSemana($userId);
+    public function somaFornecedorHoje($userId);
 }

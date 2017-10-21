@@ -12,8 +12,8 @@
 */
 
 Route::get('/', function () {
-
-    \Cookie::queue(cookie('user_1_anuncio_18', 'teste', 1));
+    dd(date("Y-m-t"));
+    //\Cookie::queue(cookie('user_1_anuncio_18', 'teste', 1));
     /*$query = http_build_query([
         'client_id'=>3,
         'redirect_id'=>'http://localhost:9999/callback',
