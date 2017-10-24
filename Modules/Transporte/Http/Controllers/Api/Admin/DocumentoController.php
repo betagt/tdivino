@@ -61,19 +61,58 @@ class DocumentoController extends BaseController
         return $this->validator;
     }
 
+    /**
+     * Cadastrar
+     *
+     * Endpoint para cadastrar
+     *
+     * @param Request $request
+     * @return retorna um registro criado
+     */
+    public function store(Request $request)
+    {
+        $data = $request->only([
+            'arquivo', 'transporte_tipo_documento_id', 'user_id'
+        ]);
+        \Validator::make($data, [
+            'arquivo' => 'required|array',
+            'user_id' => 'exists:users,id|array',
+            'transporte_tipo_documento_id|array' => 'required'
+        ])->validate();
+        try {
+            foreach ($data['arquivo'] as $key =>$val){
+                $this->imageUploadService->upload64('arquivo', $this->getPathFile(), $data);
+                $data['status'] = 'pendente';
+                $arquivo = $this->documentoRepository->skipPresenter(true)->findWhere(['user_id' => $data['user_id'], 'transporte_tipo_documento_id' => $data['transporte_tipo_documento_id']]);
+                if ($arquivo->count() > 0) {
+                    foreach ($arquivo->all() as $item) {
+                        $item->delete();
+                    }
+                }
+            }
+            return $this->documentoRepository->create($data);
+        } catch (ModelNotFoundException $e) {
+            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code' => $e->getCode(), 'message' => $e->getMessage()]));
+        } catch (RepositoryException $e) {
+            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code' => $e->getCode(), 'message' => $e->getMessage()]));
+        } catch (\Exception $e) {
+            return self::responseError(self::HTTP_CODE_BAD_REQUEST, trans('errors.undefined', ['status_code' => $e->getCode(), 'message' => $e->getMessage()]));
+        }
+    }
+
     public function meusdocumentos()
     {
         try {
             $servico = $this->servicoRepository->first();
             $validacao = [];
-            foreach ($servico['data']['habilidades_values'] as $key => $item){
-                $arquivo = $this->documentoRepository->skipPresenter(true)->findWhere(['user_id' =>  $this->getUser()->id, 'transporte_tipo_documento_id' => $item]);
-                $status = ($arquivo->count() > 0)?$arquivo->first()->status:null;
+            foreach ($servico['data']['habilidades_values'] as $key => $item) {
+                $arquivo = $this->documentoRepository->skipPresenter(true)->findWhere(['user_id' => $this->getUser()->id, 'transporte_tipo_documento_id' => $item]);
+                $status = ($arquivo->count() > 0) ? $arquivo->first()->status : null;
                 $validacao[] = [
                     'id' => $item,
                     'label' => $servico['data']['habilidades_labels'][$key],
                     'ativo' => ($status == 'aceito'),
-                    'status_label' => ($status == 'aceito')?'Aceito':'Requerido'
+                    'status_label' => ($status == 'aceito') ? 'Aceito' : 'Requerido'
 
                 ];
             }
@@ -81,11 +120,11 @@ class DocumentoController extends BaseController
             $retorno['validacao'] = $validacao;
             return $retorno;
         } catch (ModelNotFoundException $e) {
-            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code' => $e->getCode(), 'message' => $e->getMessage(). ' Linha: '. $e->getLine()]));
+            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code' => $e->getCode(), 'message' => $e->getMessage() . ' Linha: ' . $e->getLine()]));
         } catch (RepositoryException $e) {
-            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code' => $e->getCode(), 'message' => $e->getMessage(). ' Linha: '. $e->getLine()]));
+            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code' => $e->getCode(), 'message' => $e->getMessage() . ' Linha: ' . $e->getLine()]));
         } catch (\Exception $e) {
-            return self::responseError(self::HTTP_CODE_BAD_REQUEST, trans('errors.undefined', ['status_code' => $e->getCode(), 'message' => $e->getMessage(). ' Linha: '. $e->getLine()]));
+            return self::responseError(self::HTTP_CODE_BAD_REQUEST, trans('errors.undefined', ['status_code' => $e->getCode(), 'message' => $e->getMessage() . ' Linha: ' . $e->getLine()]));
         }
     }
 
@@ -110,7 +149,7 @@ class DocumentoController extends BaseController
             $data['status'] = 'pendente';
             $arquivo = $this->documentoRepository->skipPresenter(true)->findWhere(['user_id' => $data['user_id'], 'transporte_tipo_documento_id' => $data['transporte_tipo_documento_id']]);
             if ($arquivo->count() > 0) {
-                foreach ($arquivo->all() as $item){
+                foreach ($arquivo->all() as $item) {
                     $item->delete();
                 }
             }
