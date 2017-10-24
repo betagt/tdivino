@@ -11,6 +11,6 @@ class FormaPgtoTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(\Portal\Models\FormaPagamento::class, 3)->create();
+        factory(\Modules\Plano\Models\FormaPagamento::class, 3)->create();
     }
 }

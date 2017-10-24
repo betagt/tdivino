@@ -12,7 +12,7 @@ class ContratacaoTableSeeder extends Seeder
     public function run()
     {
 
-        $contratacao = factory(\Modules\Plano\Models\PlanoContratacao::class, 1)->create([
+       /* $contratacao = factory(\Modules\Plano\Models\PlanoContratacao::class, 1)->create([
             'plano_id'=>1,
             'user_id'=>1,
             'numero_fatura'=>rand(100,5000),
@@ -20,8 +20,6 @@ class ContratacaoTableSeeder extends Seeder
             'data_fim'=>\Carbon\Carbon::now()->addDay(7),
             'total'=>rand(126,1520),
             'desconto'=>rand(10,100),
-            'plano_contratacaotable_id'=>4,
-            'plano_contratacaotable_type'=>\Portal\Models\Anuncio::class,
         ]);
 
         factory(\Modules\Plano\Models\Lancamento::class, 1)->create([
@@ -30,7 +28,7 @@ class ContratacaoTableSeeder extends Seeder
             'valor' =>$contratacao->total,
             'desconto' =>$contratacao->desconto,
             'data_do_pagamento'=>date('Y-m-d')
-        ]);
+        ]);*/
 
     }
 }

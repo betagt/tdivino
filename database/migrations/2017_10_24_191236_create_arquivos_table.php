@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCaracteristicasTable extends Migration
+class CreateArquivosTable extends Migration
 {
 
 	/**
@@ -13,12 +13,10 @@ class CreateCaracteristicasTable extends Migration
 	 */
 	public function up()
 	{
-		Schema::create('caracteristicas', function(Blueprint $table) {
+		Schema::create('arquivos', function(Blueprint $table) {
             $table->increments('id');
-            $table->string('titulo')->unique();
-            $table->enum('tipo', ['Privativa', 'Comum']);
+
             $table->timestamps();
-            $table->softDeletes();
 		});
 	}
 
@@ -29,7 +27,7 @@ class CreateCaracteristicasTable extends Migration
 	 */
 	public function down()
 	{
-		Schema::drop('caracteristicas');
+		Schema::drop('arquivos');
 	}
 
 }

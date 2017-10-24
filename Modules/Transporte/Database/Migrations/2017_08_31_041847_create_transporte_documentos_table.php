@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateDocumentosTable extends Migration
+class CreateTransporteDocumentosTable extends Migration
 {
 
 	/**

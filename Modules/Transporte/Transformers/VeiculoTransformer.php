@@ -24,6 +24,7 @@ class VeiculoTransformer extends TransformerAbstract
             'id' => (int)$model->id,
             'transporte_marca_carro_id' => (int)$model->transporte_marca_carro_id,
             'transporte_modelo_carro_id' => (int)$model->transporte_modelo_carro_id,
+            'proprietario' => (string)$model->usuario->name,
             'marca' => (string)$model->marca->nome,
             'modelo' => (string)$model->modelo->nome,
             'placa' => (string)$model->placa,

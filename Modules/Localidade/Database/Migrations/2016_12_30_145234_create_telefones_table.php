@@ -21,8 +21,7 @@ class CreateTelefonesTable extends Migration
             $table->integer('telefonetable_id');
             $table->string('telefonetable_type');
             $table->enum('tipo', ['fixo', 'celular', 'fax']);
-
-            $table->timestamp();
+            $table->timestamps();
 		});
 	}
 

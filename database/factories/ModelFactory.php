@@ -11,7 +11,7 @@
 |
 */
 
-$factory->define(\Portal\Models\User::class, function (Faker\Generator $faker) {
+$factory->define(\Modules\Core\Models\User::class, function (Faker\Generator $faker) {
     static $password;
 
     return [
@@ -23,6 +23,7 @@ $factory->define(\Portal\Models\User::class, function (Faker\Generator $faker) {
         'password' => 'secret',
         'status' => 'ativo',
         'remember_token' => str_random(10),
+        'disponivel' => true,
     ];
 });
 
@@ -112,7 +113,7 @@ $factory->define(\Modules\Localidade\Models\Bairro::class, function (Faker\Gener
     ];
 });
 
-$factory->define(\Portal\Models\FormaPagamento::class, function (Faker\Generator $faker) {
+$factory->define(\Modules\Plano\Models\FormaPagamento::class, function (Faker\Generator $faker) {
     return [
         'nome' => $faker->word,
         'taxa' => random_int(1, 5),
@@ -153,11 +154,11 @@ $factory->define(\Modules\Localidade\Models\Endereco::class, function (Faker\Gen
         'complemento' => 'casa'
     ];
 });
-$factory->define(\Portal\Models\Finalidade::class, function (Faker\Generator $faker) {
+/*$factory->define(Finalidade::class, function (Faker\Generator $faker) {
     return [
         'titulo' => $faker->word,
     ];
-});
+});*/
 $factory->define(\Portal\Models\Imagem::class, function (Faker\Generator $faker) {
     return [
         'img' => $faker->imageUrl(),
@@ -165,7 +166,7 @@ $factory->define(\Portal\Models\Imagem::class, function (Faker\Generator $faker)
         'imagemtable_type_id' => 'Portal\Models\Anuncio',*/
     ];
 });
-$factory->define(\Portal\Models\Anuncio::class, function (Faker\Generator $faker) {
+/*$factory->define(\Portal\Models\Anuncio::class, function (Faker\Generator $faker) {
     return [
         'situacao' => $faker->randomElements(['na-planta', 'em-obras', 'pronto'])[0],
         'tipo' => $faker->randomElements(['imovel', 'empreendimento'])[0],
@@ -222,7 +223,7 @@ $factory->define(\Portal\Models\Caracteristica::class, function (Faker\Generator
         'titulo' => (string)substr($faker->paragraph,0,80),
         'tipo' => $faker->randomElements(['Privativa', 'Comum'])[0],
     ];
-});
+});*/
 
 $factory->define(\Modules\Core\Models\RotaAcesso::class, function (Faker\Generator $faker){
     return [
@@ -242,9 +243,9 @@ $factory->define(\Modules\Plano\Models\PlanoContratacao::class, function (\Faker
         'data_inicio'=>\Carbon\Carbon::now(),
         'data_fim'=>\Carbon\Carbon::now()->addDay(7),
         'total'=>500.62,
-        'desconto'=>5.63,
+        'desconto'=>5.63,/*
         'plano_contratacaotable_id'=>1,
-        'plano_contratacaotable_type'=>\Portal\Models\Anuncio::class,
+        'plano_contratacaotable_type'=>\Portal\Models\Anuncio::class,*/
     ];
 });
 

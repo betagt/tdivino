@@ -40,7 +40,7 @@ class VeiculoRoute implements ICustomRoute
                     [
                         'except' => ['create', 'edit']
                     ]);
-            });
+                });
         });
     }
 }

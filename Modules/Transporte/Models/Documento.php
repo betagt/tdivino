@@ -4,6 +4,7 @@ namespace Modules\Transporte\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Modules\Core\Models\User;
+use Portal\Models\Imagem;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
@@ -17,7 +18,8 @@ class Documento extends Model implements Transformable
         'nome',
         'arquivo',
         'transporte_tipo_documento_id',
-        'user_id',
+        'documentotable_id',
+        'documentotable_type',
         'numero',
         'data_vigencia_inicial',
         'data_vigencia_fim',
@@ -30,8 +32,9 @@ class Documento extends Model implements Transformable
         return $this->belongsTo(TipoDocumento::class, 'transporte_tipo_documento_id');
     }
 
-    public function usuario(){
-        return $this->belongsTo(User::class, 'user_id');
+    public function arquivo()
+    {
+        return $this->morphMany(Imagem::class, 'imagemtable');
     }
 
 }

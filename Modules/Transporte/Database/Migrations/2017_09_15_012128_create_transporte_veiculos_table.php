@@ -32,7 +32,6 @@ class CreateTransporteVeiculosTable extends Migration
             $table->string('consumo_medio')->nullale();
             $table->string('chassi')->nullale();
             $table->string('porta_mala_tamanho')->nullale();
-            $table->string('arquivo');
             $table->string('status');
             $table->timestamps();
 		});

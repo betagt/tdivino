@@ -11,14 +11,14 @@ class RotasTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(\Portal\Models\RotaAcesso::class)->create([
+        factory(\Modules\Core\Models\RotaAcesso::class)->create([
             'text' => 'Inicio',
             'rota' => '',
             'icon' => 'zmdi zmdi-home',
             'disabled' => false,
             'is_menu'=>true,
         ])->roles()->attach([1]);
-       $usuario = factory(\Portal\Models\RotaAcesso::class)->create([
+       $usuario = factory(\Modules\Core\Models\RotaAcesso::class)->create([
             'text' => 'Usuarios',
             'rota' => '',
             'icon' => 'zmdi zmdi-accounts',
@@ -26,7 +26,7 @@ class RotasTableSeeder extends Seeder
             'is_menu'=>true,
        ]);
         $usuario->roles()->attach([1]);
-        factory(\Portal\Models\RotaAcesso::class)->create([
+        factory(\Modules\Core\Models\RotaAcesso::class)->create([
             'parent_id' => $usuario->id,
             'text' => 'Listar',
             'rota' => '/usuarios',
@@ -34,7 +34,7 @@ class RotasTableSeeder extends Seeder
             'disabled' => false,
             'is_menu'=>true,
         ])->roles()->attach([1]);
-        factory(\Portal\Models\RotaAcesso::class)->create([
+        factory(\Modules\Core\Models\RotaAcesso::class)->create([
             'parent_id' => $usuario->id,
             'text' => 'Novo',
             'rota' => '/usuarios/new',
@@ -42,7 +42,7 @@ class RotasTableSeeder extends Seeder
             'disabled' => false,
             'is_menu'=>false,
         ])->roles()->attach([1]);
-        factory(\Portal\Models\RotaAcesso::class)->create([
+        factory(\Modules\Core\Models\RotaAcesso::class)->create([
             'parent_id' => $usuario->id,
             'text' => 'Editar',
             'rota' => '/usuarios/:id/edit',
@@ -50,7 +50,7 @@ class RotasTableSeeder extends Seeder
             'disabled' => false,
             'is_menu'=>false,
         ])->roles()->attach([1]);
-        $rotas = factory(\Portal\Models\RotaAcesso::class)->create([
+        $rotas = factory(\Modules\Core\Models\RotaAcesso::class)->create([
             'text' => 'Acessos',
             'rota' => '',
             'icon' => 'zmdi zmdi-lock',
@@ -58,7 +58,7 @@ class RotasTableSeeder extends Seeder
             'is_menu'=>true,
         ]);
         $rotas->roles()->attach([1]);
-        factory(\Portal\Models\RotaAcesso::class)->create([
+        factory(\Modules\Core\Models\RotaAcesso::class)->create([
             'parent_id' => $rotas->id,
             'text' => 'Listar',
             'rota' => '/rota_acesso',
@@ -66,7 +66,7 @@ class RotasTableSeeder extends Seeder
             'disabled' => false,
             'is_menu'=>true,
         ])->roles()->attach([1]);
-        factory(\Portal\Models\RotaAcesso::class)->create([
+        factory(\Modules\Core\Models\RotaAcesso::class)->create([
             'parent_id' => $rotas->id,
             'text' => 'Novo',
             'rota' => '/rota_acesso/new',
@@ -74,7 +74,7 @@ class RotasTableSeeder extends Seeder
             'disabled' => false,
             'is_menu'=>false,
         ])->roles()->attach([1]);
-        factory(\Portal\Models\RotaAcesso::class)->create([
+        factory(\Modules\Core\Models\RotaAcesso::class)->create([
             'parent_id' => $rotas->id,
             'text' => 'Editar',
             'rota' => '/rota_acesso/:id/edit',
@@ -82,7 +82,7 @@ class RotasTableSeeder extends Seeder
             'disabled' => false,
             'is_menu'=>false,
         ])->roles()->attach([1]);
-        factory(\Portal\Models\RotaAcesso::class)->create([
+        factory(\Modules\Core\Models\RotaAcesso::class)->create([
             'text' => 'Configurações',
             'rota' => '',
             'icon' => 'zmdi zmdi-home',

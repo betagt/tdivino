@@ -45,7 +45,7 @@ class PermissionTableSeeder extends Seeder
         }
         Permission::create($data);
         $roleAdmin->assignPermission($data['name']);
-        $user = \Portal\Models\User::find($userId);
+        $user = \Modules\Core\Models\User::find($userId);
         if($role)
         $user->assignRole($role);
     }
@@ -90,7 +90,7 @@ class PermissionTableSeeder extends Seeder
     }
     private function createUserPermission($id)
     {
-        $user = \Portal\Models\User::find($id);
+        $user = \Modules\Core\Models\User::find($id);
 
         // create crud permissions
         // create.user, view.user, update.user, delete.user
@@ -124,7 +124,7 @@ class PermissionTableSeeder extends Seeder
     }
 
     private function accessRole($rule='administrator',$userId){
-        $user = \Portal\Models\User::find($userId);
+        $user = \Modules\Core\Models\User::find($userId);
         // by object
         //$user->assignRole($roleAdmin);
         // or by id
@@ -134,7 +134,7 @@ class PermissionTableSeeder extends Seeder
     }
 
     private function removeRule($id){
-        $user = \Portal\Models\User::find($id);
+        $user = \Modules\Core\Models\User::find($id);
         $user->revokeAllRoles();
     }
     private function removePermissionMe($id){

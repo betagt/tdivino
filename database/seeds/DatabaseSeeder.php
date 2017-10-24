@@ -18,7 +18,6 @@ class DatabaseSeeder extends Seeder
         $this->call(PermissionTableSeeder::class);
         $this->call(PlanoSeeder::class);
         $this->call(FormaPgtoTableSeeder::class);
-        $this->call(AnuncioTableSeeder::class);
         $this->call(RotasTableSeeder::class);
     }
 }

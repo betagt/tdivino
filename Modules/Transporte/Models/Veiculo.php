@@ -3,6 +3,7 @@
 namespace Modules\Transporte\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Modules\Core\Models\User;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
@@ -38,6 +39,15 @@ class Veiculo extends Model implements Transformable
 
     public function modelo(){
         return $this->belongsTo(ModeloCarro::class, 'transporte_modelo_carro_id');
+    }
+
+    public function usuario(){
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function documento()
+    {
+        return $this->morphMany(Documento::class, 'documentotable');
     }
 
 }
