@@ -22,6 +22,14 @@ class TipoDocumentoRoute implements ICustomRoute
                     'as' => 'habilidade.todos',
                     'uses' => 'TipoDocumentoController@todos'
                 ]);
+                Route::get('tipo-documento/todos-pessoa', [
+                    'as' => 'habilidade.todos',
+                    'uses' => 'TipoDocumentoController@pessoa'
+                ]);
+                Route::get('tipo-documento/todos-veiculo', [
+                    'as' => 'habilidade.todos.pessoa',
+                    'uses' => 'TipoDocumentoController@veiculo'
+                ]);
             });
             Route::group(['middleware' => ['acl'],'is' => 'administrador|moderador,or', 'protect_alias'  => 'user'],function (){
                 Route::resource('tipo-documento', 'TipoDocumentoController',

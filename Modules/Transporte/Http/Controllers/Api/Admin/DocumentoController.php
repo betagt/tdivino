@@ -113,7 +113,6 @@ class DocumentoController extends BaseController
                     'label' => $servico['data']['habilidades_labels'][$key],
                     'ativo' => ($status == 'aceito'),
                     'status_label' => ($status == 'aceito') ? 'Aceito' : 'Requerido'
-
                 ];
             }
             $retorno = $this->documentoRepository->skipPresenter(false)->findByField('user_id', $this->getUser()->id);

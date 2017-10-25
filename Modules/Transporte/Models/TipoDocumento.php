@@ -10,6 +10,10 @@ class TipoDocumento extends Model implements Transformable
 {
     use TransformableTrait;
 
+    const TIPO_PESSOA = 'pessoa';
+
+    const TIPO_veiculo = 'veiculo';
+
     protected $table = 'transporte_tipo_documentos';
 
     protected $fillable = [
@@ -17,6 +21,7 @@ class TipoDocumento extends Model implements Transformable
         'descricao',
         'observacao',
         'precisa_de_documento',
+        'tipo'
     ];
 
 }

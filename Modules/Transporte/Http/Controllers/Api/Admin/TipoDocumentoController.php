@@ -51,4 +51,32 @@ class TipoDocumentoController extends BaseController
             return self::responseError(self::HTTP_CODE_BAD_REQUEST, trans('errors.undefined', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
         }
     }
+
+    public function pessoa(){
+        try{
+            return $this->tipoDocumentoRepository->findWhere(['tipo'=>'pessoa']);
+        }catch (ModelNotFoundException $e){
+            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
+        }
+        catch (RepositoryException $e){
+            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
+        }
+        catch (\Exception $e){
+            return self::responseError(self::HTTP_CODE_BAD_REQUEST, trans('errors.undefined', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
+        }
+    }
+
+    public function veiculo(){
+        try{
+            return $this->tipoDocumentoRepository->findWhere(['tipo'=>'veiculo']);
+        }catch (ModelNotFoundException $e){
+            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
+        }
+        catch (RepositoryException $e){
+            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
+        }
+        catch (\Exception $e){
+            return self::responseError(self::HTTP_CODE_BAD_REQUEST, trans('errors.undefined', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
+        }
+    }
 }
