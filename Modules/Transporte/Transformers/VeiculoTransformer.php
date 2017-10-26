@@ -11,7 +11,7 @@ use Modules\Transporte\Models\Veiculo;
  */
 class VeiculoTransformer extends TransformerAbstract
 {
-
+    protected $availableIncludes = ['documentos'];
     /**
      * Transform the \Veiculo entity
      * @param \Modules\Transporte\Models\Veiculo $model
@@ -24,6 +24,8 @@ class VeiculoTransformer extends TransformerAbstract
             'id' => (int)$model->id,
             'transporte_marca_carro_id' => (int)$model->transporte_marca_carro_id,
             'transporte_modelo_carro_id' => (int)$model->transporte_modelo_carro_id,
+            'user_id' => (int)$model->user_id,
+            'usuario_nome' => (string)$model->usuario->name,
             'proprietario' => (string)$model->usuario->name,
             'marca' => (string)$model->marca->nome,
             'modelo' => (string)$model->modelo->nome,
@@ -45,4 +47,12 @@ class VeiculoTransformer extends TransformerAbstract
             'updated_at' => $model->updated_at
         ];
     }
+
+    public function includeDocumentos(Veiculo $model){
+        if($model->documento->count() == 0){
+            return $this->null();
+        }
+        return $this->collection($model->documento, new DocumentoTransformer());
+    }
+
 }

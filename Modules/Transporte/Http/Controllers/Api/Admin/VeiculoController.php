@@ -34,7 +34,7 @@ class VeiculoController extends BaseController
         ImageUploadService $imageUploadService)
     {
         parent::__construct($veiculoRepository, VeiculoCriteria::class);
-        $this->setPathFile(public_path('arquivos/img/veiculo'));
+        $this->setPathFile(public_path('arquivos/img/documento'));
         $this->veiculoRepository = $veiculoRepository;
         $this->imageUploadService = $imageUploadService;
     }
@@ -77,6 +77,68 @@ class VeiculoController extends BaseController
         catch (\Exception $e){
             return self::responseError(self::HTTP_CODE_BAD_REQUEST, trans('errors.undefined', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
         }
+    }
+    public function update(Request $request, $id)
+    {
+        $aux = [];
+        $data = $request->only([
+            'transporte_marca_carro_id',
+            'transporte_modelo_carro_id',
+            'placa',
+            'ano',
+            'cor',
+            'user_id',
+            'arquivos',
+            'status',
+            'documentos'
+        ]);
+
+        \Validator::make($data, [
+            'user_id'=>'required|integer|exists:users,id',
+            'transporte_marca_carro_id' =>'required|integer|exists:transporte_marca_carros,id',
+            'transporte_modelo_carro_id' =>'required|integer|exists:transporte_modelo_carros,id',
+            'ano' =>'required|integer',
+            'status' =>'required|in:pendente,aceito,invalido',
+            'placa' =>'required|string',
+            'cor' =>'required|string',
+            'documentos' => 'array|nullable',
+            'documentos.*.transporte_tipo_documento_id' => 'integer|nullable',
+            'documentos.*.arquivos' => 'array|nullable',
+        ])->validate();
+            try{
+                \DB::beginTransaction();
+                $veiculo = $this->veiculoRepository->skipPresenter(true)->update($data,$id);
+                if(isset($data['documentos'])){
+                    foreach ($data['documentos'] as $doc){
+                        $documento = $veiculo->documento()->create($doc);
+                        if(isset($doc['arquivos'])){
+                            foreach ($doc['arquivos'] as $key=>$arquivo) {
+                                $aux['arquivo'] = $arquivo;
+                                $this->imageUploadService->upload64('arquivo', $this->getPathFile(), $aux);
+                                $documento->arquivo()->create([
+                                    'img' => $aux['arquivo'],
+                                    'princial' => false,
+                                    'prioridade' => $key + 1
+                                ]);
+                            }
+                        }
+                    }
+                }
+                $result = $this->veiculoRepository->find($veiculo->id);
+                \DB::commit();
+                return $result;
+            }catch (ModelNotFoundException $e){
+                \DB::rollBack();
+                return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
+            }
+            catch (RepositoryException $e){
+                \DB::rollBack();
+                return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
+            }
+            catch (\Exception $e){
+                \DB::rollBack();
+                return self::responseError(self::HTTP_CODE_BAD_REQUEST, trans('errors.undefined', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
+            }
     }
 
     /**

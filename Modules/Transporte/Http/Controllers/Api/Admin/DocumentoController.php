@@ -214,4 +214,33 @@ class DocumentoController extends BaseController
             return parent::responseError(parent::HTTP_CODE_BAD_REQUEST, $e->getMessage());
         }
     }
+
+    /**
+     * Deletar
+     *
+     * Endpoint para deletar passando o ID
+     */
+    public function excluir(Request $request){
+        $data = $request->all();
+        \Validator::make($data, [
+            'ids'=>'array|required'
+        ])->validate();
+
+        try{
+            \DB::beginTransaction();
+            app($this->documentoRepository->model())->destroy($data['ids']);
+            $result = self::responseSuccess(self::HTTP_CODE_OK, self::MSG_REGISTRO_EXCLUIDO);
+            \DB::commit();
+            return $result;
+        }catch (ModelNotFoundException $e){
+            \DB::rollBack();
+            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
+        }catch (RepositoryException $e){
+            \DB::rollBack();
+            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
+        }catch (\Exception $e){
+            \DB::rollBack();
+            return self::responseError(self::HTTP_CODE_BAD_REQUEST, trans('errors.undefined', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
+        }
+    }
 }

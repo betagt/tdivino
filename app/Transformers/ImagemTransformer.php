@@ -29,10 +29,11 @@ class ImagemTransformer extends TransformerAbstract
             foreach ($imagem_list['anuncio'] as $index => $item) {
                 $tamanos[$index] = \URL::to('/') . '/arquivos/img/' . $ligacao . '/' . $filemake[0] . '_' . $index . '.' . $filemake[1];
             }
+
         }
         return [
             'id' => (int)$model->id,
-            'img' => is_null($tamanos) ? $this->img : $tamanos,
+            'img' => is_null($tamanos) ? \URL::to('/') . '/arquivos/img/' . $ligacao . '/' . $model->img : $tamanos,
             'principal' => (boolean)$model->principal,
             'prioridade' => (int)$model->prioridade,
             'created_at' => $model->created_at,
