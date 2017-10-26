@@ -88,40 +88,50 @@ class VeiculoController extends BaseController
      * @return retorna um registro criado
      */
     public function store(Request $request){
+        $aux = [];
         $data = $request->only([
             'transporte_marca_carro_id',
             'transporte_modelo_carro_id',
             'placa',
             'ano',
             'cor',
-            'arquivos'
+            'user_id',
+            'arquivos',
+            'status',
+            'documentos'
         ]);
 
         \Validator::make($data, [
+            'user_id'=>'required|integer|exists:users,id',
             'transporte_marca_carro_id' =>'required|integer|exists:transporte_marca_carros,id',
             'transporte_modelo_carro_id' =>'required|integer|exists:transporte_modelo_carros,id',
             'ano' =>'required|integer',
+            'status' =>'required|in:pendente,aceito,invalido',
             'placa' =>'required|string',
             'cor' =>'required|string',
             'documentos' => 'array',
             'documentos.*.transporte_tipo_documento_id' => 'required|integer',
-            'documentos.*.arquivos' => 'required|array|string',
+            'documentos.*.arquivos' => 'required|array',
         ])->validate();
         try{
             \DB::beginTransaction();
             $veiculo = $this->veiculoRepository->skipPresenter(true)->create($data);
-            if(isset($data['documentos'])){
+            //if(isset($data['documentos'])){
                 foreach ($data['documentos'] as $doc){
                     $documento = $veiculo->documento()->create($doc);
-                    if(isset($doc['arquivos'])){
-                        foreach ($data['arquivos'] as $arquivo) {
-                            $aux = $arquivo;
+                    //if(isset($doc['arquivos'])){
+                        foreach ($doc['arquivos'] as $key=>$arquivo) {
+                            $aux['arquivo'] = $arquivo;
                             $this->imageUploadService->upload64('arquivo', $this->getPathFile(), $aux);
-                            $documento->arquivo()->create($aux);
+                            $documento->arquivo()->create([
+                                'img' => $aux['arquivo'],
+                                'princial' => false,
+                                'prioridade' => $key + 1
+                            ]);
                         }
-                    }
+                    //}
                 }
-            }
+            //}
             $result = $this->veiculoRepository->find($veiculo->id);
             \DB::commit();
             return $result;
