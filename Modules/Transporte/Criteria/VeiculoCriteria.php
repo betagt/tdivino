@@ -12,5 +12,7 @@ use Prettus\Repository\Contracts\RepositoryInterface;
  */
 class VeiculoCriteria extends BaseCriteria
 {
-    protected $filterCriteria = [];
+    protected $filterCriteria = [
+        'transporte_veiculos.user_id'      =>'=',
+    ];
 }
