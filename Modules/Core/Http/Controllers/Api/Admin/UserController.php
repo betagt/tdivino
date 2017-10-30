@@ -117,10 +117,29 @@ class UserController extends BaseController
     public function store(Request $request)
     {
         $data = $request->all();
-        \Validator::make($data, $this->getValidator())->validate();
+        $validator = array_merge($this->getValidator(), [
+        	'pessoa.cpf_cnpf' => 'required',
+			'pessoa.nec_especial' => 'required',
+			'pessoa.data_nascimento' => 'required',
+			'pessoa.rg' => 'required',
+			'pessoa.orgao_emissor' => 'required',
+			'pessoa.escolaridade' => 'required',
+			'pessoa.sexo' => 'required',
+			'pessoa.estado_civil' => 'required',
+			'pessoa.fantasia' => 'required',
+			'pessoa.contato' => 'required',
+		]);
+        \Validator::make($data, $validator)->validate();
         try {
             $data['status'] = User::INATIVO;
-            event(new Registered($user = $this->userRepository->skipPresenter(true)->create($data)));
+			$user = $this->userRepository->skipPresenter(true)->create($data);
+			$documento = $user->documentos();
+			if(isset($data['documentos'])){
+				foreach ($data['documentos'] as $doc){
+					$this->documentoService->cadastrarDocumento($doc, $documento);
+				}
+			}
+            //event(new Registered($user));
             $data = $user;
             $data->assignRole('cliente');
             return $this->userRepository->skipPresenter(false)->find($data->id);
@@ -226,7 +245,16 @@ class UserController extends BaseController
      */
     public function update(Request $request, $id){
         $data = $request->all();
-        \Validator::make($data, $this->getValidator($id))->validate();
+		$validator = array_merge($this->getValidator($id), [
+			'pessoa.cpf_cnpf' => 'required',
+			'pessoa.data_nascimento' => 'required',
+			'pessoa.rg' => 'required',
+			'pessoa.orgao_emissor' => 'required',
+			'pessoa.escolaridade' => 'required',
+			'pessoa.sexo' => 'required',
+			'pessoa.estado_civil' => 'required',
+		]);
+        \Validator::make($data, $validator)->validate();
         try{
             \DB::beginTransaction();
             $usuario = $this->userRepository->skipPresenter(true)->update($data,$id);
@@ -234,6 +262,11 @@ class UserController extends BaseController
             foreach ($data['documentos'] as $doc){
                 $this->documentoService->cadastrarDocumento($doc, $documento);
             }
+			if(is_null($usuario->pessoa)){
+				$usuario->pessoa()->create($data['pessoa']);
+			}else{
+				$usuario->pessoa()->update($data['pessoa']);
+			}
             $result = $this->userRepository->find($usuario->id);
             \DB::commit();
             return  $result;

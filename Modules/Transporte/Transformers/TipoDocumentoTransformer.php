@@ -27,6 +27,7 @@ class TipoDocumentoTransformer extends TransformerAbstract
             'observacao' => (string) $model->observacao,
             'precisa_de_documento' => (boolean) $model->precisa_de_documento,
             'tipo' => (string) $model->tipo,
+            'possui_vencimento' => (boolean) $model->possui_vencimento,
             /* place your other model properties here */
 
             'created_at' => $model->created_at,

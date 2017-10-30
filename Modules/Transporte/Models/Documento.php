@@ -20,10 +20,11 @@ class Documento extends Model implements Transformable
         'documentotable_id',
         'documentotable_type',
         'numero',
+        'numero',
         'data_vigencia_inicial',
         'data_vigencia_fim',
         'categoria_cnh',
-        'status'
+        'possui_vencimento'
     ];
 
     /**

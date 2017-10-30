@@ -21,7 +21,8 @@ class TipoDocumento extends Model implements Transformable
         'descricao',
         'observacao',
         'precisa_de_documento',
-        'tipo'
+        'tipo',
+        'possui_vencimento',
     ];
 
 }
