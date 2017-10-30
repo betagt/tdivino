@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 use Lcobucci\JWT\Parser;
 use Modules\Core\Criteria\UserCriteria;
 use Modules\Core\Models\Pessoa;
+use Modules\Transporte\Services\DocumentoService;
 use Portal\Http\Controllers\BaseController;
 use Modules\Core\Http\Requests\UserChangePasswordRequest;
 use Modules\Core\Http\Requests\UserRequest;
@@ -39,6 +40,10 @@ class UserController extends BaseController
      * @var ImageUploadService
      */
     private $imageUploadService;
+    /**
+     * @var DocumentoService
+     */
+    private $documentoService;
 
     /**
      * UserController constructor.
@@ -48,13 +53,15 @@ class UserController extends BaseController
     public function __construct(
         UserRepository $userRepository,
         PasswordBroker $passwordBroker,
+        DocumentoService $documentoService,
         ImageUploadService $imageUploadService)
     {
+        parent::__construct($userRepository, UserCriteria::class);
         $this->userRepository = $userRepository;
         $this->passwordBroker = $passwordBroker;
         $this->setPathFile(public_path('arquivos/img/user'));
         $this->imageUploadService = $imageUploadService;
-        parent::__construct($userRepository, UserCriteria::class);
+        $this->documentoService = $documentoService;
     }
 
     /**
@@ -198,13 +205,49 @@ class UserController extends BaseController
         $data = $request->all();
         \Validator::make($data, $this->getValidator($id))->validate();
         try {
-            return $this->defaultRepository->update($request->all(), $id);
+            return $this->userRepository->update($request->all(), $id);
         } catch (ModelNotFoundException $e) {
             return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code' => $e->getCode(), 'line' => $e->getLine()]));
         } catch (RepositoryException $e) {
             return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code' => $e->getCode(), 'line' => $e->getLine()]));
         } catch (\Exception $e) {
             return self::responseError(self::HTTP_CODE_BAD_REQUEST, trans('errors.undefined', ['status_code' => $e->getCode(), 'line' => $e->getLine()]));
+        }
+    }
+
+    /**
+     * Alterar
+     *
+     * Endpoint para alterar
+     *
+     * @param Request $request
+     * @param $id
+     * @return retorna registro alterado
+     */
+    public function update(Request $request, $id){
+        $data = $request->all();
+        \Validator::make($data, $this->getValidator($id))->validate();
+        try{
+            \DB::beginTransaction();
+            $usuario = $this->userRepository->skipPresenter(true)->update($data,$id);
+            $documento = $usuario->documentos();
+            foreach ($data['documentos'] as $doc){
+                $this->documentoService->cadastrarDocumento($doc, $documento);
+            }
+            $result = $this->userRepository->find($usuario->id);
+            \DB::commit();
+            return  $result;
+        }catch (ModelNotFoundException $e){
+            \DB::rollBack();
+            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
+        }
+        catch (RepositoryException $e){
+            \DB::rollBack();
+            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
+        }
+        catch (\Exception $e){
+            \DB::rollBack();
+            return self::responseError(self::HTTP_CODE_BAD_REQUEST, trans('errors.undefined', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
         }
     }
 

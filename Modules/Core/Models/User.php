@@ -9,6 +9,7 @@ use Kodeine\Acl\Traits\HasRole;
 use Laravel\Passport\HasApiTokens;
 use Modules\Localidade\Models\Endereco;
 use Modules\Localidade\Models\Telefone;
+use Modules\Transporte\Models\Documento;
 use OwenIt\Auditing\Auditable;
 use Portal\Notifications\PasswordReset;
 use Prettus\Repository\Contracts\Transformable;
@@ -115,6 +116,11 @@ class User extends Authenticatable implements Transformable
     public function return_roles()
     {
         return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id');
+    }
+
+    public function documentos()
+    {
+        return $this->morphMany(Documento::class, 'documentotable');
     }
 
 }

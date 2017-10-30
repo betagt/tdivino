@@ -48,7 +48,7 @@ class DocumentoController extends BaseController
     {
         parent::__construct($documentoRepository, DocumentoCriteria::class);
         $this->documentoRepository = $documentoRepository;
-        $this->setPathFile(public_path('arquivos/img/documentos'));
+        $this->setPathFile(public_path('arquivos/img/documento'));
         $this->imageUploadService = $imageUploadService;
         $this->tipoDocumentoRepository = $tipoDocumentoRepository;
         $this->servicoRepository = $servicoRepository;

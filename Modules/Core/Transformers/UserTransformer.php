@@ -6,6 +6,7 @@ use Modules\Core\Models\Pessoa;
 use Modules\Core\Models\User;
 use Modules\Localidade\Transformers\EnderecoTransformer;
 use Modules\Localidade\Transformers\TelefoneTransformer;
+use Modules\Transporte\Transformers\DocumentoTransformer;
 use Portal\Transformers\BaseTransformer;
 
 /**
@@ -14,7 +15,7 @@ use Portal\Transformers\BaseTransformer;
  */
 class UserTransformer extends BaseTransformer
 {
-    public $availableIncludes = ['permissions', 'roles'];
+    public $availableIncludes = ['permissions', 'roles', 'documentos'];
     public $defaultIncludes = [ 'endereco','pessoa', 'telefones'];
 
     /**
@@ -84,4 +85,12 @@ class UserTransformer extends BaseTransformer
         }
         return $this->item($model->pessoa, new PessoaTransformer());
     }
+
+    public function includeDocumentos(User $model){
+        if($model->documentos->count() == 0){
+            return $this->null();
+        }
+        return $this->collection($model->documentos, new DocumentoTransformer());
+    }
+
 }

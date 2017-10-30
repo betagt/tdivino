@@ -8,6 +8,7 @@ use Modules\Core\Services\ImageUploadService;
 use Modules\Transporte\Criteria\VeiculoCriteria;
 use Modules\Transporte\Http\Requests\VeiculoRequest;
 use Modules\Transporte\Repositories\VeiculoRepository;
+use Modules\Transporte\Services\DocumentoService;
 use Portal\Http\Controllers\BaseController;
 use Prettus\Repository\Exceptions\RepositoryException;
 
@@ -28,15 +29,21 @@ class VeiculoController extends BaseController
      * @var ImageUploadService
      */
     private $imageUploadService;
+    /**
+     * @var DocumentoService
+     */
+    private $documentoService;
 
     public function __construct(
         VeiculoRepository $veiculoRepository,
+        DocumentoService $documentoService,
         ImageUploadService $imageUploadService)
     {
         parent::__construct($veiculoRepository, VeiculoCriteria::class);
         $this->setPathFile(public_path('arquivos/img/documento'));
         $this->veiculoRepository = $veiculoRepository;
         $this->imageUploadService = $imageUploadService;
+        $this->documentoService = $documentoService;
     }
 
 
@@ -108,21 +115,9 @@ class VeiculoController extends BaseController
             try{
                 \DB::beginTransaction();
                 $veiculo = $this->veiculoRepository->skipPresenter(true)->update($data,$id);
-                if(isset($data['documentos'])){
-                    foreach ($data['documentos'] as $doc){
-                        $documento = $veiculo->documento()->create($doc);
-                        if(isset($doc['arquivos'])){
-                            foreach ($doc['arquivos'] as $key=>$arquivo) {
-                                $aux['arquivo'] = $arquivo;
-                                $this->imageUploadService->upload64('arquivo', $this->getPathFile(), $aux);
-                                $documento->arquivo()->create([
-                                    'img' => $aux['arquivo'],
-                                    'princial' => false,
-                                    'prioridade' => $key + 1
-                                ]);
-                            }
-                        }
-                    }
+                $documento = $veiculo->documento();
+                foreach ($data['documentos'] as $doc){
+                    $this->documentoService->cadastrarDocumento($doc, $documento,$this->getPathFile());
                 }
                 $result = $this->veiculoRepository->find($veiculo->id);
                 \DB::commit();
@@ -178,22 +173,9 @@ class VeiculoController extends BaseController
         try{
             \DB::beginTransaction();
             $veiculo = $this->veiculoRepository->skipPresenter(true)->create($data);
-            //if(isset($data['documentos'])){
-                foreach ($data['documentos'] as $doc){
-                    $documento = $veiculo->documento()->create($doc);
-                    //if(isset($doc['arquivos'])){
-                        foreach ($doc['arquivos'] as $key=>$arquivo) {
-                            $aux['arquivo'] = $arquivo;
-                            $this->imageUploadService->upload64('arquivo', $this->getPathFile(), $aux);
-                            $documento->arquivo()->create([
-                                'img' => $aux['arquivo'],
-                                'princial' => false,
-                                'prioridade' => $key + 1
-                            ]);
-                        }
-                    //}
-                }
-            //}
+            foreach ($data['documentos'] as $doc){
+                $this->documentoService->cadastrarDocumento($doc, $veiculo->documento(),$this->getPathFile());
+            }
             $result = $this->veiculoRepository->find($veiculo->id);
             \DB::commit();
             return $result;
