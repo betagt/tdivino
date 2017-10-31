@@ -245,13 +245,23 @@ class UserController extends BaseController
      */
     public function update(Request $request, $id){
         $data = $request->all();
+        \Validator::extend('cpf_validator', function ($attribute, $value, $parameters, $validator) {
+            $valid = false;
+            if(validar_cnpj($value)){
+                $valid = true;
+            }
+            if(validar_cpf($value)){
+                $valid = true;
+            }
+            return $valid;
+        },'CPF Inválido!');
 		$validator = array_merge($this->getValidator($id), [
-			'pessoa.cpf_cnpf' => 'required',
-			'pessoa.data_nascimento' => 'required',
+			'pessoa.cpf_cnpj' => 'required|cpf_validator',
+			'pessoa.data_nascimento' => 'required|date',
 			'pessoa.rg' => 'required',
 			'pessoa.orgao_emissor' => 'required',
 			'pessoa.escolaridade' => 'required',
-			'pessoa.sexo' => 'required',
+			'pessoa.sexo' => 'required|integer|in:1,2',
 			'pessoa.estado_civil' => 'required',
 		]);
         \Validator::make($data, $validator)->validate();
@@ -263,11 +273,13 @@ class UserController extends BaseController
                 $this->documentoService->cadastrarDocumento($doc, $documento);
             }
 			if(is_null($usuario->pessoa)){
-				$usuario->pessoa()->create($data['pessoa']);
+                $pessoa = Pessoa::create($data);
+                $usuario->pessoa_id = $pessoa->id;
+                $usuario->save();
 			}else{
 				$usuario->pessoa()->update($data['pessoa']);
 			}
-            $result = $this->userRepository->find($usuario->id);
+            $result = $this->userRepository->skipPresenter(false)->find($usuario->id);
             \DB::commit();
             return  $result;
         }catch (ModelNotFoundException $e){
@@ -297,7 +309,7 @@ class UserController extends BaseController
     {
         $user = $request->user();
         $data = $request->only([
-            'cpf_cnpf', 'nec_especial', 'data_nascimento', 'rg', 'orgao_emissor', 'escolaridade', 'sexo', 'estado_civil', 'fantasia', 'contato',
+            'cpf_cnpj', 'nec_especial', 'data_nascimento', 'rg', 'orgao_emissor', 'escolaridade', 'sexo', 'estado_civil', 'fantasia', 'contato',
         ]);
         \Validator::make($data, [
             'sexo'                  => 'integer|in:1,2|nullable',

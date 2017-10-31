@@ -24,7 +24,7 @@ class PessoaTransformer extends TransformerAbstract
         return [
             'id' => (int)$model->id,
             'data_nascimento' => $model->data_nascimento,
-            'cpf_cnpj' => (string)$model->cpf_cnpf,
+            'cpf_cnpj' => (string)$model->cpf_cnpj,
             'rg' => (string)$model->rg,
             'nec_especial' => (string)$model->nec_especial,
             'orgao_emissor' => (string)$model->orgao_emissor,

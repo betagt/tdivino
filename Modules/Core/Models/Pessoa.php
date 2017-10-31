@@ -28,7 +28,6 @@ class Pessoa extends Model implements Transformable
     {
         if(is_null($value))
             return null;
-
         if(validar_cnpj($value)) {
             return mask($this->attributes['cpf_cnpj'], '##.###.###/####-##');
         }
