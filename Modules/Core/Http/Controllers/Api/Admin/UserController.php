@@ -117,8 +117,18 @@ class UserController extends BaseController
     public function store(Request $request)
     {
         $data = $request->all();
+		\Validator::extend('cpf_validator', function ($attribute, $value, $parameters, $validator) {
+			$valid = false;
+			if(validar_cnpj($value)){
+				$valid = true;
+			}
+			if(validar_cpf($value)){
+				$valid = true;
+			}
+			return $valid;
+		},'CPF Inválido!');
         $validator = array_merge($this->getValidator(), [
-        	'pessoa.cpf_cnpf' => 'required',
+        	'pessoa.cpf_cnpf' => 'required|cpf_validator',
 			'pessoa.nec_especial' => 'required',
 			'pessoa.data_nascimento' => 'required',
 			'pessoa.rg' => 'required',
@@ -131,6 +141,7 @@ class UserController extends BaseController
 		]);
         \Validator::make($data, $validator)->validate();
         try {
+			\DB::beginTransaction();
             $data['status'] = User::INATIVO;
 			$user = $this->userRepository->skipPresenter(true)->create($data);
 			$documento = $user->documentos();
@@ -148,12 +159,16 @@ class UserController extends BaseController
 				$user->pessoa()->update($data['pessoa']);
 			}
 			$user->assignRole('cliente');
+			\DB::commit();
             return $this->userRepository->skipPresenter(false)->find($user->id);
         } catch (ModelNotFoundException $e) {
+			\DB::rollBack();
             return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code' => $e->getCode(), 'line' => $e->getLine()]));
         } catch (RepositoryException $e) {
+			\DB::rollBack();
             return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code' => $e->getCode(), 'line' => $e->getLine()]));
         } catch (\Exception $e) {
+			\DB::rollBack();
             return self::responseError(self::HTTP_CODE_BAD_REQUEST, trans('errors.undefined', ['status_code' => $e->getCode(), 'line' => $e->getLine()]));
         }
     }
@@ -279,7 +294,7 @@ class UserController extends BaseController
                 $this->documentoService->cadastrarDocumento($doc, $documento);
             }
 			if(is_null($usuario->pessoa)){
-                $pessoa = Pessoa::create($data);
+                $pessoa = Pessoa::create($data['pessoa']);
                 $usuario->pessoa_id = $pessoa->id;
                 $usuario->save();
 			}else{
