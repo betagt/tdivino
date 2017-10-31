@@ -111,11 +111,26 @@ class UserController extends BaseController
             'data_nascimento'       => 'date|nullable',
             'sexo'                  => 'integer|in:1,2|nullable',
             'chk_newsletter'        => 'boolean|nullable',
+			'ddd'        => 'required|numeric|nullable',
+			'numero'        => 'required|numeric|nullable',
         ])->validate();
         try {
             $data = $this->userRepository->skipPresenter(true)->create($data);
             $data->assignRole('cliente');
             $user = $this->userRepository->skipPresenter(false)->find($data->id);
+			if(!empty($data['ddd']) && !empty($data['numero'])){
+				if(!is_null($user->telefone)){
+					$user->telefone->ddd = $data['ddd'];
+					$user->telefone->numero = $data['numero'];
+					$user->telefone->save();
+				}else{
+					$data['principal'] = true;
+					$data['tipo'] = 'celular';
+					/*$data['telefonetable_id'] = $user->id;
+					$data['telefonetable_type'] = User::class;*/
+					$user->telefone()->create($data);
+				}
+			}
             event(new UsuarioCadastrado($this->userRepository->skipPresenter(true)->find($user['data']['id']),'cliente'));
             return $user;
         } catch (ModelNotFoundException $e) {

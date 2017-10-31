@@ -140,9 +140,15 @@ class UserController extends BaseController
 				}
 			}
             //event(new Registered($user));
-            $data = $user;
-            $data->assignRole('cliente');
-            return $this->userRepository->skipPresenter(false)->find($data->id);
+			if(is_null($user->pessoa)){
+				$pessoa = Pessoa::create($data['pessoa']);
+				$user->pessoa_id = $pessoa->id;
+				$user->save();
+			}else{
+				$user->pessoa()->update($data['pessoa']);
+			}
+			$user->assignRole('cliente');
+            return $this->userRepository->skipPresenter(false)->find($user->id);
         } catch (ModelNotFoundException $e) {
             return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code' => $e->getCode(), 'line' => $e->getLine()]));
         } catch (RepositoryException $e) {
