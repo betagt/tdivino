@@ -111,13 +111,12 @@ class UserController extends BaseController
             'data_nascimento'       => 'date|nullable',
             'sexo'                  => 'integer|in:1,2|nullable',
             'chk_newsletter'        => 'boolean|nullable',
-			'ddd'        => 'required|numeric|nullable',
-			'numero'        => 'required|numeric|nullable',
+			'ddd'        => 'required|numeric|nullable|max:2',
+			'numero'        => 'required|numeric|nullable|max:15',
         ])->validate();
         try {
-            $data = $this->userRepository->skipPresenter(true)->create($data);
-            $data->assignRole('cliente');
-            $user = $this->userRepository->skipPresenter(false)->find($data->id);
+            $user = $this->userRepository->skipPresenter(true)->create($data);
+            $user->assignRole('cliente');
 			if(!empty($data['ddd']) && !empty($data['numero'])){
 				if(!is_null($user->telefone)){
 					$user->telefone->ddd = $data['ddd'];
@@ -126,11 +125,10 @@ class UserController extends BaseController
 				}else{
 					$data['principal'] = true;
 					$data['tipo'] = 'celular';
-					/*$data['telefonetable_id'] = $user->id;
-					$data['telefonetable_type'] = User::class;*/
 					$user->telefone()->create($data);
 				}
 			}
+            $user = $this->userRepository->skipPresenter(false)->find($user->id);
             event(new UsuarioCadastrado($this->userRepository->skipPresenter(true)->find($user['data']['id']),'cliente'));
             return $user;
         } catch (ModelNotFoundException $e) {
@@ -162,8 +160,8 @@ class UserController extends BaseController
             'data_nascimento'       => 'date|nullable',
             'sexo'                  => 'integer|in:1,2|nullable',
             'chk_newsletter'        => 'boolean|nullable',
-            'ddd'        => 'numeric|nullable',
-            'numero'        => 'numeric|nullable',
+            'ddd'        => 'numeric|nullable|max:2',
+            'numero'        => 'numeric|nullable|max:15',
             'old_password' => 'nullable|alphaNum|min:8',
             'new_password' => 'nullable|alphaNum|min:8|confirmed'
         ])->validate();
