@@ -13,11 +13,11 @@ class CreateMultiplePrimaryPlanoPrecoTable extends Migration
      */
     public function up()
     {
-        Schema::table('plano_tabela_precos', function(Blueprint $table) {
+       /* Schema::table('plano_tabela_precos', function(Blueprint $table) {
             $table->primary(array('id','plano_id', 'cidade_id', 'estado_id'));
 
-            //DB::statement('ALTER TABLE spins MODIFY rid INTEGER NOT NULL AUTO_INCREMENT');
-        });
+            DB::statement('ALTER TABLE spins MODIFY rid INTEGER NOT NULL AUTO_INCREMENT');
+        });*/
     }
 
     /**
@@ -27,11 +27,11 @@ class CreateMultiplePrimaryPlanoPrecoTable extends Migration
      */
     public function down()
     {
-        Schema::table('plano_tabela_precos', function(Blueprint $table) {
+        /*Schema::table('plano_tabela_precos', function(Blueprint $table) {
             $table->dropPrimary('id');
             $table->dropPrimary('plano_id');
             $table->dropPrimary('cidade_id');
             $table->dropPrimary('estado_id');
-        });
+        });*/
     }
 }

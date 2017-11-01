@@ -25,8 +25,8 @@ class CreateUsersTable extends Migration
             $table->string('cep')->nullable();
             $table->date('data_nascimento')->nullable();
             $table->enum('status',['ativo','boqueado','inativo']);
-            $table->boolean('disponivel');
-            $table->boolean('documentos_validate')->default(false);
+            $table->boolean('disponivel')->nullable()->default(false);
+            $table->boolean('documentos_validate')->nullable()->default(false);
             $table->boolean('chk_newsletter')->nullable();
             $table->string('password');
             $table->rememberToken();
