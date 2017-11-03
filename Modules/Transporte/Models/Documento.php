@@ -24,7 +24,13 @@ class Documento extends Model implements Transformable
         'data_vigencia_inicial',
         'data_vigencia_fim',
         'categoria_cnh',
-        'possui_vencimento'
+        'data_emissao',
+        'orgao_amissor',
+        'cnae',
+        'uf',
+        'curso',
+        'carga_horaria',
+        'data_conclusao',
     ];
 
     /**
