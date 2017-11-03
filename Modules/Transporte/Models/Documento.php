@@ -31,6 +31,7 @@ class Documento extends Model implements Transformable
         'curso',
         'carga_horaria',
         'data_conclusao',
+        'nit',
     ];
 
     /**

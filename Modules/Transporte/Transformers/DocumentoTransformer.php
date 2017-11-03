@@ -47,6 +47,7 @@ class DocumentoTransformer extends TransformerAbstract
             'curso' => (string)$model->curso,
             'carga_horaria' => (string)$model->carga_horaria,
             'data_conclusao' => $model->data_conclusao,
+            'nit' => $model->nit,
 
             'created_at' => $model->created_at,
             'updated_at' => $model->updated_at
