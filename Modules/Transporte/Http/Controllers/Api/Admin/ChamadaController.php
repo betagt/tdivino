@@ -9,9 +9,11 @@ use Modules\Localidade\Services\GeoService;
 use Modules\Transporte\Criteria\ChamadaCriteria;
 use Modules\Transporte\Criteria\ChamadaFornecedorCriteria;
 use Modules\Transporte\Http\Requests\ChamadaRequest;
+use Modules\Transporte\Notifications\IniciarChamadaNotify;
 use Modules\Transporte\Repositories\ChamadaRepository;
 use Modules\Transporte\Repositories\GeoPosicaoRepository;
 use Portal\Criteria\OrderCriteria;
+use Portal\Events\GroupCreated;
 use Portal\Http\Controllers\BaseController;
 
 use Modules\Transporte\Models\Chamada;
@@ -89,6 +91,23 @@ class ChamadaController extends BaseController
      */
     function iniciarChamada(Request $request)
     {
+		//\Notification::send($this->getUser(), new IniciarChamadaNotify());
+		/*$options = array(
+			'cluster' => 'us2',
+			'encrypted' => false
+		);
+		$pusher = new \Pusher(
+			'432c193295441f1cd8bb',
+			'e7c5d6602965d882a4c8',
+			'429229',
+			$options
+		);
+
+		$data['name'] = 'teste';
+		$data['message'] = 'teste';
+		dd($pusher->trigger('my-channel', 'my-event', $data));*/
+		//event(new GroupCreated($this->getUser(), "teste", $request->bearerToken()));
+    	//die;
         $data = $request->only(['origem', 'destino', 'endereco_origem', 'endereco_destino']);
 
         \Validator::make($data, [
@@ -123,7 +142,6 @@ class ChamadaController extends BaseController
                 'lng' => $data['destino']['lng'],
                 'passageiro' => false
             ]);
-            //$chamada->geoPosition()
             \DB::commit();
             return $chamada;
         } catch (ModelNotFoundException $e) {

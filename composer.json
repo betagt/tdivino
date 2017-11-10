@@ -27,7 +27,8 @@
         "laravel/passport": "1.0.x-dev",
         "nwidart/laravel-modules": "^1.27.2",
         "browner12/helpers": "^1.1",
-        "folklore/image": "^0.3.20"
+        "folklore/image": "^0.3.20",
+        "laravel-notification-channels/pusher-push-notifications": "^1.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

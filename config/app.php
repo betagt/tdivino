@@ -190,6 +190,7 @@ return [
         Nwidart\Modules\LaravelModulesServiceProvider::class,
         browner12\helpers\HelperServiceProvider::class,
         Folklore\Image\ImageServiceProvider::class,
+		NotificationChannels\PusherPushNotifications\PusherPushNotificationsServiceProvider::class,
 
     ],
 
