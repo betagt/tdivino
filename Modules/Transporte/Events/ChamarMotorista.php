@@ -41,7 +41,7 @@ class ChamarMotorista implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return  new PrivateChannel('chamada.motorista');
+        return  ['chamada.motorista'];
     }
 }
 

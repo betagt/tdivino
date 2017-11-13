@@ -42,7 +42,7 @@ class ChamadaMotoristaNoLocal implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return  new PrivateChannel('chamada.motorista_no_local.cliente.'.$this->uuid);
+        return  ['chamada.motorista_no_local.cliente.'.$this->uuid];
     }
 }
 

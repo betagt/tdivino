@@ -40,6 +40,6 @@ class ChamadaAceita implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return  new PrivateChannel('chamada.atendida.cliente.'.$this->uuid);
+        return  ['chamada.atendida.cliente.'.$this->uuid];
     }
 }

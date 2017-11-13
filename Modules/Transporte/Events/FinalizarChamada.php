@@ -40,6 +40,6 @@ class FinalizarChamada implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return  new PrivateChannel('chamada.cacelada.motorista.'.$this->uuid);
+        return  ['chamada.cacelada.motorista.'.$this->uuid];
     }
 }
