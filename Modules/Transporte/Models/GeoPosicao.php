@@ -15,8 +15,8 @@ class GeoPosicao extends Model implements Transformable
     protected $fillable = [
         'user_id',
         'transporte_chamada_id',
-        'transporte_geo_posicaotable_id',
-        'transporte_geo_posicaotable_type',
+        'transporte_geo_posicaotable_type_id',
+        'transporte_geo_posicaotable_type_type',
         'endereco',
         'lat',
         'lng',

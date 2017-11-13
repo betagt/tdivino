@@ -8,12 +8,15 @@ use Illuminate\Http\Request;
 use Modules\Localidade\Services\GeoService;
 use Modules\Transporte\Criteria\ChamadaCriteria;
 use Modules\Transporte\Criteria\ChamadaFornecedorCriteria;
+use Modules\Transporte\Events\ChamadaAceita;
+use Modules\Transporte\Events\ChamadaMotoristaNoLocal;
+use Modules\Transporte\Events\ChamarMotorista;
+use Modules\Transporte\Events\FinalizarChamada;
 use Modules\Transporte\Http\Requests\ChamadaRequest;
 use Modules\Transporte\Notifications\IniciarChamadaNotify;
 use Modules\Transporte\Repositories\ChamadaRepository;
 use Modules\Transporte\Repositories\GeoPosicaoRepository;
 use Portal\Criteria\OrderCriteria;
-use Portal\Events\GroupCreated;
 use Portal\Http\Controllers\BaseController;
 
 use Modules\Transporte\Models\Chamada;
@@ -106,8 +109,8 @@ class ChamadaController extends BaseController
 		$data['name'] = 'teste';
 		$data['message'] = 'teste';
 		dd($pusher->trigger('my-channel', 'my-event', $data));*/
-		//event(new GroupCreated($this->getUser(), "teste", $request->bearerToken()));
-    	//die;
+		/*event(new ChamarMotorista($this->getUser(), "teste", $request->bearerToken()));
+    	die;*/
         $data = $request->only(['origem', 'destino', 'endereco_origem', 'endereco_destino']);
 
         \Validator::make($data, [
@@ -127,8 +130,8 @@ class ChamadaController extends BaseController
             $this->geoPosicaoRepository->create([
                 'user_id' => $data['cliente_id'],
                 'endereco' => $data['endereco_origem'],
-                'transporte_geo_posicaotable_id' => $chamada['data']['id'],
-                'transporte_geo_posicaotable_type' => Chamada::class,
+                'transporte_geo_posicaotable_type_id' => $chamada['data']['id'],
+                'transporte_geo_posicaotable_type_type' => Chamada::class,
                 'lat' => $data['origem']['lat'],
                 'lng' => $data['origem']['lng'],
                 'passageiro' => false
@@ -136,13 +139,15 @@ class ChamadaController extends BaseController
             $this->geoPosicaoRepository->create([
                 'user_id' => $data['cliente_id'],
                 'endereco' => $data['endereco_destino'],
-                'transporte_geo_posicaotable_id' => $chamada['data']['id'],
-                'transporte_geo_posicaotable_type' => Chamada::class,
+                'transporte_geo_posicaotable_type_id' => $chamada['data']['id'],
+                'transporte_geo_posicaotable_type_type' => Chamada::class,
                 'lat' => $data['destino']['lat'],
                 'lng' => $data['destino']['lng'],
                 'passageiro' => false
             ]);
             \DB::commit();
+            $chamada = $this->chamadaRepository->find($chamada['data']['id']);
+            event(new ChamarMotorista($this->getUser()->device_uuid, $chamada));
             return $chamada;
         } catch (ModelNotFoundException $e) {
             \DB::rollback();
@@ -227,7 +232,7 @@ class ChamadaController extends BaseController
         $this->getUser()->save();
         try {
             \DB::beginTransaction();
-            $chamada = $this->chamadaRepository->update($data, $idChamada);
+            $chamada = $this->chamadaRepository->skipPresenter(true)->update($data, $idChamada);
             $this->geoPosicaoRepository->create([
                 'user_id' => $data['fornecedor_id'],
                 'endereco' => $data['endereco_origem'],
@@ -237,8 +242,10 @@ class ChamadaController extends BaseController
                 'lng' => $data['origem']['lng'],
                 'passageiro' => false
             ]);
+            $response = $this->chamadaRepository->skipPresenter(false)->find($idChamada);
+            event(new ChamadaAceita($chamada->cliente->device_uuid, $response));
             \DB::commit();
-            return $chamada;
+            return $response;
         } catch (ModelNotFoundException $e) {
             \DB::rollback();
             return parent::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code' => $e->getCode(), 'message' => $e->getMessage()]));
@@ -258,6 +265,7 @@ class ChamadaController extends BaseController
             'chamada_id'=>'required|exists:transporte_chamadas,id'
         ])->validate();
         try {
+            \DB::beginTransaction();
             $chamada = $this->chamadaRepository->find($data['chamada_id']);
             if ($chamada['data']['status'] == Chamada::STATUS_CANCELADO) {
                 throw new \Exception('chamada já cancelada');
@@ -269,7 +277,11 @@ class ChamadaController extends BaseController
                 throw new \Exception('chamada não pertence a você');
             }
             $chamada['status'] = Chamada::STATUS_CANCELADO;
-            return $this->chamadaRepository->update($chamada, $idChamada);
+            $chamada = $this->chamadaRepository->skipPresenter(true)->update($chamada, $idChamada);
+            $response = $this->chamadaRepository->skipPresenter(false)->find($idChamada);
+            event(new FinalizarChamada($chamada->fornecedor->device_uuid, $response));
+            \DB::commit();
+            return $response;
         } catch (ModelNotFoundException $e) {
             return parent::responseError(self::HTTP_CODE_NOT_FOUND, $e->getMessage());
         } catch (RepositoryException $e) {
@@ -277,6 +289,33 @@ class ChamadaController extends BaseController
         } catch (\Exception $e) {
             return parent::responseError(self::HTTP_CODE_BAD_REQUEST, $e->getMessage());
         }
+    }
+
+    public function motoristaNoLocal($idChamada){
+        $data = ['chamada_id' => $idChamada];
+        \Validator::make($data, [
+            'chamada_id'=>'required|exists:transporte_chamadas,id'
+        ])->validate();
+        try {
+            $chamada = $this->chamadaRepository->skipPresenter(true)->find($data['chamada_id']);
+            if ($chamada->status == Chamada::STATUS_CANCELADO) {
+                throw new \Exception('chamada já cancelada');
+            }
+            if (is_null($chamada)) {
+                throw new \Exception('chamada invalida');
+            }
+            if (!($chamada->cliente_id == $this->getUserId())) {
+                throw new \Exception('chamada não pertence a você');
+            }
+            event(new ChamadaMotoristaNoLocal($chamada->fornecedor->device_uuid, "Motorista aguardando no local indicado!"));
+        } catch (ModelNotFoundException $e) {
+            return parent::responseError(self::HTTP_CODE_NOT_FOUND, $e->getMessage());
+        } catch (RepositoryException $e) {
+            return parent::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code' => $e->getCode(), 'message' => $e->getMessage()]));
+        } catch (\Exception $e) {
+            return parent::responseError(self::HTTP_CODE_BAD_REQUEST, $e->getMessage());
+        }
+
     }
 
     function cancelarForcedor($idChamada)

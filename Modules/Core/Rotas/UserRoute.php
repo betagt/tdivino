@@ -12,10 +12,6 @@ class UserRoute implements ICustomRoute
 {
     public static function run()
     {
-        Route::get('admin/user/logout', [
-            'as' => 'user.meu_perfil',
-            'uses' => 'Api\Admin\UserController@logout'
-        ]);
         Route::post('admin/user/faleconosco', [
             'as' => 'user.solicitar_nova_senha',
             'uses' => 'Api\Front\UserController@faleConosco'
@@ -88,7 +84,17 @@ class UserRoute implements ICustomRoute
                 ]);
             });
         });
-        Route::group(['prefix'=>'front','middleware' => ['auth:api','acl'],'is' => 'administrador|cliente|moderator|qative','namespace'=>'Api\Front'],function (){
+        Route::group(['prefix'=>'admin','middleware' => ['auth:api','acl'],'is' => 'administrador|fornecedor|cliente|moderator','namespace'=>'Api\Admin'],function (){
+            Route::post('user/device_register', [
+                'as' => 'user.device_register',
+                'uses' => 'UserController@deviceRegister',
+            ]);
+            Route::get('admin/user/logout', [
+                'as' => 'user.meu_perfil',
+                'uses' => 'Api\Admin\UserController@logout'
+            ]);
+        });
+        Route::group(['prefix'=>'front','middleware' => ['auth:api','acl'],'is' => 'administrador|cliente|moderator','namespace'=>'Api\Front'],function (){
 
 
             Route::put('user/userupdate', [

@@ -5,7 +5,6 @@ namespace Portal\Events;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Modules\Core\Models\User;
@@ -27,10 +26,11 @@ class GroupCreated implements ShouldBroadcast
 	 * @var Message
 	 */
 	public $message;
+
 	/**
-	 * @var
+	 * @var Bearer
 	 */
-	private $bearer;
+	public $bearer;
 
 	/**
 	 * Create a new event instance.
@@ -43,6 +43,7 @@ class GroupCreated implements ShouldBroadcast
 		$this->message = $message;
 		$this->bearer = $bearer;
 	}
+
     /**
      * Get the channels the event should broadcast on.
      *

@@ -10,6 +10,7 @@ use Laravel\Passport\HasApiTokens;
 use Modules\Localidade\Models\Endereco;
 use Modules\Localidade\Models\Telefone;
 use Modules\Transporte\Models\Documento;
+use Modules\Transporte\Models\Veiculo;
 use OwenIt\Auditing\Auditable;
 use Portal\Notifications\PasswordReset;
 use Prettus\Repository\Contracts\Transformable;
@@ -135,6 +136,10 @@ class User extends Authenticatable implements Transformable
     public function documentos()
     {
         return $this->morphMany(Documento::class, 'documentotable');
+    }
+
+    public function veiculoAtivo(){
+        return $this->hasOne(Veiculo::class, 'user_id')->where('status', '=', 'aceito');
     }
 
 }

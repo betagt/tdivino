@@ -13,7 +13,7 @@ use Modules\Transporte\Models\Chamada;
  */
 class ChamadaTransformer extends TransformerAbstract
 {
-    protected $defaultIncludes = ['fornecedor', 'cliente', 'lancamentos'];
+    protected $defaultIncludes = ['fornecedor', 'cliente', 'lancamentos', 'trajeto'];
     /**
      * Transform the \Chamada entity
      * @param Chamada $model
@@ -22,10 +22,11 @@ class ChamadaTransformer extends TransformerAbstract
      */
     public function transform(Chamada $model)
     {
-        return [
+        $chamada = [
             'id'         => (int) $model->id,
             'fornecedor_id'=> (int) $model->fornecedor_id,
             'cliente_id'=> (int) $model->cliente_id,
+            'cliente_nome' => (string)  $model->cliente->name,
             'tipo'=> (string) $model->tipo,
             'desolamento_km_com_passageiro'=> (double) $model->desolamento_km_com_passageiro,
             'desolamento_km_sem_passageiro'=> (double) $model->desolamento_km_sem_passageiro,
@@ -44,6 +45,19 @@ class ChamadaTransformer extends TransformerAbstract
             'created_at' => $model->created_at,
             'updated_at' => $model->updated_at
         ];
+        if(!is_null($model->fornecedor)){
+            $chamada = array_merge($chamada, [
+                'fornecedor_nome' => $model->fornecedor->name
+            ]);
+            if(!is_null($model->fornecedor->veiculoAtivo)){
+                $chamada = array_merge($chamada, [
+                    'veiculo_placa' => $model->fornecedor->veiculoAtivo->placa,
+                    'veiculo_cor' => $model->fornecedor->veiculoAtivo->cor,
+                    'veiculo_modelo' => $model->fornecedor->veiculoAtivo->modelo->nome
+                ]);
+            }
+        }
+        return $chamada;
     }
 
     public function includeFornecedor(Chamada $model){
@@ -54,15 +68,23 @@ class ChamadaTransformer extends TransformerAbstract
     }
 
     public function includeCliente(Chamada $model){
-        if(is_null($model->fornecedor)){
+        if(is_null($model->cliente)){
             return $this->null();
         }
         return $this->item($model->cliente, new UserTransformer());
     }
+
     public function includeLancamentos(Chamada $model){
         if($model->lancamentos->count() == 0){
             return $this->null();
         }
         return $this->collection($model->lancamentos, new LancamentoTransformer());
+    }
+
+    public function includeTrajeto(Chamada $model){
+        if($model->trajeto->count() == 0){
+            return $this->null();
+        }
+        return $this->collection($model->trajeto, new GeoPosicaoTransformer());
     }
 }

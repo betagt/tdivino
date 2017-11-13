@@ -5,6 +5,7 @@ namespace Modules\Transporte\Models;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Core\Models\User;
 use Modules\Plano\Models\Lancamento;
+use Modules\Transporte\Models\GeoPosicao;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
@@ -46,6 +47,11 @@ class Chamada extends Model implements Transformable
     public function lancamentos()
     {
         return $this->morphMany(Lancamento::class, 'lancamentotable');
+    }
+
+    public function trajeto()
+    {
+        return $this->morphMany(GeoPosicao::class, 'transporte_geo_posicaotable_type');
     }
 
     public function fornecedor(){

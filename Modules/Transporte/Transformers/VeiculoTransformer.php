@@ -25,8 +25,8 @@ class VeiculoTransformer extends TransformerAbstract
             'transporte_marca_carro_id' => (int)$model->transporte_marca_carro_id,
             'transporte_modelo_carro_id' => (int)$model->transporte_modelo_carro_id,
             'user_id' => (int)$model->user_id,
-            'usuario_nome' => (string)$model->usuario->name,
-            'proprietario' => (string)$model->usuario->name,
+            'usuario_nome' => ($model->usuario)?(string)$model->usuario->name:null,
+            'proprietario' => ($model->usuario)?(string)$model->usuario->name:null,
             'marca' => (string)$model->marca->nome,
             'modelo' => (string)$model->modelo->nome,
             'placa' => (string)$model->placa,
@@ -41,7 +41,6 @@ class VeiculoTransformer extends TransformerAbstract
             'consumo_medio' => (string)$model->consumo_medio,
             'chassi' => (string)$model->chassi,
             'porta_mala_tamanho' => (string)$model->porta_mala_tamanho,
-            'arquivo' => (string)$model->arquivo,
             'status' => (string)$model->status,
             'created_at' => $model->created_at,
             'updated_at' => $model->updated_at

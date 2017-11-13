@@ -105,6 +105,21 @@ class UserController extends BaseController
         }
     }
 
+    public function deviceRegister(Request $request){
+        $data = $request->only(['device_uuid']);
+        \Validator::make($data, [
+            'device_uuid' => 'required|string',
+        ])->validate();
+        try{
+            $usuario = $this->getUser();
+            $usuario->device_uuid = $data['device_uuid'];
+            $usuario->save();
+            return parent::responseSuccess(parent::HTTP_CODE_OK, "dispositivo redistrado com sucesso");
+        }
+        catch (\Exception $e){
+            return self::responseError(self::HTTP_CODE_BAD_REQUEST, trans('errors.undefined', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
+        }
+    }
 
     /**
      * Cadastrar
@@ -519,9 +534,12 @@ class UserController extends BaseController
 
     public function logout(Request $request)
     {
+
         $value = $request->bearerToken();
         $id = (new Parser())->parse($value)->getHeader('jti');
-
+        $usuario = $this->getUser();
+        $usuario->device_uuid = null;
+        $usuario->save();
         \DB::table('oauth_access_tokens')
             ->where('id', '=', $id)
             ->update(['revoked' => true]);

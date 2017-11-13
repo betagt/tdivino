@@ -11,6 +11,7 @@ namespace Portal\Http\Controllers;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Modules\Core\Models\User;
 use Portal\Criteria\OrderCriteria;
 use Portal\Interfaces\ICustomController;
 use Portal\Traits\DefaultAcions;

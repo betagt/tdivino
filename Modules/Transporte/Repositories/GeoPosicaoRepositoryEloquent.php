@@ -2,6 +2,7 @@
 
 namespace Modules\Transporte\Repositories;
 
+use Modules\Transporte\Presenters\GeoPosicaoPresenter;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Modules\Transporte\Repositories\GeoPosicaoRepository;
@@ -31,5 +32,10 @@ class GeoPosicaoRepositoryEloquent extends BaseRepository implements GeoPosicaoR
     public function boot()
     {
         $this->pushCriteria(app(RequestCriteria::class));
+    }
+
+    public function presenter()
+    {
+        return GeoPosicaoPresenter::class;
     }
 }
