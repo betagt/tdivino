@@ -80,8 +80,15 @@ class GeoService
         $configuracao = $this->configuracaoService->getConfiguracao();
         $calc = $configuracao['data'];
         $valorMinimo = ($calc['vlkm'] * $calc['nmkm']) + ($calc['vlmin'] * $calc['nmmin']) + $calc['vlsegp'] + ($calc['vlkmr'] * $distanciaTotal);
-        //$total = ($distanciaTotal * $configuracao['data']['gasolina_km']);
-        $total = ($calc['vlkm'] * $distanciaTotal) + ($calc['vlkm'] * $duracaoPrevista) + $calc['vlsegp'] + ($calc['vlkmr'] * $distanciaTotal);
+        $currentTime = (new \DateTime());
+        $startTime = new \DateTime('06:00');
+        $endTime = (new \DateTime('23:59'));
+        if ($currentTime >= $startTime && $currentTime <= $endTime) {
+            $total = ($calc['vlkm'] * $distanciaTotal) + ($calc['vlkm'] * $duracaoPrevista) + $calc['vlsegp'] + ($calc['vlkmr'] * $distanciaTotal);
+        }else{
+            $total = ($calc['vlkm'] * $distanciaTotal) + ($calc['vlkm'] * $duracaoPrevista) + $calc['vlsegp'] + ($calc['vlkmr'] * $distanciaTotal);
+            $total = $total+($total+$calc['pkmm']);
+        }
         return ($total < $valorMinimo) ? $valorMinimo : $total;
     }
 
