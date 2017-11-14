@@ -64,9 +64,11 @@ class GeoService
         }
 
         $distanciaTotal = 0;
+        $duracaoPrevista = 0;
         foreach ($response_a['rows'] as $v => $item) {
             foreach ($item['elements'] as $key => $value) {
-                $distanciaTotal += floatval(str_replace(',', '.', str_replace(' km', '', $value['distance']['text'])));
+                $distanciaTotal += (double)str_replace(',', '.', $value['distance']['text']);
+                $duracaoPrevista += (double)str_replace(',', '.', $value['duration']['text']);
             }
         }
         //$total = ($distanciaTotal * 2) * 0.51875;
@@ -76,8 +78,11 @@ class GeoService
             'price' =>floatval($total)
         ]);*/
         $configuracao = $this->configuracaoService->getConfiguracao();
-        $total = ($distanciaTotal * $configuracao['data']['gasolina_km']);
-        return ($total*$taxa)+$total;
+        $calc = $configuracao['data'];
+        $valorMinimo = ($calc['vlkm'] * $calc['nmkm']) + ($calc['vlmin'] * $calc['nmmin']) + $calc['vlsegp'] + ($calc['vlkmr'] * $distanciaTotal);
+        //$total = ($distanciaTotal * $configuracao['data']['gasolina_km']);
+        $total = ($calc['vlkm'] * $distanciaTotal) + ($calc['vlkm'] * $duracaoPrevista) + $calc['vlsegp'] + ($calc['vlkmr'] * $distanciaTotal);
+        return ($total < $valorMinimo) ? $valorMinimo : $total;
     }
 
     private function formatLocation($location)

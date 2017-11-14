@@ -44,6 +44,20 @@ class ConfiguracaoTransformer extends TransformerAbstract
             'token' => $model->token,
             'analytcs_code' => $model->analytcs_code,
             'gasolina_km' => (double)$model->gasolina_km,
+            'vlbas' => (double)$model->vlbas,
+            'vlkm' => (double)$model->vlkm,
+            'vlmin' => (double)$model->vlmin,
+            'vlsegp' => (double)$model->vlsegp,
+            'vlkmr' => (double)$model->vlkmr,
+            'nmkm' => (double)$model->nmkm,
+            'nmmin' => (double)$model->nmmin,
+            'pkmm' => (double)$model->pkmm,
+            'ptxoper' => (double)$model->ptxoper,
+            'bonusm' => (double)$model->bonusm,
+            'vltgo' => (double)$model->vltgo,
+            'vlapseg' => (double)$model->vlapseg,
+            'vlbonusp' => (double)$model->vlbonusp,
+            'pbonusp' => (double)$model->pbonusp
 
         ];
     }

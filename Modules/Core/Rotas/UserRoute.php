@@ -36,6 +36,16 @@ class UserRoute implements ICustomRoute
             'as' => 'user.solicitar_nova_senha',
             'uses' => 'Api\Front\UserController@solicitarNovaSenha'
         ]);
+        Route::group(['prefix'=>'admin','middleware' => ['auth:api','acl'],'is' => 'administrador|fornecedor|cliente|moderator','namespace'=>'Api\Admin'],function (){
+            Route::post('user/device_register', [
+                'as' => 'user.device_register',
+                'uses' => 'UserController@deviceRegister',
+            ]);
+            Route::get('user/logout', [
+                'as' => 'user.meu_perfil',
+                'uses' => 'UserController@logout'
+            ]);
+        });
 
         Route::group(['prefix'=>'admin','middleware' => ['auth:api'],'namespace'=>'Api\Admin'],function (){
             Route::get('user/perfil/', [
@@ -83,16 +93,6 @@ class UserRoute implements ICustomRoute
                     'except' => ['create', 'edit']
                 ]);
             });
-        });
-        Route::group(['prefix'=>'admin','middleware' => ['auth:api','acl'],'is' => 'administrador|fornecedor|cliente|moderator','namespace'=>'Api\Admin'],function (){
-            Route::post('user/device_register', [
-                'as' => 'user.device_register',
-                'uses' => 'UserController@deviceRegister',
-            ]);
-            Route::get('admin/user/logout', [
-                'as' => 'user.meu_perfil',
-                'uses' => 'Api\Admin\UserController@logout'
-            ]);
         });
         Route::group(['prefix'=>'front','middleware' => ['auth:api','acl'],'is' => 'administrador|cliente|moderator','namespace'=>'Api\Front'],function (){
 

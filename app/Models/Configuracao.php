@@ -15,7 +15,8 @@ class Configuracao extends Model implements Transformable
     protected $fillable = [
         'titulo', 'email', 'url_site', 'telefone', 'horario_atendimento', 'endereco', 'rodape',
         'facebook', 'twitter', 'google_plus', 'youtube', 'instagram', 'palavra_chave', 'descricao_site',
-        'og_tipo_app', 'og_titulo_site', 'od_url_site', 'od_autor_site', 'facebook_id', 'token', 'analytcs_code', 'gasolina_km'
+        'og_tipo_app', 'og_titulo_site', 'od_url_site', 'od_autor_site', 'facebook_id', 'token', 'analytcs_code','gasolina_km',
+        'vlbas','vlkm','vlmin','vlsegp','vlkmr','nmkm','nmmin','pkmm','ptxoper','bonusm','vltgo','vlapseg','vlbonusp','pbonusp'
     ];
 
     protected  $hidden = [
