@@ -15,7 +15,7 @@ class CreateTransporteServicoTipoDocumentoExigidasTable extends Migration
     {
         Schema::create('transporte_servico_tipo_documento_exigidas', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('servico_id')->unsigned()->index()->foreign()->references("id")->on("transporte_servicos")->onDelete("cascade");
+			$table->integer('tipo_documento_id')->unsigned()->nullable();
             $table->integer('tipo_documento_id')->unsigned()->index()->foreign()->references("id")->on("transporte_tipo_documentos")->onDelete("cascade");
             $table->timestamps();
         });

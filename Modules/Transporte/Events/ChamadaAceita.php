@@ -16,6 +16,7 @@ class ChamadaAceita implements ShouldBroadcast
      * @var string
      */
     private $uuid;
+
     /**
      * @var
      */

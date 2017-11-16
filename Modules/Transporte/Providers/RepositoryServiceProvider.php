@@ -5,6 +5,8 @@ namespace Modules\Transporte\Providers;
 use Illuminate\Support\ServiceProvider;
 use Modules\Transporte\Repositories\ChamadaRepository;
 use Modules\Transporte\Repositories\ChamadaRepositoryEloquent;
+use Modules\Transporte\Repositories\ContaRepository;
+use Modules\Transporte\Repositories\ContaRepositoryEloquent;
 use Modules\Transporte\Repositories\DocumentoRepository;
 use Modules\Transporte\Repositories\DocumentoRepositoryEloquent;
 use Modules\Transporte\Repositories\GeoPosicaoRepository;
@@ -60,6 +62,10 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             GeoPosicaoRepository::class,
             GeoPosicaoRepositoryEloquent::class
+        );
+        $this->app->bind(
+            ContaRepository::class,
+			ContaRepositoryEloquent::class
         );
     }
 }
