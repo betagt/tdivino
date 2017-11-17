@@ -360,7 +360,9 @@ class ChamadaController extends BaseController
                 throw new \Exception('chamada não pertence a você');
             }
             $chamada['data']['datahora_embarque'] = Carbon::now();
-            return $this->chamadaRepository->update($chamada['data'], $idChamada);
+			$response = $this->chamadaRepository->skipPresenter(true)->find($idChamada);
+			event(new FinalizarChamada($response->cliente->device_uuid, $chamada));
+            return $this->chamadaRepository->skipPresenter(false)->update($chamada['data'], $idChamada);
         } catch (ModelNotFoundException $e) {
             return parent::responseError(self::HTTP_CODE_NOT_FOUND, $e->getMessage());
         } catch (RepositoryException $e) {
@@ -388,7 +390,9 @@ class ChamadaController extends BaseController
             $chamada['data']['tipo'] = Chamada::TIPO_FINALIZADO;
             $this->getUser()->disponivel = true;
             $this->getUser()->save();
-            return $this->chamadaRepository->update($chamada['data'], $idChamada);
+			$response = $this->chamadaRepository->skipPresenter(true)->find($idChamada);
+			event(new FinalizarChamada($response->cliente->device_uuid, $chamada));
+            return $this->chamadaRepository->skipPresenter(false)->update($chamada['data'], $idChamada);
         } catch (ModelNotFoundException $e) {
             return parent::responseError(self::HTTP_CODE_NOT_FOUND, $e->getMessage());
         } catch (RepositoryException $e) {

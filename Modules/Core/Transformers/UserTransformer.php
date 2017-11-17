@@ -40,6 +40,7 @@ class UserTransformer extends BaseTransformer
             'ddd' => (is_null($model->telefone))?null:$model->telefone->ddd,
             'numero' => (is_null($model->telefone))?null:$model->telefone->numero,
             'chk_newsletter' => (boolean)$model->chk_newsletter,
+            'device_uuid' => (string)$model->device_uuid,
             'excluido' => (boolean)$model->trashed(),
             'created_at' => $model->created_at,
             'updated_at' => $model->updated_at
