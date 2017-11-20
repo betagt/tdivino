@@ -56,7 +56,7 @@ class ContaController extends BaseController
 	 */
 	public function index(Request $request){
 		try{
-			return $this->defaultRepository
+			return $this->contaRepository
 				->pushCriteria(new ContaCriteria($request))
 				->pushCriteria(new OrderCriteria($request))
 				->paginate(self::$_PAGINATION_COUNT);

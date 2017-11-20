@@ -2,6 +2,7 @@
 
 namespace  Modules\Transporte\Repositories;
 
+use Modules\Transporte\Presenters\ContaPresenter;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
 use  Modules\Transporte\Repositories\ContaRepository;
@@ -32,5 +33,10 @@ class ContaRepositoryEloquent extends BaseRepository implements ContaRepository
     public function boot()
     {
         $this->pushCriteria(app(RequestCriteria::class));
+    }
+
+    public function presenter()
+    {
+        return ContaPresenter::class;
     }
 }

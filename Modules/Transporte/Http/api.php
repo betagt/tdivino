@@ -8,4 +8,5 @@ Route::group(['prefix'=>'v1','middleware' => ['cors']], function () {
     \Modules\Transporte\Rotas\MarcaCarroRoute::run();
     \Modules\Transporte\Rotas\ModeloCarroRoute::run();
     \Modules\Transporte\Rotas\ChamadaRoute::run();
+    \Modules\Transporte\Rotas\ContaRoute::run();
 });
