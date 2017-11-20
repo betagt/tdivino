@@ -37,6 +37,7 @@ class ChamadaTransformer extends TransformerAbstract
             'valor'=> (double) $model->valor,
             'observacao'=> (string) $model->observacao,
             'porta_mala'=> (int) $model->porta_mala,
+            'avaliacao'=> (int) $model->avaliacao,
             'cupon'=> (string) $model->cupon,
             'data_inicial'=> $model->data_inicial,
             'data_final'=> $model->data_final,

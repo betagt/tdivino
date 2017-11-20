@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Modules\Transporte\Criteria\ContaCriteria;
 use Modules\Transporte\Criteria\ModeloCarroCriteria;
 use Modules\Transporte\Http\Requests\ContaRequest;
+use Modules\Transporte\Models\Conta;
 use Modules\Transporte\Repositories\ContaRepository;
 use Portal\Criteria\OrderCriteria;
 use Portal\Http\Controllers\BaseController;
@@ -60,6 +61,41 @@ class ContaController extends BaseController
 				->pushCriteria(new ContaCriteria($request))
 				->pushCriteria(new OrderCriteria($request))
 				->paginate(self::$_PAGINATION_COUNT);
+		}catch (ModelNotFoundException $e){
+			return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
+		}
+		catch (RepositoryException $e){
+			return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
+		}
+		catch (\Exception $e){
+			return self::responseError(self::HTTP_CODE_BAD_REQUEST, trans('errors.undefined', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
+		}
+	}
+
+	public function contasPorUsuario($id){
+		try{
+			return $this->contaRepository->findByField('id', $id);
+		}catch (ModelNotFoundException $e){
+			return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
+		}
+		catch (RepositoryException $e){
+			return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
+		}
+		catch (\Exception $e){
+			return self::responseError(self::HTTP_CODE_BAD_REQUEST, trans('errors.undefined', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
+		}
+	}
+
+	public function contaPrincipal($userId, $id){
+		try{
+			Conta::where('user_id', $userId)
+				->update([
+					'principal' => false,
+				]);
+			$conta = $this->contaRepository->skipPresenter(true)->find($id);
+			$conta->principal = true;
+			$conta->save();
+			return  $this->contaRepository->skipPresenter(false)->orderBy('id')->findByField('user_id', $userId);
 		}catch (ModelNotFoundException $e){
 			return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
 		}

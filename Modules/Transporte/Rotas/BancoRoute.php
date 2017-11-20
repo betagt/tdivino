@@ -11,20 +11,20 @@ namespace Modules\Transporte\Rotas;
 use Portal\Interfaces\ICustomRoute;
 use \Route;
 
-class ContaRoute implements ICustomRoute
+class BancoRoute implements ICustomRoute
 {
 
     public static function run()
     {
         Route::group(['prefix'=>'admin','middleware' => ['auth:api'],'namespace'=>'Api\Admin'],function () {
             Route::group(['middleware' => ['acl'],'is' => 'administrador|fornecedor', 'protect_alias'  => 'user'],function (){
+                Route::get('banco/codigos', [
+                    'as' => 'habilidade.todos',
+                    'uses' => 'BancoController@todos'
+                ]);
             });
             Route::group(['middleware' => ['acl'],'is' => 'administrador|moderador,or', 'protect_alias'  => 'user'],function (){
-				Route::get('conta/principal/{userId}/{id}', [
-					'as' => 'conta.principal',
-					'uses' => 'ContaController@contaPrincipal'
-				]);
-            	Route::resource('conta', 'ContaController',
+                Route::resource('banco', 'BancoController',
                     [
                         'except' => ['create', 'edit']
                     ]);

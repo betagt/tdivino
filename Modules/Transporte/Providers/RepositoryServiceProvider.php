@@ -3,6 +3,8 @@
 namespace Modules\Transporte\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Modules\Transporte\Repositories\BancoRepository;
+use Modules\Transporte\Repositories\BancoRepositoryEloquent;
 use Modules\Transporte\Repositories\ChamadaRepository;
 use Modules\Transporte\Repositories\ChamadaRepositoryEloquent;
 use Modules\Transporte\Repositories\ContaRepository;
@@ -66,6 +68,10 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             ContaRepository::class,
 			ContaRepositoryEloquent::class
+        );
+        $this->app->bind(
+            BancoRepository::class,
+			BancoRepositoryEloquent::class
         );
     }
 }

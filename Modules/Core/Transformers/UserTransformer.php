@@ -6,6 +6,7 @@ use Modules\Core\Models\Pessoa;
 use Modules\Core\Models\User;
 use Modules\Localidade\Transformers\EnderecoTransformer;
 use Modules\Localidade\Transformers\TelefoneTransformer;
+use Modules\Transporte\Transformers\ContaTransformer;
 use Modules\Transporte\Transformers\DocumentoTransformer;
 use Portal\Transformers\BaseTransformer;
 
@@ -16,7 +17,7 @@ use Portal\Transformers\BaseTransformer;
 class UserTransformer extends BaseTransformer
 {
     public $availableIncludes = ['permissions', 'roles', 'documentos'];
-    public $defaultIncludes = [ 'endereco','pessoa', 'telefones'];
+    public $defaultIncludes = [ 'endereco','pessoa', 'telefones', 'contas'];
 
     /**
      * Transform the \User entity
@@ -92,6 +93,13 @@ class UserTransformer extends BaseTransformer
             return $this->null();
         }
         return $this->collection($model->documentos, new DocumentoTransformer());
+    }
+
+    public function includeContas(User $model){
+        if($model->contas->count() == 0){
+            return $this->null();
+        }
+        return $this->collection($model->contas, new ContaTransformer());
     }
 
 }

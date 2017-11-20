@@ -9,6 +9,7 @@ use Kodeine\Acl\Traits\HasRole;
 use Laravel\Passport\HasApiTokens;
 use Modules\Localidade\Models\Endereco;
 use Modules\Localidade\Models\Telefone;
+use Modules\Transporte\Models\Conta;
 use Modules\Transporte\Models\Documento;
 use Modules\Transporte\Models\Veiculo;
 use OwenIt\Auditing\Auditable;
@@ -25,6 +26,8 @@ class User extends Authenticatable implements Transformable
     const ATIVO = "ativo";
     const BLOQUEADO = "bloqueado";
 
+    const CLIENTE = "cliente";
+    const FORNECEDOR = "fornecedor";
 
     /**
      * The attributes that are mass assignable.
@@ -107,6 +110,10 @@ class User extends Authenticatable implements Transformable
 
     public function pessoa(){
         return $this->belongsTo(Pessoa::class);
+    }
+
+    public function contas(){
+        return $this->hasMany(Conta::class);
     }
 
     public function permissions()

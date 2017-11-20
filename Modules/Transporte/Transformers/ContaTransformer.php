@@ -23,6 +23,7 @@ class ContaTransformer extends TransformerAbstract
 		return [
 			'id' => (int)$model->id,
 			'user_id' => (int)$model->user_id,
+			'nome' => (string)$model->usuario->name,
 			'codigo' => (int)$model->codigo,
 			'agencia' => (string)$model->agencia,
 			'conta' => (string)$model->conta,

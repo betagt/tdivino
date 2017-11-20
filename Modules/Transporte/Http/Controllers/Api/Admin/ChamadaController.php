@@ -5,10 +5,14 @@ namespace Modules\Transporte\Http\Controllers\Api\Admin;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Modules\Core\Models\User;
 use Modules\Localidade\Services\GeoService;
 use Modules\Transporte\Criteria\ChamadaCriteria;
 use Modules\Transporte\Criteria\ChamadaFornecedorCriteria;
 use Modules\Transporte\Events\ChamadaAceita;
+use Modules\Transporte\Events\ChamadaCancelar;
+use Modules\Transporte\Events\ChamadaDesembarque;
+use Modules\Transporte\Events\ChamadaEmbarque;
 use Modules\Transporte\Events\ChamadaMotoristaNoLocal;
 use Modules\Transporte\Events\ChamarMotorista;
 use Modules\Transporte\Events\FinalizarChamada;
@@ -283,10 +287,13 @@ class ChamadaController extends BaseController
             \DB::commit();
             return $response;
         } catch (ModelNotFoundException $e) {
+			\DB::rollBack();
             return parent::responseError(self::HTTP_CODE_NOT_FOUND, $e->getMessage());
         } catch (RepositoryException $e) {
+			\DB::rollBack();
             return parent::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code' => $e->getCode(), 'message' => $e->getMessage()]));
         } catch (\Exception $e) {
+			\DB::rollBack();
             return parent::responseError(self::HTTP_CODE_BAD_REQUEST, $e->getMessage());
         }
     }
@@ -323,6 +330,7 @@ class ChamadaController extends BaseController
         $data = ['chamada_id' => $idChamada];
         \Validator::make($data, ['chamada_id' => 'required']);
         try {
+			\DB::beginTransaction();
             $chamada = $this->chamadaRepository->find($data['chamada_id']);
             if ($chamada['data']['status'] == Chamada::STATUS_CANCELADO) {
                 throw new \Exception('chamada já cancelada');
@@ -330,17 +338,22 @@ class ChamadaController extends BaseController
             if (is_null($chamada['data'])) {
                 throw new \Exception('chamada invalida');
             }
-            if (!($chamada['data']['fornecedor_id'] == $this->getUserId())) {
+            /*if (!($chamada['data']['fornecedor_id'] == $this->getUserId())) {
                 throw new \Exception('chamada não pertence a você');
-            }
+            }*/
             $chamada['status'] = Chamada::STATUS_CANCELADO;
             $this->chamadaRepository->update($chamada, $idChamada);
+			event(new ChamadaCancelar($chamada['data']['fornecedor']['data']['device_uuid'], $chamada, User::CLIENTE));
+			\DB::commit();
             return $chamada;
         } catch (ModelNotFoundException $e) {
+			\DB::rollBack();
             return parent::responseError(self::HTTP_CODE_NOT_FOUND, $e->getMessage());
         } catch (RepositoryException $e) {
+			\DB::rollBack();
             return parent::responseError(self::HTTP_CODE_NOT_FOUND, $e->getMessage());
         } catch (\Exception $e) {
+			\DB::rollBack();
             return parent::responseError(self::HTTP_CODE_BAD_REQUEST, trans('errors.undefined', ['status_code' => $e->getCode(), 'message' => $e->getMessage()]));
         }
     }
@@ -352,7 +365,6 @@ class ChamadaController extends BaseController
         ])->validate();
         try {
             $chamada = $this->chamadaRepository->find($data['chamada_id']);
-
             if (is_null($chamada['data'])) {
                 throw new \Exception('chamada invalida');
             }
@@ -361,7 +373,7 @@ class ChamadaController extends BaseController
             }
             $chamada['data']['datahora_embarque'] = Carbon::now();
 			$response = $this->chamadaRepository->skipPresenter(true)->find($idChamada);
-			event(new FinalizarChamada($response->cliente->device_uuid, $chamada));
+			event(new ChamadaEmbarque($response->cliente->device_uuid, $chamada, 'fornecedor'));
             return $this->chamadaRepository->skipPresenter(false)->update($chamada['data'], $idChamada);
         } catch (ModelNotFoundException $e) {
             return parent::responseError(self::HTTP_CODE_NOT_FOUND, $e->getMessage());
@@ -391,7 +403,7 @@ class ChamadaController extends BaseController
             $this->getUser()->disponivel = true;
             $this->getUser()->save();
 			$response = $this->chamadaRepository->skipPresenter(true)->find($idChamada);
-			event(new FinalizarChamada($response->cliente->device_uuid, $chamada));
+			event(new ChamadaDesembarque($response->cliente->device_uuid, $chamada, 'cliente'));
             return $this->chamadaRepository->skipPresenter(false)->update($chamada['data'], $idChamada);
         } catch (ModelNotFoundException $e) {
             return parent::responseError(self::HTTP_CODE_NOT_FOUND, $e->getMessage());
