@@ -283,7 +283,8 @@ class ChamadaController extends BaseController
             $chamada['status'] = Chamada::STATUS_CANCELADO;
             $chamada = $this->chamadaRepository->skipPresenter(true)->update($chamada, $idChamada);
             $response = $this->chamadaRepository->skipPresenter(false)->find($idChamada);
-            event(new FinalizarChamada($chamada->fornecedor->device_uuid, $response));
+            if(!is_null($chamada->fornecedor))
+            	event(new FinalizarChamada($chamada->fornecedor->device_uuid, $response));
             \DB::commit();
             return $response;
         } catch (ModelNotFoundException $e) {

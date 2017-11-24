@@ -537,9 +537,6 @@ class UserController extends BaseController
 
         $value = $request->bearerToken();
         $id = (new Parser())->parse($value)->getHeader('jti');
-        $usuario = $this->getUser();
-        $usuario->device_uuid = null;
-        $usuario->save();
         \DB::table('oauth_access_tokens')
             ->where('id', '=', $id)
             ->update(['revoked' => true]);
