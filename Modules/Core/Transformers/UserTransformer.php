@@ -27,14 +27,17 @@ class UserTransformer extends BaseTransformer
      */
     public function transform(User $model)
     {
+        $perfil = current($model->getRoles());
         return [
             'id' => (int)$model->id,
             'name' => (string)$model->name,
+            'name_flag' => (string)$model->name." - $perfil",
             'email' => (string)$model->email,
             'email_alternativo' => (string)$model->email_alternativo,
             'disponivel' => (boolean)$model->disponivel,
             'pagina_user' => (string)$model->pagina_user,
             'cep' => $model->cep,
+            'perfil' => $perfil,
             'documentos_validate' => (boolean) $model->documentos_validate,
             'imagem' => (string) \URL::to('/').($model->imagem) ? url('/arquivos/img/user/' . $model->imagem) : null,
             'status' => (string)$model->status,

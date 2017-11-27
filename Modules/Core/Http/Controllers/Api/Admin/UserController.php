@@ -315,6 +315,17 @@ class UserController extends BaseController
 			}else{
 				$usuario->pessoa()->update($data['pessoa']);
 			}
+			if(isset($data['perfil'])){
+                $usuario->revokeAllRoles();
+                switch ($data['perfil']){
+                    case 'fornecedor':
+                        $usuario->assignRole('fornecedor');
+                        break;
+                    case 'cliente':
+                        $usuario->assignRole('cliente');
+                        break;
+                }
+            }
             $result = $this->userRepository->skipPresenter(false)->find($usuario->id);
             \DB::commit();
             return  $result;
