@@ -90,7 +90,7 @@ class GeoService
             $total = $total+($total*$calc['pkmm']);
         }
         return [
-            'total'=>(($total < $valorMinimo) ? $valorMinimo : $total),
+            'valor'=>(($total < $valorMinimo) ? $valorMinimo : $total),
             'duracao'=>$duracaoPrevista
         ];
     }
