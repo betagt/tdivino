@@ -57,8 +57,9 @@ class ConfiguracaoTransformer extends TransformerAbstract
             'vltgo' => (double)$model->vltgo,
             'vlapseg' => (double)$model->vlapseg,
             'vlbonusp' => (double)$model->vlbonusp,
-            'pbonusp' => (double)$model->pbonusp
-
+            'pbonusp' => (double)$model->pbonusp,
+            'tempo_cancel_fornecedor_min' => (double)$model->tempo_cancel_fornecedor_min,
+            'tempo_cancel_cliente_min' => (double)$model->tempo_cancel_cliente_min
         ];
     }
 

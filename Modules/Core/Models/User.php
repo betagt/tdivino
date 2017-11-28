@@ -50,7 +50,8 @@ class User extends Authenticatable implements Transformable
         'lat',
         'lng',
         'documentos_validate',
-		'device_uuid'
+		'device_uuid',
+        'aceita_termos'
     ];
 
     public function findForPassport($username)

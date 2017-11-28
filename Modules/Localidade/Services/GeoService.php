@@ -84,12 +84,15 @@ class GeoService
         $startTime = new \DateTime('06:00');
         $endTime = (new \DateTime('23:59'));
         if ($currentTime >= $startTime && $currentTime <= $endTime) {
-            $total = ($calc['vlkm'] * $distanciaTotal) + ($calc['vlkm'] * $duracaoPrevista) + $calc['vlsegp'] + ($calc['vlkmr'] * $distanciaTotal);
+            $total = ($calc['vlkm'] * $distanciaTotal) + ($calc['vlmin'] * $duracaoPrevista) + $calc['vlsegp'] + ($calc['vlkmr'] * $distanciaTotal);
         }else{
-            $total = ($calc['vlkm'] * $distanciaTotal) + ($calc['vlkm'] * $duracaoPrevista) + $calc['vlsegp'] + ($calc['vlkmr'] * $distanciaTotal);
-            $total = $total+($total+$calc['pkmm']);
+            $total = ($calc['vlkm'] * $distanciaTotal) + ($calc['vlmin'] * $duracaoPrevista) + $calc['vlsegp'] + ($calc['vlkmr'] * $distanciaTotal);
+            $total = $total+($total*$calc['pkmm']);
         }
-        return ($total < $valorMinimo) ? $valorMinimo : $total;
+        return [
+            'total'=>(($total < $valorMinimo) ? $valorMinimo : $total),
+            'duracao'=>$duracaoPrevista
+        ];
     }
 
     private function formatLocation($location)

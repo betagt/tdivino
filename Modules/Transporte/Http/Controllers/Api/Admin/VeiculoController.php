@@ -61,12 +61,17 @@ class VeiculoController extends BaseController
             'ano',
             'cor'
         ]);
-
+        \Validator::extend('veiculo_user_exists', function ($attribute, $value, $parameters, $validator) use ($data) {
+            $veiculos = $this->veiculoRepository->findWhere([
+                'placa'=>$data['placa'],
+            ]);
+            return !(count($veiculos['dataa']) > 0);
+        },'Veiculo já pertence a um usuário!');
         \Validator::make($data, [
             'transporte_marca_carro_id' =>'required|integer|exists:transporte_marca_carros,id',
             'transporte_modelo_carro_id' =>'required|integer|exists:transporte_modelo_carros,id',
             'ano' =>'required|integer',
-            'placa' =>'required|string',
+            'placa' =>'required|string|veiculo_user_exists',
             'cor' =>'required|string'
         ])->validate();
 
@@ -99,7 +104,12 @@ class VeiculoController extends BaseController
             'status',
             'documentos'
         ]);
-
+        /*\Validator::extend('veiculo_user_exists', function ($attribute, $value, $parameters, $validator) use ($data) {
+            $veiculos = $this->veiculoRepository->findWhere([
+                'placa'=>$data['placa'],
+            ]);
+            return !(count($veiculos['data']) > 0);
+        },'Veiculo já pertence a um usuário!');*/
         \Validator::make($data, [
             'user_id'=>'required|integer|exists:users,id',
             'transporte_marca_carro_id' =>'required|integer|exists:transporte_marca_carros,id',
@@ -158,13 +168,20 @@ class VeiculoController extends BaseController
             'documentos'
         ]);
 
+        \Validator::extend('veiculo_user_exists', function ($attribute, $value, $parameters, $validator) use ($data) {
+            $veiculos = $this->veiculoRepository->findWhere([
+                'user_id'=>$data['user_id'],
+                'placa'=>$data['placa'],
+            ]);
+            return !(count($veiculos['data']) > 0);
+        },'Veiculo já pertence a um usuário!');
         \Validator::make($data, [
             'user_id'=>'required|integer|exists:users,id',
             'transporte_marca_carro_id' =>'required|integer|exists:transporte_marca_carros,id',
             'transporte_modelo_carro_id' =>'required|integer|exists:transporte_modelo_carros,id',
             'ano' =>'required|integer',
             'status' =>'required|in:pendente,aceito,invalido',
-            'placa' =>'required|string',
+            'placa' =>'required|string|veiculo_user_exists',
             'cor' =>'required|string',
             'documentos' => 'array',
             'documentos.*.transporte_tipo_documento_id' => 'required|integer',

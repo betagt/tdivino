@@ -24,6 +24,7 @@ use Portal\Criteria\OrderCriteria;
 use Portal\Http\Controllers\BaseController;
 
 use Modules\Transporte\Models\Chamada;
+use Portal\Services\ConfiguracaoService;
 use Prettus\Repository\Exceptions\RepositoryException;
 
 /**
@@ -48,16 +49,22 @@ class ChamadaController extends BaseController
      * @var GeoPosicaoRepository
      */
     private $geoPosicaoRepository;
+    /**
+     * @var ConfiguracaoService
+     */
+    private $configuracaoService;
 
     public function __construct(
         ChamadaRepository $chamadaRepository,
         GeoService $geoService,
-        GeoPosicaoRepository $geoPosicaoRepository)
+        GeoPosicaoRepository $geoPosicaoRepository,
+        ConfiguracaoService $configuracaoService)
     {
         parent::__construct($chamadaRepository, ChamadaCriteria::class);
         $this->chamadaRepository = $chamadaRepository;
         $this->geoService = $geoService;
         $this->geoPosicaoRepository = $geoPosicaoRepository;
+        $this->configuracaoService = $configuracaoService;
     }
 
 
@@ -98,23 +105,7 @@ class ChamadaController extends BaseController
      */
     function iniciarChamada(Request $request)
     {
-		//\Notification::send($this->getUser(), new IniciarChamadaNotify());
-		/*$options = array(
-			'cluster' => 'us2',
-			'encrypted' => false
-		);
-		$pusher = new \Pusher(
-			'432c193295441f1cd8bb',
-			'e7c5d6602965d882a4c8',
-			'429229',
-			$options
-		);
 
-		$data['name'] = 'teste';
-		$data['message'] = 'teste';
-		dd($pusher->trigger('my-channel', 'my-event', $data));*/
-		/*event(new ChamarMotorista($this->getUser(), "teste", $request->bearerToken()));
-    	die;*/
         $data = $request->only(['origem', 'destino', 'endereco_origem', 'endereco_destino']);
 
         \Validator::make($data, [
@@ -126,8 +117,10 @@ class ChamadaController extends BaseController
         $data['cliente_id'] = $this->getUserId();
         $data['tipo'] = Chamada::TIPO_SOLICITACAO;
         $data['status'] = Chamada::STATUS_PENDENTE;
-        $data['timedown'] = Carbon::now()->addMinute(5);
-        $data['valor'] = $this->geoService->distanceCalculate($data['origem'], $data['destino']);
+        $configuracao = $this->configuracaoService->getConfiguracao();
+        $data['timedown'] = Carbon::now()->addMinute($configuracao['data']['tempo_cancel_cliente_min']);
+        $result = $this->geoService->distanceCalculate($data['origem'], $data['destino']);
+        $data['valor'] = $result['valor'];
         try {
             \DB::beginTransaction();
             $chamada = $this->chamadaRepository->create($data);
@@ -280,6 +273,11 @@ class ChamadaController extends BaseController
             if (!($chamada['data']['cliente_id'] == $this->getUserId())) {
                 throw new \Exception('chamada não pertence a você');
             }
+            $endTime = new \DateTime($chamada['data']['timedown']);
+            $currentTime = Carbon::now();
+            if ($currentTime > $endTime) {
+                throw new \Exception('O tmepo de cancelamento está expirado');
+            }
             $chamada['status'] = Chamada::STATUS_CANCELADO;
             $chamada = $this->chamadaRepository->skipPresenter(true)->update($chamada, $idChamada);
             $response = $this->chamadaRepository->skipPresenter(false)->find($idChamada);
@@ -339,9 +337,14 @@ class ChamadaController extends BaseController
             if (is_null($chamada['data'])) {
                 throw new \Exception('chamada invalida');
             }
-            /*if (!($chamada['data']['fornecedor_id'] == $this->getUserId())) {
+            if (!($chamada['data']['fornecedor_id'] == $this->getUserId())) {
                 throw new \Exception('chamada não pertence a você');
-            }*/
+            }
+            $endTime = new \DateTime($chamada['data']['timedown']);
+            $currentTime = Carbon::now();
+            if ($currentTime > $endTime) {
+                throw new \Exception('O tmepo de cancelamento está expirado');
+            }
             $chamada['status'] = Chamada::STATUS_CANCELADO;
             $this->chamadaRepository->update($chamada, $idChamada);
 			event(new ChamadaCancelar($chamada['data']['fornecedor']['data']['device_uuid'], $chamada, User::CLIENTE));
@@ -456,7 +459,7 @@ class ChamadaController extends BaseController
             'destino' => 'required|array',
             'forma_pagamento_id' => 'required|integer|min:1',
         ])->validate();
-        return ['data' => ['valor' => $this->geoService->distanceCalculate($data['origem'], $data['destino'])]];
+        return ['data' => $this->geoService->distanceCalculate($data['origem'], $data['destino'])];
     }
 
 
