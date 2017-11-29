@@ -51,18 +51,30 @@ class User extends Authenticatable implements Transformable
         'lng',
         'documentos_validate',
 		'device_uuid',
-        'aceita_termos'
+        'aceita_termos',
+        'codigo',
+        'incicacao',
     ];
 
-    public function findForPassport($username)
+    public function __construct(array $attributes = [])
+	{
+		parent::__construct($attributes);
+		$this->attributes['codigo'] = substr(md5(time()), 0, 6);
+
+	}
+
+	public function findForPassport($username)
     {
         $return = $this->where('email', $username)->first();
+
         if(is_null($return)){
             return false;
         }
+
         if ($return->status != self::ATIVO) {
             return false;
         }
+
         return $return;
     }
 

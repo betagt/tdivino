@@ -22,17 +22,20 @@ class ConfiguracaoRoute implements ICustomRoute
             //'is' => 'administrador|moderador,or'
             Route::group(['middleware' => ['acl'],'is' => 'administrador', 'protect_alias'  => 'user'],function (){
 
-                Route::get('configuracao', [
-                    'as' => 'configuracao.index',
-                    'uses' => 'ConfiguracaoController@view'
-                ]);
-
                 Route::put('configuracao', [
                     'as' => 'configuracao.put',
                     'uses' => 'ConfiguracaoController@editar'
                 ]);
 
             });
+			Route::group(['middleware' => ['acl'],'is' => 'administrador|cliente|fornecedor', 'protect_alias'  => 'user'],function (){
+
+				Route::get('configuracao', [
+					'as' => 'configuracao.index',
+					'uses' => 'ConfiguracaoController@view'
+				]);
+
+			});
         });
 
     }

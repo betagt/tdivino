@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Modules\Core\Services\ImageUploadService;
 use Modules\Transporte\Criteria\VeiculoCriteria;
 use Modules\Transporte\Http\Requests\VeiculoRequest;
+use Modules\Transporte\Models\Veiculo;
 use Modules\Transporte\Repositories\VeiculoRepository;
 use Modules\Transporte\Services\DocumentoService;
 use Portal\Http\Controllers\BaseController;
@@ -124,6 +125,12 @@ class VeiculoController extends BaseController
         ])->validate();
             try{
                 \DB::beginTransaction();
+				if($data['status'] == Veiculo::ACEITO){
+					Veiculo::where('user_id', $data['user_id'])
+						->update([
+							'status' => Veiculo::PENDENTE,
+						]);
+				}
                 $veiculo = $this->veiculoRepository->skipPresenter(true)->update($data,$id);
                 $documento = $veiculo->documento();
                 foreach ($data['documentos'] as $doc){
@@ -188,7 +195,12 @@ class VeiculoController extends BaseController
             'documentos.*.arquivos' => 'required|array',
         ])->validate();
         try{
-            \DB::beginTransaction();
+            \DB::beginTransaction();if($data['status'] == Veiculo::ACEITO){
+				Veiculo::where('user_id', $data['user_id'])
+					->update([
+						'status' => Veiculo::PENDENTE,
+					]);
+			}
             $veiculo = $this->veiculoRepository->skipPresenter(true)->create($data);
             foreach ($data['documentos'] as $doc){
                 $this->documentoService->cadastrarDocumento($doc, $veiculo->documento(),$this->getPathFile());

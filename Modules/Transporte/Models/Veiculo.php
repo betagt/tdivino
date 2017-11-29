@@ -9,7 +9,12 @@ use Prettus\Repository\Traits\TransformableTrait;
 
 class Veiculo extends Model implements Transformable
 {
-    use TransformableTrait;
+
+	const ACEITO = "aceito";
+	const INVALIDO = "invalido";
+	const PENDENTE = "pendente";
+
+	use TransformableTrait;
 
     protected $fillable = [
         'user_id',
