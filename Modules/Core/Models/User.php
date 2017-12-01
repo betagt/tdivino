@@ -9,6 +9,7 @@ use Kodeine\Acl\Traits\HasRole;
 use Laravel\Passport\HasApiTokens;
 use Modules\Localidade\Models\Endereco;
 use Modules\Localidade\Models\Telefone;
+use Modules\Transporte\Models\Chamada;
 use Modules\Transporte\Models\Conta;
 use Modules\Transporte\Models\Documento;
 use Modules\Transporte\Models\Veiculo;
@@ -158,6 +159,14 @@ class User extends Authenticatable implements Transformable
     {
         return $this->morphMany(Documento::class, 'documentotable');
     }
+
+    public function chamadas_cliente(){
+		return $this->hasMany(Chamada::class, 'client_id');
+	}
+
+	public function chamadas_fornecedor(){
+		return $this->hasMany(Chamada::class, 'fornecedor_id');
+	}
 
     public function veiculoAtivo(){
         return $this->hasOne(Veiculo::class, 'user_id')->where('status', '=', 'aceito');

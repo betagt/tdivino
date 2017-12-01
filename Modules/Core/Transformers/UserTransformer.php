@@ -6,6 +6,7 @@ use Modules\Core\Models\Pessoa;
 use Modules\Core\Models\User;
 use Modules\Localidade\Transformers\EnderecoTransformer;
 use Modules\Localidade\Transformers\TelefoneTransformer;
+use Modules\Transporte\Models\Chamada;
 use Modules\Transporte\Transformers\ContaTransformer;
 use Modules\Transporte\Transformers\DocumentoTransformer;
 use Portal\Transformers\BaseTransformer;
@@ -28,30 +29,43 @@ class UserTransformer extends BaseTransformer
     public function transform(User $model)
     {
         $perfil = current($model->getRoles());
-        return [
-            'id' => (int)$model->id,
-            'name' => (string)$model->name,
-            'name_flag' => (string)$model->name." - $perfil",
-            'email' => (string)$model->email,
-            'email_alternativo' => (string)$model->email_alternativo,
-            'disponivel' => (boolean)$model->disponivel,
-            'pagina_user' => (string)$model->pagina_user,
-            'cep' => $model->cep,
-            'perfil' => $perfil,
-            'documentos_validate' => (boolean) $model->documentos_validate,
-            'imagem' => (string) \URL::to('/').($model->imagem) ? url('/arquivos/img/user/' . $model->imagem) : null,
-            'status' => (string)$model->status,
-            'ddd' => (is_null($model->telefone))?null:$model->telefone->ddd,
-            'numero' => (is_null($model->telefone))?null:$model->telefone->numero,
-            'chk_newsletter' => (boolean)$model->chk_newsletter,
-            'device_uuid' => (string)$model->device_uuid,
-            'indicacao' => (string) $model->indicacao,
-            'codigo' => (string) $model->codigo,
-            'aceita_termos' => (boolean) $model->aceita_termos,
-            'excluido' => (boolean) $model->trashed(),
-            'created_at' => $model->created_at,
-            'updated_at' => $model->updated_at
-        ];
+		$result = [
+			'id' => (int)$model->id,
+			'name' => (string)$model->name,
+			'name_flag' => (string)$model->name." - $perfil",
+			'email' => (string)$model->email,
+			'email_alternativo' => (string)$model->email_alternativo,
+			'disponivel' => (boolean)$model->disponivel,
+			'pagina_user' => (string)$model->pagina_user,
+			'cep' => $model->cep,
+			'perfil' => $perfil,
+			'documentos_validate' => (boolean) $model->documentos_validate,
+			'imagem' => (string) \URL::to('/').($model->imagem) ? url('/arquivos/img/user/' . $model->imagem) : null,
+			'status' => (string)$model->status,
+			'ddd' => (is_null($model->telefone))?null:$model->telefone->ddd,
+			'numero' => (is_null($model->telefone))?null:$model->telefone->numero,
+			'chk_newsletter' => (boolean)$model->chk_newsletter,
+			'device_uuid' => (string)$model->device_uuid,
+			'indicacao' => (string) $model->indicacao,
+			'codigo' => (string) $model->codigo,
+			'aceita_termos' => (boolean) $model->aceita_termos,
+			'excluido' => (boolean) $model->trashed(),
+			'created_at' => $model->created_at,
+			'updated_at' => $model->updated_at
+		];
+		switch ($perfil){
+			case User::FORNECEDOR :
+				$soma = $model->chamadas_fornecedor->where('tipo', Chamada::TIPO_FINALIZADO)->sum('avaliacao');
+				$avaliacao = 0;
+				if($soma > 0){
+					$avaliacao = $soma/$model->chamadas_fornecedor->where('tipo', Chamada::TIPO_FINALIZADO)->count('avaliacao');
+				}
+				$result = array_merge($result,[
+					'nota_fornecedor' => $avaliacao
+				]);
+				break;
+		};
+        return $result;
     }
 
     public function includePermissions(User $model)
