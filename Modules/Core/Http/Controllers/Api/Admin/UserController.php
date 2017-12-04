@@ -8,9 +8,11 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Lcobucci\JWT\Parser;
+use Modules\Core\Criteria\UserAgenciaReguladoraCriteria;
 use Modules\Core\Criteria\UserCriteria;
 use Modules\Core\Models\Pessoa;
 use Modules\Transporte\Services\DocumentoService;
+use Portal\Criteria\OrderCriteria;
 use Portal\Http\Controllers\BaseController;
 use Modules\Core\Http\Requests\UserChangePasswordRequest;
 use Modules\Core\Http\Requests\UserRequest;
@@ -560,4 +562,21 @@ class UserController extends BaseController
         return response()->json($json, '200');
     }
 
+
+    public function listagemFornecedores(Request $request){
+		try{
+			return $this->defaultRepository
+				->pushCriteria(new UserAgenciaReguladoraCriteria($request))
+				->pushCriteria(new OrderCriteria($request))
+				->paginate(self::$_PAGINATION_COUNT);
+		}catch (ModelNotFoundException $e){
+			return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
+		}
+		catch (RepositoryException $e){
+			return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
+		}
+		catch (\Exception $e){
+			return self::responseError(self::HTTP_CODE_BAD_REQUEST, trans('errors.undefined', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
+		}
+	}
 }

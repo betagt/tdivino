@@ -36,11 +36,22 @@ class UserRoute implements ICustomRoute
             'as' => 'user.solicitar_nova_senha',
             'uses' => 'Api\Front\UserController@solicitarNovaSenha'
         ]);
-        Route::group(['prefix'=>'admin','middleware' => ['auth:api','acl'],'is' => 'administrador|fornecedor|cliente|moderator','namespace'=>'Api\Admin'],function (){
+		Route::group(['prefix'=>'admin', 'middleware'=>['auth:api','acl'],'is'=>'administrador|agencia-reguladora|moderator','protect_alias'=>'user','namespace'=>'Api\Admin'], function (){
+			Route::get('user/lista-fornecedores', [
+				'as' => 'user.select-list',
+				'uses' => 'UserController@listagemFornecedores',
+			]);
+		});
+
+        Route::group(['prefix'=>'admin','middleware' => ['auth:api','acl'],'is' => 'administrador|agencia-reguladora|fornecedor|cliente|moderator','namespace'=>'Api\Admin'],function (){
             Route::post('user/device_register', [
                 'as' => 'user.device_register',
                 'uses' => 'UserController@deviceRegister',
             ]);
+			Route::get('user/perfil/', [
+				'as' => 'user.meu_perfil',
+				'uses' => 'UserController@myProfile'
+			]);
             Route::get('user/logout', [
                 'as' => 'user.meu_perfil',
                 'uses' => 'UserController@logout'
@@ -100,10 +111,6 @@ class UserRoute implements ICustomRoute
             Route::put('user/userupdate', [
                 'as' => 'user.alterar_senha',
                 'uses' => 'UserController@updateCurrentUser',
-            ]);
-            Route::get('user/perfil/', [
-                'as' => 'user.meu_perfil',
-                'uses' => 'UserController@myProfile'
             ]);
 
             Route::post('user/alterar_imagem', [
