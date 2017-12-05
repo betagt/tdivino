@@ -42,6 +42,10 @@ class ChamadaTransformer extends TransformerAbstract
             'data_inicial'=> $model->data_inicial,
             'data_final'=> $model->data_final,
             'timedown'=> $model->timedown,
+            'km_rodado'=> $model->km_rodado,
+            'tx_uso_malha'=> $model->tx_uso_malha,
+            'tarifa_operacao'=> $model->tarifa_operacao,
+            'valor_repasse'=> $model->valor_repasse,
             'status'=> (string) $model->status,
             'created_at' => $model->created_at,
             'updated_at' => $model->updated_at

@@ -42,8 +42,11 @@ class Chamada extends Model implements Transformable
         'data_final',
         'timedown',
         'status',
+		'km_rodado',
+		'tx_uso_malha',
+		'tarifa_operacao',
+		'valor_repasse',
     ];
-
     public function lancamentos()
     {
         return $this->morphMany(Lancamento::class, 'lancamentotable');

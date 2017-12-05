@@ -23,4 +23,27 @@ class Configuracao extends Model implements Transformable
         'created_at', 'updated_at', 'deleted_at'
     ];
 
+	public function getPkmmAttribute($value)
+	{
+		if(is_null($value))
+			return null;
+
+		return (double)$this->attributes['pkmm']/100;
+	}
+
+	public function getPtxoperAttribute($value)
+	{
+		if(is_null($value))
+			return null;
+
+		return (double)$this->attributes['ptxoper']/100;
+	}
+
+	public function getPbonuspAttribute($value)
+	{
+		if(is_null($value))
+			return null;
+
+		return (double)$this->attributes['pbonusp']/100;
+	}
 }

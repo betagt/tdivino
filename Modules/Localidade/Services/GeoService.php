@@ -89,9 +89,16 @@ class GeoService
             $total = ($calc['vlkm'] * $distanciaTotal) + ($calc['vlmin'] * $duracaoPrevista) + $calc['vlsegp'] + ($calc['vlkmr'] * $distanciaTotal);
             $total = $total+($total*$calc['pkmm']);
         }
+        $tx_uso_malha = $calc['vlkmr']*$distanciaTotal;
+		$tarifa_operacao = ($total-$tx_uso_malha)*($calc['ptxoper']);
+        //dd($total, $tx_uso_malha, $calc['ptxoper'], $tarifa_operacao);
         return [
             'valor'=>(($total < $valorMinimo) ? $valorMinimo : $total),
-            'duracao'=>$duracaoPrevista
+            'duracao'=>$duracaoPrevista,
+			'distanciatotal' => $distanciaTotal,
+			'tx_uso_malha' => $tx_uso_malha,
+			'tarifa_operacao' => $tarifa_operacao,//(Vlcor- vltxmpub) X (%txoper-%bonusm))
+			'valor_repasse'=> $total-$tarifa_operacao-$tx_uso_malha,
         ];
     }
 

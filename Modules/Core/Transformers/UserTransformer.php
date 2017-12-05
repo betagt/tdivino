@@ -61,8 +61,18 @@ class UserTransformer extends BaseTransformer
 					$avaliacao = $soma/$model->chamadas_fornecedor->where('tipo', Chamada::TIPO_FINALIZADO)->count('avaliacao');
 				}
 				$result = array_merge($result,[
-					'nota_fornecedor' => $avaliacao
+					'nota_fornecedor' => $avaliacao,
+					'contagem_chamadas' => $model->chamadas_fornecedor->count(),
+					'km_mes_rodado' => $model->chamadas_fornecedor->sum('km_rodado'),
 				]);
+				if(!is_null($model->veiculoAtivo)){
+					$result = array_merge($result, [
+						'veiculo_placa' => $model->veiculoAtivo->placa,
+						'veiculo_cor' => $model->veiculoAtivo->cor,
+						'veiculo_status' => $model->veiculoAtivo->status,
+						'veiculo_modelo' => $model->veiculoAtivo->modelo->nome
+					]);
+				}
 				break;
 		};
         return $result;

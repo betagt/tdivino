@@ -121,6 +121,10 @@ class ChamadaController extends BaseController
         $data['timedown'] = Carbon::now()->addMinute($configuracao['data']['tempo_cancel_cliente_min']);
         $result = $this->geoService->distanceCalculate($data['origem'], $data['destino']);
         $data['valor'] = $result['valor'];
+        $data['km_rodado'] = $result['distanciatotal'];
+        $data['tx_uso_malha'] = $result['tx_uso_malha'];
+        $data['tarifa_operacao'] = $result['tarifa_operacao'];
+        $data['valor_repasse'] = $result['valor_repasse'];
         try {
             \DB::beginTransaction();
             $chamada = $this->chamadaRepository->create($data);
