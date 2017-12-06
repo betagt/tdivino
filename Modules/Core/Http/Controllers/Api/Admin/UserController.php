@@ -579,4 +579,26 @@ class UserController extends BaseController
 			return self::responseError(self::HTTP_CODE_BAD_REQUEST, trans('errors.undefined', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
 		}
 	}
+
+    /**
+     * Consulta  por ID
+     *
+     * Endpoint para consultar passando o ID como parametro
+     *
+     * @param $id
+     * @return retorna um registro
+     */
+    public function vizualizarFornecedor($id){
+        try{
+            return $this->userRepository->visualizarFornecedor($id);
+        }catch (ModelNotFoundException $e){
+            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
+        }
+        catch (RepositoryException $e){
+            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
+        }
+        catch (\Exception $e){
+            return self::responseError(self::HTTP_CODE_BAD_REQUEST, trans('errors.undefined', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
+        }
+    }
 }

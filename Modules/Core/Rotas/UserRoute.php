@@ -56,6 +56,10 @@ class UserRoute implements ICustomRoute
                 'as' => 'user.meu_perfil',
                 'uses' => 'UserController@logout'
             ]);
+            Route::get('user/vizualizar-fornecedor/{id}', [
+                'as' => 'user.select-list',
+                'uses' => 'UserController@vizualizarFornecedor',
+            ])->where('id', '[0-9\s+]+');
         });
 
         Route::group(['prefix'=>'admin','middleware' => ['auth:api'],'namespace'=>'Api\Admin'],function (){

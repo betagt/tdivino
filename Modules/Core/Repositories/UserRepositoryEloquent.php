@@ -114,4 +114,13 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
     }
 
 
+    function visualizarFornecedor(int $id)
+    {
+        return $this->parserResult($this->model
+            ->join('role_user','users.id','role_user.user_id')
+            ->join('roles','roles.id','role_user.role_id')
+            ->where('roles.slug', User::FORNECEDOR)
+            ->where('users.id', $id)
+            ->select(['users.*'])->first());
+    }
 }

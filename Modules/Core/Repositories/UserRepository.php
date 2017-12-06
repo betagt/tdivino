@@ -69,4 +69,6 @@ interface UserRepository extends RepositoryInterface
      * @return mixed
      */
     public function syncRoles(int $userId, $roles);
+
+    function visualizarFornecedor(int $id);
 }

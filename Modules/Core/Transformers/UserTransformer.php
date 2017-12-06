@@ -67,6 +67,7 @@ class UserTransformer extends BaseTransformer
 				]);
 				if(!is_null($model->veiculoAtivo)){
 					$result = array_merge($result, [
+						'veiculo_marca' => $model->veiculoAtivo->marca->nome,
 						'veiculo_placa' => $model->veiculoAtivo->placa,
 						'veiculo_cor' => $model->veiculoAtivo->cor,
 						'veiculo_status' => $model->veiculoAtivo->status,
