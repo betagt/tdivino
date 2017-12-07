@@ -26,7 +26,7 @@ class ChamadaFornecedorCriteria extends BaseCriteria
     }
 
     protected $filterCriteria = [
-        'user_id' => '='
+        'fornecedor_id' => '='
     ];
 
     public function apply($model, RepositoryInterface $repository)

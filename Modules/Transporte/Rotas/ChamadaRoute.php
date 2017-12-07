@@ -69,6 +69,12 @@ class ChamadaRoute implements ICustomRoute
                     'uses' => 'ChamadaController@motoristaNoLocal'
                 ]);
             });
+            Route::group(['middleware' => ['acl'],'is' => 'administrador|agencia-reguladora|moderator,or', 'protect_alias'  => 'user'],function (){
+                Route::get('chamada/chamadas-agencia/{id}', [
+                    'as' => 'chamda.atender',
+                    'uses' => 'ChamadaController@listarByFornecedorAgencia'
+                ]);
+            });
             Route::group(['middleware' => ['acl'],'is' => 'administrador|moderador,or', 'protect_alias'  => 'user'],function (){
                 Route::resource('veiculo', 'VeiculoController',
                     [

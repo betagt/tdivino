@@ -56,8 +56,10 @@ class ChamadaTransformer extends TransformerAbstract
             ]);
             if(!is_null($model->fornecedor->veiculoAtivo)){
                 $chamada = array_merge($chamada, [
+                    'veiculo_marca' => $model->fornecedor->veiculoAtivo->marca->nome,
                     'veiculo_placa' => $model->fornecedor->veiculoAtivo->placa,
                     'veiculo_cor' => $model->fornecedor->veiculoAtivo->cor,
+                    'veiculo_status' => $model->fornecedor->veiculoAtivo->status,
                     'veiculo_modelo' => $model->fornecedor->veiculoAtivo->modelo->nome
                 ]);
             }
