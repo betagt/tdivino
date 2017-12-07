@@ -214,6 +214,7 @@ class UserController extends BaseController
             'chk_newsletter'        => 'boolean|nullable',
             'ddd'        => 'required|numeric|nullable',
             'numero'        => 'required|numeric|nullable',
+            'aceita_termos'        => 'required|boolean',
         ])->validate();
         try {
             \DB::beginTransaction();
