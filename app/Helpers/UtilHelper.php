@@ -57,7 +57,16 @@ if (!function_exists('DummyFunction')) {
             return $csv;
         }
     }
-
+	if (!function_exists('validate_date')) {
+		function converter_data($date, $format = 'Y-m-d', $time = false)
+		{
+			if($time){
+				$format = 'Y-m-d H:i:s';
+			}
+			$d = DateTime::createFromFormat($format, $date);
+			return $d && $d->format($format) == $date;
+		}
+	}
     if (!function_exists('validar_cnpj')) {
 
         /**

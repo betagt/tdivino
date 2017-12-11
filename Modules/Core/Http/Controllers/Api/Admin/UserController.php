@@ -305,7 +305,11 @@ class UserController extends BaseController
             }
             return $valid;
         },'CPF Inválido!');
-		$validator = array_merge($this->getValidator($id), [
+
+        if(isset($data['pessoa']['data_nascimento']) and !is_null($data['pessoa']['data_nascimento']))
+			$data['pessoa']['data_nascimento'] = implode('-', array_reverse(explode('/', $data['pessoa']['data_nascimento'])));
+
+        $validator = array_merge($this->getValidator($id), [
 			'pessoa.cpf_cnpj' => 'required|cpf_validator',
 			'pessoa.data_nascimento' => 'required|date',
 			'pessoa.rg' => 'required',
