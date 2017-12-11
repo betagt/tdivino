@@ -51,6 +51,7 @@ class ImageUploadService
         $request = &$data;
         $temp = explode( ',', $request[$field] );
         $temp[0] = str_replace('data:image/','',$temp[0]);
+        $temp[0] = str_replace('data:application/','',$temp[0]);
         $temp[0] = str_replace(';base64','',$temp[0]);
         $filename = md5(time().uniqid(rand(), true)) . ".$temp[0]";
         $ifp = fopen( $path.'/'.$filename, 'wb' );

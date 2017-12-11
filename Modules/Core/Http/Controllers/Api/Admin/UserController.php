@@ -144,22 +144,22 @@ class UserController extends BaseController
 			}
 			return $valid;
 		},'CPF Inválido!');
+        if(isset($data['pessoa']['data_nascimento']))
+            $data['pessoa']['data_nascimento'] = implode('-', array_reverse(explode('/', $data['pessoa']['data_nascimento'])));
         $validator = array_merge($this->getValidator(), [
-        	'pessoa.cpf_cnpf' => 'required|cpf_validator',
-			'pessoa.nec_especial' => 'required',
-			'pessoa.data_nascimento' => 'required',
-			'pessoa.rg' => 'required',
-			'pessoa.orgao_emissor' => 'required',
-			'pessoa.escolaridade' => 'required',
-			'pessoa.sexo' => 'required',
-			'pessoa.estado_civil' => 'required',
-			'pessoa.fantasia' => 'required',
-			'pessoa.contato' => 'required',
+            'pessoa.cpf_cnpj' => 'required|cpf_validator',
+            'pessoa.data_nascimento' => 'required|date',
+            'pessoa.rg' => 'required',
+            'pessoa.orgao_emissor' => 'required',
+            'pessoa.escolaridade' => 'required',
+            'pessoa.sexo' => 'required|integer|in:1,2',
+            'pessoa.estado_civil' => 'required',
 		]);
         \Validator::make($data, $validator)->validate();
         try {
 			\DB::beginTransaction();
-            $data['status'] = User::INATIVO;
+			if(!isset($data['status']))
+                $data['status'] = User::INATIVO;
 			$user = $this->userRepository->skipPresenter(true)->create($data);
 			$documento = $user->documentos();
 			if(isset($data['documentos'])){
@@ -175,7 +175,18 @@ class UserController extends BaseController
 			}else{
 				$user->pessoa()->update($data['pessoa']);
 			}
-			$user->assignRole('cliente');
+			if(isset($data['perfil'])){
+                switch ($data['perfil']){
+                    case 'fornecedor':
+                        $user->assignRole('fornecedor');
+                        break;
+                    case 'cliente':
+                        $user->assignRole('cliente');
+                        break;
+                }
+            }else{
+                $user->assignRole('fornecedor');
+            }
 			\DB::commit();
             return $this->userRepository->skipPresenter(false)->find($user->id);
         } catch (ModelNotFoundException $e) {
