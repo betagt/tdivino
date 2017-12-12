@@ -293,6 +293,9 @@ class ChamadaController extends BaseController
             if ($chamada['data']['status'] == Chamada::STATUS_CANCELADO) {
                 throw new \Exception('chamada já cancelada');
             }
+            if ($chamada['data']['tipo'] == Chamada::TIPO_ATENDIMENTO) {
+                throw new \Exception('chamada já está em atendimento');
+            }
             if (is_null($chamada['data'])) {
                 throw new \Exception('chamada invalida');
             }
