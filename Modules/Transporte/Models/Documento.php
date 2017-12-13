@@ -32,6 +32,10 @@ class Documento extends Model implements Transformable
         'carga_horaria',
         'data_conclusao',
         'nit',
+		'atividade_remunerada',
+		'cidade',
+		'vistoriador',
+		'alienado',
     ];
 
     /**

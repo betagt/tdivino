@@ -102,6 +102,8 @@ class VeiculoController extends BaseController
             'cor',
             'user_id',
             'arquivos',
+			'renavam',
+			'chassi',
             'status',
             'documentos'
         ]);
@@ -169,6 +171,8 @@ class VeiculoController extends BaseController
             'placa',
             'ano',
             'cor',
+            'renavan',
+            'chassi',
             'user_id',
             'arquivos',
             'status',

@@ -47,7 +47,11 @@ class DocumentoTransformer extends TransformerAbstract
             'curso' => (string)$model->curso,
             'carga_horaria' => (string)$model->carga_horaria,
             'data_conclusao' => $model->data_conclusao,
-            'nit' => $model->nit,
+            'nit' => (string) $model->nit,
+
+			'cidade'=> (string) $model->cidade,
+			'vistoriador'=> (string) $model->vistoriador,
+			'alienado'=> (boolean) $model->alienado,
 
             'created_at' => $model->created_at,
             'updated_at' => $model->updated_at
