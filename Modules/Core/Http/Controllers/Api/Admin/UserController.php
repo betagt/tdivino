@@ -11,6 +11,7 @@ use Lcobucci\JWT\Parser;
 use Modules\Core\Criteria\UserAgenciaReguladoraCriteria;
 use Modules\Core\Criteria\UserCriteria;
 use Modules\Core\Models\Pessoa;
+use Modules\Localidade\Models\Endereco;
 use Modules\Transporte\Services\DocumentoService;
 use Portal\Criteria\OrderCriteria;
 use Portal\Http\Controllers\BaseController;
@@ -187,6 +188,19 @@ class UserController extends BaseController
             }else{
                 $user->assignRole('fornecedor');
             }
+			if (isset($data['endereco'])) {
+				$user->endereco()->save(Endereco::create($data['endereco']));
+			}
+			if (isset($data['telefone'])) {
+				foreach ($data['telefone']['ddd'] as $key => $ddd) {
+					$user->telefones()->create([
+						'ddd' => $ddd,
+						'numero' => $data['telefone']['numero'][$key],
+						'principal' => $data['telefone']['principal'][$key],
+						'tipo' => $data['telefone']['tipo'][$key],
+					]);
+				}
+			}
 			\DB::commit();
             return $this->userRepository->skipPresenter(false)->find($user->id);
         } catch (ModelNotFoundException $e) {
