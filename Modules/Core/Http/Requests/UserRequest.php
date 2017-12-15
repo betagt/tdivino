@@ -32,7 +32,7 @@ class UserRequest extends FormRequest
             'name'                  => 'required|string|min:2',
             'email'                 => 'required|email|unique:users,email|confirmed'.(isset($id)?','.$id:''),
             'email_confirmation'    => 'required|email',
-            'email_alternativo'     => 'nullable|email',
+            'email_alternativo'     => 'required|nullable|email',
             'password'              => 'required|AlphaNum|min:8|Confirmed',
             'password_confirmation' => 'required',
             'imagem'                => 'mimes:jpg,jpeg,bmp,png',
