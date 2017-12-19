@@ -17,8 +17,8 @@ use Portal\Transformers\BaseTransformer;
  */
 class UserTransformer extends BaseTransformer
 {
-    public $availableIncludes = ['permissions', 'roles', 'documentos'];
-    public $defaultIncludes = [ 'endereco','pessoa', 'telefones', 'contas'];
+    public $availableIncludes = ['endereco', 'telefones','permissions', 'roles', 'documentos'];
+    public $defaultIncludes = [ 'pessoa', 'contas'];
 
     /**
      * Transform the \User entity

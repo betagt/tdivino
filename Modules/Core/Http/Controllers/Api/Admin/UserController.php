@@ -331,34 +331,72 @@ class UserController extends BaseController
 			'pessoa.escolaridade' => 'required',
 			'pessoa.sexo' => 'required|integer|in:1,2',
 			'pessoa.estado_civil' => 'required',
+
+            'endereco.estado_id' => 'required|exists:estados,id',
+            'endereco.cidade_id' => 'required|exists:cidades,id',
+            'endereco.cep' => 'required',
+            'endereco.numero' => 'required',
+            'endereco.endereco' => 'required',
 		]);
         \Validator::make($data, $validator)->validate();
         try{
             \DB::beginTransaction();
-            $usuario = $this->userRepository->skipPresenter(true)->update($data,$id);
-            $documento = $usuario->documentos();
+            $user = $this->userRepository->skipPresenter(true)->update($data,$id);
+            $documento = $user->documentos();
             foreach ($data['documentos'] as $doc){
                 $this->documentoService->cadastrarDocumento($doc, $documento);
             }
-			if(is_null($usuario->pessoa)){
+			if(is_null($user->pessoa)){
                 $pessoa = Pessoa::create($data['pessoa']);
-                $usuario->pessoa_id = $pessoa->id;
-                $usuario->save();
+                $user->pessoa_id = $pessoa->id;
+                $user->save();
 			}else{
-				$usuario->pessoa()->update($data['pessoa']);
+                $user->pessoa()->update($data['pessoa']);
 			}
 			if(isset($data['perfil'])){
-                $usuario->revokeAllRoles();
+                $user->revokeAllRoles();
                 switch ($data['perfil']){
                     case 'fornecedor':
-                        $usuario->assignRole('fornecedor');
+                        $user->assignRole('fornecedor');
                         break;
                     case 'cliente':
-                        $usuario->assignRole('cliente');
+                        $user->assignRole('cliente');
                         break;
                 }
             }
-            $result = $this->userRepository->skipPresenter(false)->find($usuario->id);
+            if (isset($data['endereco'])) {
+			    if(isset($data['endereco']['id']) && $data['endereco']['id']){
+                    $model = Endereco::findOrFail($data['endereco']['id']);
+                    $model->fill($data['endereco']);
+                    $model->save();
+                }else{
+                    $user->endereco()->save(Endereco::create($data['endereco']));
+                }
+            }
+            if (isset($data['telefone'])) {
+                foreach ($data['telefone']['ddd'] as $key => $ddd) {
+                    $id_telecone = $data['telefone']['id'][$key];
+                    if(is_null($ddd)){
+                        continue;
+                    }
+                    if($id_telecone){
+                        $user->telefones()->update([
+                            'ddd' => $ddd,
+                            'numero' => $data['telefone']['numero'][$key],
+                            'principal' => $data['telefone']['principal'][$key],
+                            'tipo' => $data['telefone']['tipo'][$key],
+                        ],$id_telecone);
+                    }else{
+                        $user->telefones()->create([
+                            'ddd' => $ddd,
+                            'numero' => $data['telefone']['numero'][$key],
+                            'principal' => $data['telefone']['principal'][$key],
+                            'tipo' => $data['telefone']['tipo'][$key],
+                        ]);
+                    }
+                }
+            }
+            $result = $this->userRepository->skipPresenter(false)->find($user->id);
             \DB::commit();
             return  $result;
         }catch (ModelNotFoundException $e){
