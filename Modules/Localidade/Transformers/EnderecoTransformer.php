@@ -29,10 +29,10 @@ class EnderecoTransformer extends TransformerAbstract
             'numero'        => (string) $model->numero,
             'endereco'      => (string) $model->endereco,
             'complemento'   => (string) $model->complemento,
-            'cidade'        => (string) ($model->cidade)?$model->cidade->titulo:null,
-            'estado'        => (string) ($model->estado)?$model->estado->titulo:null,
+            'cidade_name'        => (string) ($model->cidade)?$model->cidade->titulo:null,
+            'estado_name'        => (string) ($model->estado)?$model->estado->titulo:null,
             'estado_uf'     => (string) ($model->estado)?$model->estado->uf:null,
-            'bairro'        => (string) ($model->bairro)?$model->bairro->titulo:null
+            'bairro_name'        => (string) ($model->bairro)?$model->bairro->titulo:null
             /*'created_at' => $model->created_at,
             'updated_at' => $model->updated_at*/
         ];

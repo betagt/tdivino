@@ -148,7 +148,7 @@ class UserController extends BaseController
         if(isset($data['pessoa']['data_nascimento']))
             $data['pessoa']['data_nascimento'] = implode('-', array_reverse(explode('/', $data['pessoa']['data_nascimento'])));
         $validator = array_merge($this->getValidator(), [
-            'pessoa.cpf_cnpj' => 'required|cpf_validator',
+            'pessoa.cpf_cnpj' => 'required|cpf_validator|unique:pessoas,cpf_cnpj',
             'pessoa.data_nascimento' => 'required|date',
             'pessoa.rg' => 'required',
             'pessoa.orgao_emissor' => 'required',
@@ -324,7 +324,7 @@ class UserController extends BaseController
 			$data['pessoa']['data_nascimento'] = implode('-', array_reverse(explode('/', $data['pessoa']['data_nascimento'])));
 
         $validator = array_merge($this->getValidator($id), [
-			'pessoa.cpf_cnpj' => 'required|cpf_validator',
+			'pessoa.cpf_cnpj' => 'required|cpf_validator|unique:pessoas,cpf_cnpj',
 			'pessoa.data_nascimento' => 'required|date',
 			'pessoa.rg' => 'required',
 			'pessoa.orgao_emissor' => 'required',
@@ -426,7 +426,7 @@ class UserController extends BaseController
     {
         $user = $request->user();
         $data = $request->only([
-            'cpf_cnpj', 'nec_especial', 'data_nascimento', 'rg', 'orgao_emissor', 'escolaridade', 'sexo', 'estado_civil', 'fantasia', 'contato',
+            'cpf_cnpj', 'nec_especial', 'data_nascimento', 'rg', 'orgao_emissor', 'escolaridade', 'sexo', 'estado_civil', 'fantasia', 'contato','tipo_sanguineo',
         ]);
         \Validator::make($data, [
             'sexo'                  => 'integer|in:1,2|nullable',

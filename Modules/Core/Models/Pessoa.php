@@ -14,7 +14,7 @@ class Pessoa extends Model implements Transformable
     const PESSOA_JURIDICA = 2;
 
     protected $fillable = [
-        'cpf_cnpj', 'nec_especial', 'data_nascimento', 'rg', 'orgao_emissor', 'escolaridade', 'sexo', 'estado_civil', 'fantasia', 'contato',
+        'cpf_cnpj', 'nec_especial', 'data_nascimento', 'rg', 'orgao_emissor', 'escolaridade', 'sexo', 'estado_civil', 'fantasia', 'contato', 'tipo_sanguineo',
     ];
 
 

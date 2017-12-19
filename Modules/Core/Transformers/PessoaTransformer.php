@@ -32,6 +32,7 @@ class PessoaTransformer extends TransformerAbstract
             'estado_civil' => (string)$model->estado_civil,
             'fantasia' => (string)$model->fantasia,
             'contato' => (string)$model->contato,
+            'tipo_sanguineo' => (string)$model->tipo_sanguineo,
             'sexo_label' => ($model->sexo) ? (string)User::$_SEXO[$model->sexo] : null,
             'sexo' => (int)$model->sexo,
             'tipo' => (int)$model->tipo(),
