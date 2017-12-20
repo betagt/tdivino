@@ -12,6 +12,14 @@ class Documento extends Model implements Transformable
 {
     use TransformableTrait;
 
+    const CLRV_ID = 15;
+    const VISTORIA_ID = 12;
+    const SEGURO_ID = 13;
+
+	const STATUS_PENDENTE = 'pendente';
+	const STATUS_ACEITO = 'aceito';
+	const STATUS_INVALIDO = 'invalido';
+
     protected $table = 'transporte_documentos';
 
     protected $fillable = [

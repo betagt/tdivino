@@ -169,7 +169,7 @@ class User extends Authenticatable implements Transformable
 	}
 
     public function veiculoAtivo(){
-        return $this->hasOne(Veiculo::class, 'user_id')->where('status', '=', 'aceito');
+        return $this->hasOne(Veiculo::class, 'user_id')->where('status', '=', Veiculo::ACEITO);
     }
 
 }

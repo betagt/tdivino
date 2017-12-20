@@ -55,16 +55,16 @@ class Veiculo extends Model implements Transformable
         return $this->morphMany(Documento::class, 'documentotable');
     }
 
-    public function crlAtivo(){
-		return $this->morphOne(Documento::class, 'documentotable')->where('principal', '=', true);
+    public function clrvAtivo(){
+		return $this->morphOne(Documento::class, 'documentotable');
 	}
 
     public function vistoriaAtivo(){
-		return $this->morphOne(Documento::class, 'documentotable')->where('principal', '=', true);
+		return $this->morphOne(Documento::class, 'documentotable')->where('transporte_tipo_documento_id', '=', Documento::VISTORIA_ID)->where('status', '=', Documento::STATUS_ACEITO);
 	}
 
     public function seguroAtivo(){
-		return $this->morphOne(Documento::class, 'documentotable')->where('principal', '=', true);
+		return $this->morphOne(Documento::class, 'documentotable')->where('transporte_tipo_documento_id', '=', Documento::SEGURO_ID)->where('status', '=', Documento::STATUS_ACEITO);
 	}
 
 }
