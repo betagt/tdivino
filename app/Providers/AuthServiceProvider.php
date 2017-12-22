@@ -28,7 +28,7 @@ class AuthServiceProvider extends ServiceProvider
         Passport::routes(null, [
             'prefix' => 'api/v1','middleware' => ['cors']
         ]);
-        Passport::tokensExpireIn(Carbon::now()->addDay(1));
-        Passport::refreshTokensExpireIn(Carbon::now()->addDay(2));
+        Passport::tokensExpireIn(Carbon::now()->addDay(30));
+        Passport::refreshTokensExpireIn(Carbon::now()->addDay(32));
     }
 }

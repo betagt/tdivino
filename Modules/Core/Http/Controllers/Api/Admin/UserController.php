@@ -150,8 +150,8 @@ class UserController extends BaseController
         $validator = array_merge($this->getValidator(), [
             'pessoa.cpf_cnpj' => 'required|cpf_validator|unique:pessoas,cpf_cnpj',
             'pessoa.data_nascimento' => 'required|date',
-            'pessoa.rg' => 'required',
-            'pessoa.orgao_emissor' => 'required',
+            /*'pessoa.rg' => 'required',
+            'pessoa.orgao_emissor' => 'required',*/
             'pessoa.escolaridade' => 'required',
             'pessoa.sexo' => 'required|integer|in:1,2',
             'pessoa.estado_civil' => 'required',
@@ -326,8 +326,8 @@ class UserController extends BaseController
         $validator = array_merge($this->getValidator($id), [
 			'pessoa.cpf_cnpj' => 'required|cpf_validator|unique:pessoas,cpf_cnpj',
 			'pessoa.data_nascimento' => 'required|date',
-			'pessoa.rg' => 'required',
-			'pessoa.orgao_emissor' => 'required',
+			/*'pessoa.rg' => 'required',
+			'pessoa.orgao_emissor' => 'required',*/
 			'pessoa.escolaridade' => 'required',
 			'pessoa.sexo' => 'required|integer|in:1,2',
 			'pessoa.estado_civil' => 'required',

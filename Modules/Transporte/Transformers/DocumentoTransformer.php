@@ -16,9 +16,8 @@ class DocumentoTransformer extends TransformerAbstract
 {
     protected $defaultIncludes = [
         'tipo_documento',
+		'arquivos'
     ];
-
-    protected $availableIncludes = ['arquivos'];
 
 
     /**

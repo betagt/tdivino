@@ -139,8 +139,6 @@ class ChamadaController extends BaseController
         $data['cliente_id'] = $this->getUserId();
         $data['tipo'] = Chamada::TIPO_SOLICITACAO;
         $data['status'] = Chamada::STATUS_PENDENTE;
-        $configuracao = $this->configuracaoService->getConfiguracao();
-        $data['timedown'] = Carbon::now()->addMinute($configuracao['data']['tempo_cancel_cliente_min']);
         $result = $this->geoService->distanceCalculate($data['origem'], $data['destino']);
         $data['valor'] = $result['valor'];
         $data['km_rodado'] = $result['distanciatotal'];
@@ -244,6 +242,7 @@ class ChamadaController extends BaseController
         if ($chamada['data']['tipo'] == Chamada::TIPO_ATENDIMENTO) {
             return parent::responseError(self::HTTP_CODE_BAD_REQUEST, 'Está chamada já está em atendimento.');
         }
+
         \Validator::make($data, [
             'endereco_origem' => 'required|string',
             'origem' => 'required|array',
@@ -255,6 +254,10 @@ class ChamadaController extends BaseController
         $this->getUser()->save();
         try {
             \DB::beginTransaction();
+
+			$configuracao = $this->configuracaoService->getConfiguracao();
+			$data['timedown'] = Carbon::now()->addMinute($configuracao['data']['tempo_cancel_cliente_min']);
+
             $chamada = $this->chamadaRepository->skipPresenter(true)->update($data, $idChamada);
             $this->geoPosicaoRepository->create([
                 'user_id' => $data['fornecedor_id'],
@@ -294,7 +297,11 @@ class ChamadaController extends BaseController
                 throw new \Exception('chamada já cancelada');
             }
             if ($chamada['data']['tipo'] == Chamada::TIPO_ATENDIMENTO) {
-                throw new \Exception('chamada já está em atendimento');
+				$endTime = new \DateTime($chamada['data']['timedown']);
+				$currentTime = Carbon::now();
+				if ($currentTime > $endTime) {
+					throw new \Exception('O tmepo de cancelamento está expirado');
+				}
             }
             if (is_null($chamada['data'])) {
                 throw new \Exception('chamada invalida');
@@ -302,11 +309,7 @@ class ChamadaController extends BaseController
             if (!($chamada['data']['cliente_id'] == $this->getUserId())) {
                 throw new \Exception('chamada não pertence a você');
             }
-            $endTime = new \DateTime($chamada['data']['timedown']);
-            $currentTime = Carbon::now();
-            if ($currentTime > $endTime) {
-                throw new \Exception('O tmepo de cancelamento está expirado');
-            }
+
             $chamada['status'] = Chamada::STATUS_CANCELADO;
             $chamada = $this->chamadaRepository->skipPresenter(true)->update($chamada, $idChamada);
             $response = $this->chamadaRepository->skipPresenter(false)->find($idChamada);

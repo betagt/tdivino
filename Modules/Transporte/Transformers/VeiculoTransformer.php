@@ -33,7 +33,7 @@ class VeiculoTransformer extends TransformerAbstract
             'observacao' => (string)$model->observacao,
             'num_passageiro' => (string)$model->num_passageiro,
             'ano' => (int)$model->ano,
-            'ano_modelo_fab' => (int)$model->ano_modelo_fab,
+            'ano_modelo_fab' => $model->ano_modelo_fab,
             'cor' => (string)$model->cor,
             'renavam' => (string)$model->renavam,
             'data_licenciamento' => $model->data_licenciamento,

@@ -7,8 +7,10 @@ use Modules\Core\Models\User;
 use Modules\Localidade\Transformers\EnderecoTransformer;
 use Modules\Localidade\Transformers\TelefoneTransformer;
 use Modules\Transporte\Models\Chamada;
+use Modules\Transporte\Models\Veiculo;
 use Modules\Transporte\Transformers\ContaTransformer;
 use Modules\Transporte\Transformers\DocumentoTransformer;
+use Modules\Transporte\Transformers\VeiculoTransformer;
 use Portal\Transformers\BaseTransformer;
 
 /**
@@ -18,7 +20,7 @@ use Portal\Transformers\BaseTransformer;
 class UserTransformer extends BaseTransformer
 {
 	public $availableIncludes = ['permissions', 'roles', 'documentos'];
-	public $defaultIncludes = ['endereco', 'telefones', 'pessoa', 'contas'];
+	public $defaultIncludes = ['endereco', 'telefones', 'pessoa', 'contas', 'veiculo_ativo'];
 
 	/**
 	 * Transform the \User entity
@@ -128,6 +130,14 @@ class UserTransformer extends BaseTransformer
 			return null;
 		}
 		return $this->item($model->endereco, new EnderecoTransformer());
+	}
+
+	public function includeVeiculoAtivo(User $model)
+	{
+		if (!$model->veiculoAtivo) {
+			return null;
+		}
+		return $this->item($model->veiculoAtivo, new VeiculoTransformer());
 	}
 
 	public function includePessoa(User $model)

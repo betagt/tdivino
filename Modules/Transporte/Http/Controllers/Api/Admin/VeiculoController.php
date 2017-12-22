@@ -91,6 +91,7 @@ class VeiculoController extends BaseController
             return self::responseError(self::HTTP_CODE_BAD_REQUEST, trans('errors.undefined', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
         }
     }
+
     public function update(Request $request, $id)
     {
         $aux = [];
@@ -99,6 +100,7 @@ class VeiculoController extends BaseController
             'transporte_modelo_carro_id',
             'placa',
             'ano',
+            'ano_modelo_fab',
             'cor',
             'user_id',
             'arquivos',
@@ -170,6 +172,7 @@ class VeiculoController extends BaseController
             'transporte_modelo_carro_id',
             'placa',
             'ano',
+			'ano_modelo_fab',
             'cor',
             'renavan',
             'chassi',
