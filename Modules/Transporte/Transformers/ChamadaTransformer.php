@@ -26,7 +26,7 @@ class ChamadaTransformer extends TransformerAbstract
             'id'         => (int) $model->id,
             'fornecedor_id'=> (int) $model->fornecedor_id,
             'cliente_id'=> (int) $model->cliente_id,
-            'cliente_nome' => (string)  $model->cliente->name,
+            'cliente_nome' => (string)  ($model->cliente)?$model->cliente->name:null,
             'tipo'=> (string) $model->tipo,
             'desolamento_km_com_passageiro'=> (double) $model->desolamento_km_com_passageiro,
             'desolamento_km_sem_passageiro'=> (double) $model->desolamento_km_sem_passageiro,
