@@ -129,7 +129,7 @@ class UserController extends BaseController
 				}
 			}
             $user = $this->userRepository->skipPresenter(false)->find($user->id);
-            event(new UsuarioCadastrado($this->userRepository->skipPresenter(true)->find($user['data']['id']),'cliente'));
+            //event(new UsuarioCadastrado($this->userRepository->skipPresenter(true)->find($user['data']['id']),'cliente'));
             return $user;
         } catch (ModelNotFoundException $e) {
             return self::responseError(self::HTTP_CODE_NOT_FOUND, $e->getMessage());

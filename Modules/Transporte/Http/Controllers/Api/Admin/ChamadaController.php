@@ -342,7 +342,7 @@ class ChamadaController extends BaseController
             if (is_null($chamada)) {
                 throw new \Exception('chamada invalida');
             }
-            if (!($chamada->cliente_id == $this->getUserId())) {
+            if (!($chamada->fornecedor_id == $this->getUserId())) {
                 throw new \Exception('chamada não pertence a você');
             }
             event(new ChamadaMotoristaNoLocal($chamada->fornecedor->device_uuid, "Motorista aguardando no local indicado!"));
