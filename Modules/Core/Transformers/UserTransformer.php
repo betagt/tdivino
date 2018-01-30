@@ -76,6 +76,9 @@ class UserTransformer extends BaseTransformer
 						'veiculo_marca' => $model->veiculoAtivo->marca->nome,
 						'veiculo_placa' => $model->veiculoAtivo->placa,
 						'veiculo_cor' => $model->veiculoAtivo->cor,
+						'ano_modelo_fab' => $model->veiculoAtivo->ano_modelo_fab,
+						'renavam' => $model->veiculoAtivo->renavam,
+						'chassi' => $model->veiculoAtivo->chassi,
 						'veiculo_status' => $model->veiculoAtivo->status,
 						'veiculo_modelo' => $model->veiculoAtivo->modelo->nome
 					]);
@@ -91,6 +94,7 @@ class UserTransformer extends BaseTransformer
 					}
 					if ($seguro) {
 						$result = array_merge($result, [
+							'veiculo_seguro_numero' => ($seguro) ? $seguro->numero : null,
 							'veiculo_seguro_vencimento' => ($seguro) ? $seguro->data_vigencia_fim : null,
 						]);
 					}

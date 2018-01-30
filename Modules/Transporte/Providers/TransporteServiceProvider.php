@@ -34,6 +34,19 @@ class TransporteServiceProvider extends ServiceProvider
         $this->mapApiRoutes();
     }
 
+    public function bootValidators(){
+        \Validator::extend('cpf_validator', function ($attribute, $value, $parameters, $validator) {
+            $valid = false;
+            if(validar_cnpj($value)){
+                $valid = true;
+            }
+            if(validar_cpf($value)){
+                $valid = true;
+            }
+            return $valid;
+        },'CPF Inválido!');
+    }
+
     /**
      * Define the "api" routes for the application.
      *
@@ -60,6 +73,7 @@ class TransporteServiceProvider extends ServiceProvider
     {
         $this->app->register(EventServiceProvider::class);
         $this->app->register(RepositoryServiceProvider::class);
+        $this->bootValidators();
     }
 
     /**

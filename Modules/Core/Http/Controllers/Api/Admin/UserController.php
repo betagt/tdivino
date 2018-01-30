@@ -135,16 +135,6 @@ class UserController extends BaseController
     public function store(Request $request)
     {
         $data = $request->all();
-		\Validator::extend('cpf_validator', function ($attribute, $value, $parameters, $validator) {
-			$valid = false;
-			if(validar_cnpj($value)){
-				$valid = true;
-			}
-			if(validar_cpf($value)){
-				$valid = true;
-			}
-			return $valid;
-		},'CPF Inválido!');
         if(isset($data['pessoa']['data_nascimento']))
             $data['pessoa']['data_nascimento'] = implode('-', array_reverse(explode('/', $data['pessoa']['data_nascimento'])));
         $validator = array_merge($this->getValidator(), [
@@ -228,11 +218,25 @@ class UserController extends BaseController
         $request->merge(['email_alternativo'=>$request->get('email')]);
         $request->merge(['remember_token' => str_random(10)]);
         $request->merge(['status'=>User::ATIVO]);
-        $data = $request->all();
+        $data = $request->only([
+            'name',
+            'email',
+            'password',
+            'cpf_cnpj',
+            'email_alternativo',
+            'data_nascimento',
+            'sexo',
+            'chk_newsletter',
+            'ddd',
+            'numero',
+            'aceita_termos',
+            'status',
+        ]);
         \Validator::make($data, [
             'name'=>'required|min:3|string',
             'email'=>'required|email|unique:users,email',
             'password'=>'required|min:3',
+            'cpf_cnpj'=>'required|min:3',
             'email_alternativo'     => 'nullable|email',
             'data_nascimento'       => 'date|nullable',
             'sexo'                  => 'integer|in:1,2|nullable',

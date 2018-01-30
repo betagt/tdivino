@@ -345,7 +345,7 @@ class ChamadaController extends BaseController
             if (!($chamada->fornecedor_id == $this->getUserId())) {
                 throw new \Exception('chamada não pertence a você');
             }
-            event(new ChamadaMotoristaNoLocal($chamada->fornecedor->device_uuid, "Motorista aguardando no local indicado!"));
+            event(new ChamadaMotoristaNoLocal($chamada->cliente->device_uuid, "Motorista aguardando no local indicado!"));
         } catch (ModelNotFoundException $e) {
             return parent::responseError(self::HTTP_CODE_NOT_FOUND, $e->getMessage());
         } catch (RepositoryException $e) {
@@ -379,7 +379,7 @@ class ChamadaController extends BaseController
             }
             $chamada['status'] = Chamada::STATUS_CANCELADO;
             $this->chamadaRepository->update($chamada, $idChamada);
-			event(new ChamadaCancelar($chamada['data']['fornecedor']['data']['device_uuid'], $chamada, User::CLIENTE));
+			event(new ChamadaCancelar($chamada['data']['cliente']['data']['device_uuid'], $chamada, User::CLIENTE));
 			\DB::commit();
             return $chamada;
         } catch (ModelNotFoundException $e) {

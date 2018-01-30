@@ -47,6 +47,7 @@ class Chamada extends Model implements Transformable
 		'tarifa_operacao',
 		'valor_repasse',
     ];
+
     public function lancamentos()
     {
         return $this->morphMany(Lancamento::class, 'lancamentotable');
