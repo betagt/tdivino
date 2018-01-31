@@ -37,7 +37,7 @@ use Prettus\Repository\Contracts\RepositoryInterface;
 abstract class BaseCriteria implements CriteriaInterface
 {
 
-    const FILTRO_NAME='filtro';
+    const FILTRO_NAME = 'filtro';
 
     const GET_HTTP_CONSULTA = "consulta";
 
@@ -58,17 +58,17 @@ abstract class BaseCriteria implements CriteriaInterface
      * Definir os campos a ser filtrado e a condicional.
      *
      * Exemplo:
-        [
-            [
-                'elements'=>[
-                    'anuncios.qtde_dormitorio',
-                    'anuncios.qtde_dormitoario_minimo',
-                    'anuncios.qtde_dormitoario_maximo',
-                ],
-                'condition'=>'in'
-            ]
-        ]
-        @var array
+     * [
+     * [
+     * 'elements'=>[
+     * 'anuncios.qtde_dormitorio',
+     * 'anuncios.qtde_dormitoario_minimo',
+     * 'anuncios.qtde_dormitoario_maximo',
+     * ],
+     * 'condition'=>'in'
+     * ]
+     * ]
+     * @var array
      */
     protected $filterCriteriaOr = null;
 
@@ -84,19 +84,20 @@ abstract class BaseCriteria implements CriteriaInterface
     public function __construct(Request $request)
     {
         $this->request = $request;
-        $this->whereArray = json_decode($this->request->get(self::GET_HTTP_CONSULTA),true);
+        $this->whereArray = json_decode($this->request->get(self::GET_HTTP_CONSULTA), true);
     }
 
     /**
      * @param $whereArray
      * @return bool
      */
-    public function defaultValidate($whereArray){
-        if(is_null($whereArray)){
+    public function defaultValidate($whereArray)
+    {
+        if (is_null($whereArray)) {
             return true;
         }
 
-        if(!array_key_exists(self::FILTRO_NAME,$whereArray)){
+        if (!array_key_exists(self::FILTRO_NAME, $whereArray)) {
             return true;
         }
 
@@ -106,7 +107,7 @@ abstract class BaseCriteria implements CriteriaInterface
     /**
      * Apply criteria in query repository
      *
-     * @param       Model              $model
+     * @param       Model $model
      * @param RepositoryInterface $repository
      *
      * @return mixed
@@ -115,17 +116,17 @@ abstract class BaseCriteria implements CriteriaInterface
      */
     public function apply($model, RepositoryInterface $repository)
     {
-        $this->defaultTable = array_merge($this->defaultTable,[$model->getTable().'.*']);
-        if($this->request->get('lixeira')) {
+        $this->defaultTable = array_merge($this->defaultTable, [$model->getTable() . '.*']);
+        if ($this->request->get('lixeira')) {
             $model = $model->onlyTrashed();
         }
-        if($this->defaultValidate($this->whereArray)){
+        if ($this->defaultValidate($this->whereArray)) {
             return $model;
         }
         $model = $model->select($this->defaultTable);
-        $this->builder($model,$this->whereArray[self::FILTRO_NAME],$this->filterCriteria);
-        if(!is_null($this->filterCriteriaOr)){
-            $this->builderGroup($model,$this->whereArray[self::FILTRO_NAME],$this->filterCriteriaOr);
+        $this->builder($model, $this->whereArray[self::FILTRO_NAME], $this->filterCriteria);
+        if (!is_null($this->filterCriteriaOr)) {
+            $this->builderGroup($model, $this->whereArray[self::FILTRO_NAME], $this->filterCriteriaOr);
         }
         return $model;
     }
@@ -138,18 +139,19 @@ abstract class BaseCriteria implements CriteriaInterface
      * @return mixed
      * @throws \Exception
      */
-    protected function builder(&$model, array $array, $fields){
+    protected function builder(&$model, array $array, $fields)
+    {
 
-        foreach ($array as $key =>$value){
-            $table = explode('.',$key);
-            if(count($table)!=2){
+        foreach ($array as $key => $value) {
+            $table = explode('.', $key);
+            if (count($table) != 2) {
                 continue;
             }
-            if(!$this->schemaValidate($table[0],$table[1])){
+            if (!$this->schemaValidate($table[0], $table[1])) {
                 continue;
             }
 
-            if(!array_key_exists($key,$fields)){
+            if (!array_key_exists($key, $fields)) {
                 continue;
             }
             $this->BuilderConditions($model, $key, $value, $fields[$key]);
@@ -164,10 +166,11 @@ abstract class BaseCriteria implements CriteriaInterface
      * @return mixed
      * @throws \Exception
      */
-    protected function builderGroup(&$model, array $array, $conditions){
-        $model->where(function ($query) use ($array,$conditions){
-            foreach ($conditions as $fields){
-                foreach ($array as $key =>$value) {
+    protected function builderGroup(&$model, array $array, $conditions)
+    {
+        $model->where(function ($query) use ($array, $conditions) {
+            foreach ($conditions as $fields) {
+                foreach ($array as $key => $value) {
                     $table = explode('.', $key);
                     if (count($table) != 2) {
                         continue;
@@ -192,45 +195,51 @@ abstract class BaseCriteria implements CriteriaInterface
         });
     }
 
-    private function BuilderConditions($query, $row, $value, $condition){
-        if (!$value){
+    private function BuilderConditions($query, $row, $value, $condition)
+    {
+        if (!$value) {
             return $query;
         }
-        switch ($condition){
+        switch ($condition) {
             case '=':
                 $query->where($row, '=', $value);
                 break;
             case 'like':
-                $query->where($row,'like',"%".$value."%");
+                $query->where($row, 'like', "%" . $value . "%");
                 break;
             case 'ilike':
-                $query->where($row,'ilike',"%".$value."%");
+                $query->where($row, 'ilike', "%" . $value . "%");
+                break;
+            case 'arrayIlike':
+                foreach ($value as $item) {
+                    $query->where($row, 'ilike', "%" . $item . "%");
+                }
                 break;
             case 'between':
-                $data = explode(';',$value);
-                if(!preg_match("/null/i", $data[0])){
-                    if(count($data)==2){
-                        $query->whereBetween($row, [$data[0], (preg_match("/null/i", $data[1]))?5000000000000:$data[1]]);
+                $data = explode(';', $value);
+                if (!preg_match("/null/i", $data[0])) {
+                    if (count($data) == 2) {
+                        $query->whereBetween($row, [$data[0], (preg_match("/null/i", $data[1])) ? 5000000000000 : $data[1]]);
                     }
                 }
                 break;
             case 'in':
-                $data = explode(';',$value);
-                if(count($data)>1){
+                $data = explode(';', $value);
+                if (count($data) > 1) {
                     $aux = last($data);
-                    if(empty($aux))
+                    if (empty($aux))
                         array_pop($data);
 
-                    $query->where(function($query) use ($row,$data){
+                    $query->where(function ($query) use ($row, $data) {
                         $query->whereIn($row, $data);
-                        if(empty($aux)){
-                            $query->orWhere(function($query) use ($row,$data){
+                        if (empty($aux)) {
+                            $query->orWhere(function ($query) use ($row, $data) {
                                 $query->where($row, '>', last($data));
                             });
                         }
                     });
-                }else{
-                    $query->where(function($query) use ($row,$data){
+                } else {
+                    $query->where(function ($query) use ($row, $data) {
                         $query->whereIn($row, $data);
                     });
                 }
@@ -240,14 +249,14 @@ abstract class BaseCriteria implements CriteriaInterface
     }
 
 
-
     /**
      * @param $table
      * @param $column
      * @return bool
      */
 
-    protected function schemaValidate($table, $column){
+    protected function schemaValidate($table, $column)
+    {
         return \Schema::hasColumn($table, $column);
     }
 
@@ -256,7 +265,8 @@ abstract class BaseCriteria implements CriteriaInterface
      * @param $field
      * @param $order
      */
-    protected function builderOrderBy($model, $field, $order){
-       return $model->orderBy($field, $order);
+    protected function builderOrderBy($model, $field, $order)
+    {
+        return $model->orderBy($field, $order);
     }
 }

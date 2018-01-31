@@ -25,6 +25,6 @@ class UserCriteria extends BaseCriteria implements CriteriaInterface
         return $model
             ->join('role_user','users.id','role_user.user_id')
             ->join('roles','roles.id','role_user.role_id')
-            ->select(array_merge($this->defaultTable))->first();
+            ->select(array_merge($this->defaultTable));
     }
 }
