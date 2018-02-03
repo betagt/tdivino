@@ -44,7 +44,7 @@ class TransporteServiceProvider extends ServiceProvider
                 $valid = true;
             }
             return $valid;
-        },'CPF Inválido!');
+        },'CPF/CNPJ Inválido!');
     }
 
     /**

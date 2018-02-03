@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Modules\Core\Models\User;
 use Modules\Localidade\Services\GeoService;
+use Modules\Transporte\Criteria\ChamadaClienteCriteria;
 use Modules\Transporte\Criteria\ChamadaCriteria;
 use Modules\Transporte\Criteria\ChamadaFornecedorCriteria;
 use Modules\Transporte\Events\ChamadaAceita;
@@ -86,6 +87,23 @@ class ChamadaController extends BaseController
             $result['meta']['financeiro']['mes'] = $this->chamadaRepository->somaFornecedorMes($this->getUserId());
             $result['meta']['financeiro']['semana'] = $this->chamadaRepository->somaFornecedorSemana($this->getUserId());
             $result['meta']['financeiro']['hoje'] = $this->chamadaRepository->somaFornecedorHoje($this->getUserId());
+            return $result;
+        } catch (ModelNotFoundException $e) {
+            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code' => $e->getCode(), 'message' => $e->getMessage()]));
+        } catch (RepositoryException $e) {
+            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code' => $e->getCode(), 'message' => $e->getMessage()]));
+        } catch (\Exception $e) {
+            return self::responseError(self::HTTP_CODE_BAD_REQUEST, trans('errors.undefined', ['status_code' => $e->getCode(), 'message' => $e->getMessage()]));
+        }
+    }
+
+    function listarByCliente(Request $request)
+    {
+        try {
+            $result = $this->chamadaRepository
+                ->pushCriteria(new ChamadaClienteCriteria($request, $this->getUserId()))
+                ->pushCriteria(new OrderCriteria($request))
+                ->paginate(self::$_PAGINATION_COUNT);
             return $result;
         } catch (ModelNotFoundException $e) {
             return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code' => $e->getCode(), 'message' => $e->getMessage()]));

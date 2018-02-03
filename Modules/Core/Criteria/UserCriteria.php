@@ -15,6 +15,7 @@ class UserCriteria extends BaseCriteria implements CriteriaInterface
     protected $filterCriteria = [
         'users.name'      =>'ilike',
         'users.email'     =>'like',
+        //'passoas.cpf_cnpj'     =>'like',
         'users.sexo'      =>'=',
         'users.created_at'=>'between',
     ];
@@ -23,6 +24,7 @@ class UserCriteria extends BaseCriteria implements CriteriaInterface
     {
         $model = parent::apply($model, $repository);
         return $model
+            //->joinRight('pessoas','users.pessoa_id','pessoas.id')
             ->join('role_user','users.id','role_user.user_id')
             ->join('roles','roles.id','role_user.role_id')
             ->select(array_merge($this->defaultTable));

@@ -236,7 +236,7 @@ class UserController extends BaseController
             'name'=>'required|min:3|string',
             'email'=>'required|email|unique:users,email',
             'password'=>'required|min:3',
-            'cpf_cnpj'=>'required|min:3',
+            'cpf_cnpj'=>'required|cpf_validator|min:3|unique:pessoas,cpf_cnpj',
             'email_alternativo'     => 'nullable|email',
             'data_nascimento'       => 'date|nullable',
             'sexo'                  => 'integer|in:1,2|nullable',

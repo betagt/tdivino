@@ -18,6 +18,10 @@ class ChamadaRoute implements ICustomRoute
     {
         Route::group(['prefix'=>'admin','middleware' => ['auth:api'],'namespace'=>'Api\Admin'],function () {
             Route::group(['middleware' => ['acl'],'is' => 'administrador|fornecedor|cliente', 'protect_alias'  => 'user'],function (){
+                Route::get('chamada/cliente-chamadas', [
+                    'as' => 'chamda.atender',
+                    'uses' => 'ChamadaController@listarByCliente'
+                ]);
                 Route::post('chamada/iniciar-chamada', [
                     'as' => 'chamda.iniciar-chamada',
                     'uses' => 'ChamadaController@iniciarChamada'
