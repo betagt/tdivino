@@ -10,9 +10,11 @@ class TipoDocumento extends Model implements Transformable
 {
     use TransformableTrait;
 
-    const TIPO_PESSOA = 'pessoa';
+    const TIPO_PESSOA = 'motorista';
 
     const TIPO_veiculo = 'veiculo';
+
+    const TIPO_cliente = 'cliente';
 
     protected $table = 'transporte_tipo_documentos';
 
@@ -22,6 +24,7 @@ class TipoDocumento extends Model implements Transformable
         'observacao',
         'precisa_de_documento',
         'tipo',
+        'obrigatorio',
         'possui_vencimento',
     ];
 

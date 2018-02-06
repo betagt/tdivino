@@ -53,7 +53,7 @@ class UserTransformer extends BaseTransformer
 			'aceita_termos' => (boolean)$model->aceita_termos,
 			'excluido' => (boolean)$model->trashed(),
 			'created_at' => $model->created_at,
-			'updated_at' => $model->updated_at
+			'updated_at' => $model->updated_at,
 		];
 		switch ($perfil) {
 			case User::FORNECEDOR :
@@ -66,6 +66,7 @@ class UserTransformer extends BaseTransformer
 					'nota_fornecedor' => $avaliacao,
 					'contagem_chamadas' => $model->chamadas_fornecedor->count(),
 					'km_mes_rodado' => $model->chamadas_fornecedor->sum('km_rodado'),
+                    'habilitado' => $model->habilitado
 				]);
 				if (!is_null($model->veiculoAtivo)) {
 

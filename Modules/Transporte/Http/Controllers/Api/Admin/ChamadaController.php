@@ -260,6 +260,9 @@ class ChamadaController extends BaseController
         if ($chamada['data']['tipo'] == Chamada::TIPO_ATENDIMENTO) {
             return parent::responseError(self::HTTP_CODE_BAD_REQUEST, 'Está chamada já está em atendimento.');
         }
+        if (!$chamada['data']['habilitado']) {
+            return parent::responseError(self::HTTP_CODE_BAD_REQUEST, 'Você possui pendencia favor entrar em contato com a levez.');
+        }
 
         \Validator::make($data, [
             'endereco_origem' => 'required|string',

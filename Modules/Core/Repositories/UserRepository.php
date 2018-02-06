@@ -70,5 +70,7 @@ interface UserRepository extends RepositoryInterface
      */
     public function syncRoles(int $userId, $roles);
 
-    function visualizarFornecedor(int $id);
+    public function visualizarFornecedor(int $id);
+
+    public function habilitarDesabilitar(int $id);
 }

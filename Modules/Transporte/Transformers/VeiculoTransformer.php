@@ -42,6 +42,7 @@ class VeiculoTransformer extends TransformerAbstract
             'chassi' => (string)$model->chassi,
             'porta_mala_tamanho' => (string)$model->porta_mala_tamanho,
             'status' => (string)$model->status,
+            'habilitado' => (string)$model->habilitado,
             'created_at' => $model->created_at,
             'updated_at' => $model->updated_at
         ];

@@ -34,6 +34,7 @@ class Veiculo extends Model implements Transformable
         'porta_mala_tamanho',
         'arquivo',
         'status',
+        'habilitado',
     ];
 
     protected $table = 'transporte_veiculos';

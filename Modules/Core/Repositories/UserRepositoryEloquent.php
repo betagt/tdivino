@@ -123,4 +123,11 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
             ->where('users.id', $id)
             ->select(['users.*'])->first());
     }
+
+    public function habilitarDesabilitar(int $id)
+    {
+        $veiculo = $this->skipPresenter(true)->find($id);
+        $veiculo->habilitado = !$veiculo->habilitado;
+        $veiculo->save();
+    }
 }
