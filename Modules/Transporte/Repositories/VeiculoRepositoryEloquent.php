@@ -38,10 +38,10 @@ class VeiculoRepositoryEloquent extends BaseRepository implements VeiculoReposit
         return VeiculoPresenter::class;
     }
 
-    public function habilitarDesabilitar($id)
+    public function habilitarDesabilitar($id, boolean $habilitado = false)
     {
         $veiculo = $this->skipPresenter(true)->find($id);
-        $veiculo->habilitado = !$veiculo->habilitado;
+        $veiculo->habilitado = $habilitado;
         $veiculo->save();
     }
 }

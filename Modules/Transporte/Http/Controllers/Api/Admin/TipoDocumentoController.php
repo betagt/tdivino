@@ -5,6 +5,7 @@ namespace Modules\Transporte\Http\Controllers\Api\Admin;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Modules\Transporte\Criteria\TipoDocumentoCriteria;
 use Modules\Transporte\Http\Requests\ServicoRequest;
+use Modules\Transporte\Models\TipoDocumento;
 use Modules\Transporte\Repositories\TipoDocumentoRepository;
 use Portal\Http\Controllers\BaseController;
 use Prettus\Repository\Exceptions\RepositoryException;
@@ -54,7 +55,7 @@ class TipoDocumentoController extends BaseController
 
     public function pessoa(){
         try{
-            return $this->tipoDocumentoRepository->findWhere(['tipo'=>'pessoa']);
+            return $this->tipoDocumentoRepository->findWhere(['tipo'=>TipoDocumento::TIPO_PESSOA]);
         }catch (ModelNotFoundException $e){
             return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
         }

@@ -3,6 +3,12 @@
 namespace Portal\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Modules\Core\Models\User;
+use Modules\Core\Repositories\UserRepository;
+use Modules\Transporte\Models\Documento;
+use Modules\Transporte\Models\Veiculo;
+use Modules\Transporte\Repositories\DocumentoRepository;
+use Modules\Transporte\Repositories\VeiculoRepository;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
@@ -56,5 +62,30 @@ class Imagem extends Model implements Transformable
             ],
         ]
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+        $ativar = function ($query){
+            if($query->documentotable_type == Veiculo::class){
+                app(VeiculoRepository::class)->habilitarDesabilitar($query->documentotable_id);
+            }
+            if($query->documentotable_type == User::class){
+                app(UserRepository::class)->bloquear($query->documentotable_id)->habilitarDesabilitar($query->documentotable_id);
+            }
+        };
+        self::creating(function ($query) use ($ativar){
+            if($query->imagemtable_type == Documento::class){
+                $documento = app(DocumentoRepository::class)->skipPresenter(true)->find($query->imagemtable_id);
+                $ativar($documento);
+            }
+        });
+        self::updating(function ($query) use ($ativar){
+            if($query->imagemtable_type == Documento::class){
+                $documento = app(DocumentoRepository::class)->skipPresenter(true)->find($query->imagemtable_id);
+                $ativar($documento);
+            }
+        });
+    }
 
 }

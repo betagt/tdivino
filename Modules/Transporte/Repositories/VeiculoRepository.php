@@ -10,5 +10,5 @@ use Prettus\Repository\Contracts\RepositoryInterface;
  */
 interface VeiculoRepository extends RepositoryInterface
 {
-    public function habilitarDesabilitar($id);
+    public function habilitarDesabilitar($id, boolean $habilitado = false);
 }

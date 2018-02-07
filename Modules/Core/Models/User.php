@@ -55,6 +55,7 @@ class User extends Authenticatable implements Transformable
         'aceita_termos',
         'codigo',
         'incicacao',
+        'habilitado',
     ];
 
     public function __construct(array $attributes = [])
@@ -72,7 +73,7 @@ class User extends Authenticatable implements Transformable
             return false;
         }
 
-        if ($return->status != self::ATIVO) {
+        if ($return->status == self::INATIVO) {
             return false;
         }
 

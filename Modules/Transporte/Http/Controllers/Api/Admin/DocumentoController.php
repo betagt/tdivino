@@ -103,6 +103,7 @@ class DocumentoController extends BaseController
     public function meusdocumentos()
     {
         try {
+            //TODO melhorar este processo para poder validar quando o usuário se contem todos os documentos aceitos.
             $servico = $this->servicoRepository->first();
             $validacao = [];
             foreach ($servico['data']['habilidades_values'] as $key => $item) {

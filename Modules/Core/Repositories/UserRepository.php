@@ -72,5 +72,7 @@ interface UserRepository extends RepositoryInterface
 
     public function visualizarFornecedor(int $id);
 
-    public function habilitarDesabilitar(int $id);
+    public function habilitarDesabilitar(int $id, $habilitado);
+
+    public function bloquear(int $id);
 }

@@ -66,7 +66,7 @@ class UserTransformer extends BaseTransformer
 					'nota_fornecedor' => $avaliacao,
 					'contagem_chamadas' => $model->chamadas_fornecedor->count(),
 					'km_mes_rodado' => $model->chamadas_fornecedor->sum('km_rodado'),
-                    'habilitado' => $model->habilitado
+                    'habilitado' => (boolean) $model->habilitado
 				]);
 				if (!is_null($model->veiculoAtivo)) {
 
