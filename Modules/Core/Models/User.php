@@ -29,6 +29,7 @@ class User extends Authenticatable implements Transformable
 
     const CLIENTE = "cliente";
     const FORNECEDOR = "fornecedor";
+    const MOTORISTA  = "motorista";
 
     /**
      * The attributes that are mass assignable.
@@ -171,6 +172,10 @@ class User extends Authenticatable implements Transformable
 
     public function veiculoAtivo(){
         return $this->hasOne(Veiculo::class, 'user_id')->where('status', '=', Veiculo::ACEITO);
+    }
+
+    public function documentacao(){
+
     }
 
 }

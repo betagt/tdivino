@@ -75,4 +75,6 @@ interface UserRepository extends RepositoryInterface
     public function habilitarDesabilitar(int $id, $habilitado);
 
     public function bloquear(int $id);
+
+    public function documentosPententes(int $id);
 }

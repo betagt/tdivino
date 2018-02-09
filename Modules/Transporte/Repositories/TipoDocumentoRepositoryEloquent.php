@@ -2,6 +2,7 @@
 
 namespace Modules\Transporte\Repositories;
 
+use Modules\Core\Models\User;
 use Modules\Transporte\Presenters\TipoDocumentoPresenter;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
@@ -25,7 +26,7 @@ class TipoDocumentoRepositoryEloquent extends BaseRepository implements TipoDocu
         return TipoDocumento::class;
     }
 
-    
+
 
     /**
      * Boot up the repository, pushing criteria
@@ -38,5 +39,27 @@ class TipoDocumentoRepositoryEloquent extends BaseRepository implements TipoDocu
     public function presenter()
     {
         return TipoDocumentoPresenter::class;
+    }
+
+    public function validadeUser(int $userId, $tipo = User::MOTORISTA)
+    {
+        $rs = $this->model
+            ->leftJoin('transporte_documentos', function ($join) use ($userId) {
+                $join->on('transporte_tipo_documentos.id', '=', 'transporte_documentos.transporte_tipo_documento_id');
+                $join->where('transporte_documentos.documentotable_type', '=', User::class);
+                $join->where('transporte_documentos.documentotable_id', '=', $userId);
+            })
+            ->groupby('transporte_tipo_documentos.id')
+            ->where('transporte_tipo_documentos.tipo', '=', $tipo)
+            ->select(['transporte_tipo_documentos.*', \DB::raw('count(transporte_documentos.id) AS contagem')])
+            ->get();
+        if($rs->count() == 0){
+            return null;
+        }
+        $skypresenter = $this->skipPresenter;
+        $data = $this->skipPresenter(false)->parserResult($rs);
+        $data['habilitado'] = !in_array(0, array_column($data['data'],'contagem'));
+        $this->skipPresenter($skypresenter);
+        return $data;
     }
 }

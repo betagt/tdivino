@@ -5,6 +5,7 @@ namespace Modules\Core\Repositories;
 use Illuminate\Container\Container as Application;
 use Modules\Core\Models\User;
 use Modules\Core\Presenters\UserPresenter;
+use Modules\Transporte\Repositories\TipoDocumentoRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Prettus\Repository\Eloquent\BaseRepository;
 
@@ -15,9 +16,16 @@ use Prettus\Repository\Eloquent\BaseRepository;
 class UserRepositoryEloquent extends BaseRepository implements UserRepository
 {
 
-    public function __construct(Application $app, User $model)
+
+    /**
+     * @var TipoDocumentoRepository
+     */
+    private $documentoRepositoryEloquent;
+
+    public function __construct(Application $app, TipoDocumentoRepository $documentoRepositoryEloquent)
     {
-        parent::__construct($app, $model);
+        parent::__construct($app);
+        $this->documentoRepositoryEloquent = $documentoRepositoryEloquent;
     }
 
     /**
@@ -126,9 +134,11 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
 
     public function habilitarDesabilitar(int $id, $habilitado = false)
     {
-        $veiculo = $this->skipPresenter(true)->find($id);
-        $veiculo->habilitado = $habilitado;
-        $veiculo->save();
+        $usuario = $this->skipPresenter(true)->find($id);
+        $usuario->habilitado = $habilitado;
+        if(!$habilitado)
+            $usuario->status = User::BLOQUEADO;
+        $usuario->save();
     }
 
     public function bloquear(int $id)
@@ -137,5 +147,9 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
         $usuario->status = User::BLOQUEADO;
         $usuario->save();
         return $this;
+    }
+
+    public function documentosPententes(int $id){
+        return $this->documentoRepositoryEloquent->validadeUser($id);
     }
 }

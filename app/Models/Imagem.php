@@ -68,20 +68,24 @@ class Imagem extends Model implements Transformable
         parent::boot();
         $ativar = function ($query){
             if($query->documentotable_type == Veiculo::class){
+                //TODO criar eventos para para esse tipo de ação.
                 app(VeiculoRepository::class)->habilitarDesabilitar($query->documentotable_id);
             }
             if($query->documentotable_type == User::class){
-                app(UserRepository::class)->bloquear($query->documentotable_id)->habilitarDesabilitar($query->documentotable_id);
+                //TODO criar eventos para para esse tipo de ação.
+                app(UserRepository::class)->habilitarDesabilitar($query->documentotable_id);
             }
         };
         self::creating(function ($query) use ($ativar){
             if($query->imagemtable_type == Documento::class){
+                //TODO criar eventos para para esse tipo de ação.
                 $documento = app(DocumentoRepository::class)->skipPresenter(true)->find($query->imagemtable_id);
                 $ativar($documento);
             }
         });
         self::updating(function ($query) use ($ativar){
             if($query->imagemtable_type == Documento::class){
+                //TODO criar eventos para para esse tipo de ação.
                 $documento = app(DocumentoRepository::class)->skipPresenter(true)->find($query->imagemtable_id);
                 $ativar($documento);
             }

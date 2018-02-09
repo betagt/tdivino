@@ -3,6 +3,9 @@
 namespace Modules\Transporte\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Modules\Core\Models\User;
+use Modules\Core\Repositories\UserRepository;
+use Modules\Transporte\Repositories\TipoDocumentoRepository;
 use Portal\Models\Imagem;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
@@ -59,7 +62,19 @@ class Documento extends Model implements Transformable
                 $b->delete();
             }
         });
-
+        $ativar = function ($query){
+            if($query->documentotable_type == User::class){
+                //TODO criar eventos para para esse tipo de ação.
+                $validado = app(TipoDocumentoRepository::class)->validadeUser($query->documentotable_id);
+                app(UserRepository::class)->habilitarDesabilitar($query->documentotable_id, $validado['habilitado']);
+            }
+        };
+        self::created(function ($query) use ($ativar){
+            $ativar($query);
+        });
+        self::updated(function ($query) use ($ativar){
+            $ativar($query);
+        });
     }
 
     public function tipoDocumento(){

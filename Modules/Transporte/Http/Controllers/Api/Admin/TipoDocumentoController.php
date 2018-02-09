@@ -3,6 +3,7 @@
 namespace Modules\Transporte\Http\Controllers\Api\Admin;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Modules\Core\Repositories\UserRepositoryEloquent;
 use Modules\Transporte\Criteria\TipoDocumentoCriteria;
 use Modules\Transporte\Http\Requests\ServicoRequest;
 use Modules\Transporte\Models\TipoDocumento;
@@ -23,12 +24,18 @@ class TipoDocumentoController extends BaseController
      * @var HabilidadeRepository
      */
     private $tipoDocumentoRepository;
+    /**
+     * @var UserRepositoryEloquent
+     */
+    private $userRepositoryEloquent;
 
     public function __construct(
-        TipoDocumentoRepository $tipoDocumentoRepository)
+        TipoDocumentoRepository $tipoDocumentoRepository,
+        UserRepositoryEloquent $userRepositoryEloquent)
     {
         parent::__construct($tipoDocumentoRepository, TipoDocumentoCriteria::class);
         $this->tipoDocumentoRepository = $tipoDocumentoRepository;
+        $this->userRepositoryEloquent = $userRepositoryEloquent;
     }
 
 
@@ -40,6 +47,7 @@ class TipoDocumentoController extends BaseController
 
 
     public function todos(){
+        dd($this->userRepositoryEloquent->documentosPententes(214));
         try{
             return $this->tipoDocumentoRepository->all();
         }catch (ModelNotFoundException $e){

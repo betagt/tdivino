@@ -10,5 +10,5 @@ use Prettus\Repository\Contracts\RepositoryInterface;
  */
 interface TipoDocumentoRepository extends RepositoryInterface
 {
-    //
+    public function validadeUser(int $userId);
 }
