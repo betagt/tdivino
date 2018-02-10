@@ -8,6 +8,7 @@ use Modules\Localidade\Transformers\EnderecoTransformer;
 use Modules\Localidade\Transformers\TelefoneTransformer;
 use Modules\Transporte\Models\Chamada;
 use Modules\Transporte\Models\Veiculo;
+use Modules\Transporte\Repositories\TipoDocumentoRepository;
 use Modules\Transporte\Transformers\ContaTransformer;
 use Modules\Transporte\Transformers\DocumentoTransformer;
 use Modules\Transporte\Transformers\VeiculoTransformer;
@@ -62,11 +63,13 @@ class UserTransformer extends BaseTransformer
 				if ($soma > 0) {
 					$avaliacao = $soma / $model->chamadas_fornecedor->where('tipo', Chamada::TIPO_FINALIZADO)->count('avaliacao');
 				}
+				$pendencias = app(TipoDocumentoRepository::class)->validadeUser($model->id);
 				$result = array_merge($result, [
 					'nota_fornecedor' => $avaliacao,
 					'contagem_chamadas' => $model->chamadas_fornecedor->count(),
 					'km_mes_rodado' => $model->chamadas_fornecedor->sum('km_rodado'),
-                    'habilitado' => (boolean) $model->habilitado
+                    'habilitado' => (boolean) $model->habilitado,
+                    'pendencias' => $pendencias,
 				]);
 				if (!is_null($model->veiculoAtivo)) {
 

@@ -57,11 +57,6 @@ class Documento extends Model implements Transformable
     protected static function boot()
     {
         parent::boot();
-        self::deleting(function ($venue) {
-            foreach ($venue->arquivo as $b){
-                $b->delete();
-            }
-        });
         $ativar = function ($query){
             if($query->documentotable_type == User::class){
                 //TODO criar eventos para para esse tipo de ação.
@@ -74,6 +69,15 @@ class Documento extends Model implements Transformable
         });
         self::updated(function ($query) use ($ativar){
             $ativar($query);
+        });
+        self::saved(function ($query) use ($ativar){
+            $ativar($query);
+        });
+        self::deleting(function ($venue) use ($ativar){
+            foreach ($venue->arquivo as $b){
+                $b->delete();
+            }
+            $ativar($venue);
         });
     }
 

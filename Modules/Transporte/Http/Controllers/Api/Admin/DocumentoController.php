@@ -165,10 +165,11 @@ class DocumentoController extends BaseController
 
     public function aceitar($id)
     {
+
+        $documento = $this->documentoRepository->skipPresenter(true)->find($id);
+        $documento->status = 'aceito';
+        $documento->save();
         try {
-            $documento = $this->documentoRepository->skipPresenter(true)->find($id);
-            $documento->status = 'aceito';
-            $documento->save();
             return parent::responseSuccess(parent::HTTP_CODE_OK, 'Documento aceito!');
         } catch (ModelNotFoundException $e) {
             return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code' => $e->getCode(), 'message' => $e->getMessage()]));

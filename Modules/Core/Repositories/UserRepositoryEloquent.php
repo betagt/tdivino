@@ -136,8 +136,7 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
     {
         $usuario = $this->skipPresenter(true)->find($id);
         $usuario->habilitado = $habilitado;
-        if(!$habilitado)
-            $usuario->status = User::BLOQUEADO;
+        $usuario->status = (!$habilitado)?User::BLOQUEADO:User::ATIVO;
         $usuario->save();
     }
 
