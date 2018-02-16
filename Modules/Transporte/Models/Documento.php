@@ -73,6 +73,9 @@ class Documento extends Model implements Transformable
         self::saved(function ($query) use ($ativar){
             $ativar($query);
         });
+        self::deleted(function ($query) use ($ativar){
+            $ativar($query);
+        });
         self::deleting(function ($venue) use ($ativar){
             foreach ($venue->arquivo as $b){
                 $b->delete();

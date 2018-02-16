@@ -2,14 +2,14 @@
 
 namespace Modules\Transporte\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Modules\Core\Models\User;
 use Modules\Plano\Models\Lancamento;
 use Modules\Transporte\Models\GeoPosicao;
+use Portal\Models\BaseModel;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
-class Chamada extends Model implements Transformable
+class Chamada extends BaseModel implements Transformable
 {
     use TransformableTrait;
 

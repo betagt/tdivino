@@ -34,6 +34,7 @@ class ChamadaClienteCriteria extends BaseCriteria
         $model = parent::apply($model, $repository);
         return $model
             ->where('cliente_id', $this->id)
+            ->orderBy('id','desc')
             ->select(array_merge($this->defaultTable));
     }
 }

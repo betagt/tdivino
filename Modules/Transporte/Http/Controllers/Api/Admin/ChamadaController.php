@@ -101,8 +101,8 @@ class ChamadaController extends BaseController
     {
         try {
             $result = $this->chamadaRepository
-                ->pushCriteria(new ChamadaClienteCriteria($request, $this->getUserId()))
                 ->pushCriteria(new OrderCriteria($request))
+                ->pushCriteria(new ChamadaClienteCriteria($request, $this->getUserId()))
                 ->paginate(self::$_PAGINATION_COUNT);
             return $result;
         } catch (ModelNotFoundException $e) {
@@ -116,6 +116,7 @@ class ChamadaController extends BaseController
 
     function listarByFornecedorAgencia($id, Request $request)
     {
+
         try {
             $result = $this->chamadaRepository
                 ->pushCriteria(new ChamadaFornecedorCriteria($request, $id))
@@ -146,12 +147,13 @@ class ChamadaController extends BaseController
     function iniciarChamada(Request $request)
     {
 
-        $data = $request->only(['origem', 'destino', 'endereco_origem', 'endereco_destino']);
+        $data = $request->only(['origem', 'destino', 'forma_pagamento_id', 'endereco_origem', 'endereco_destino']);
 
         \Validator::make($data, [
             'endereco_origem' => 'required|string',
             'endereco_destino' => 'required|string',
             'origem' => 'required|array',
+            'forma_pagamento_id' => 'integer',
             'destino' => 'required|array'
         ])->validate();
         $data['cliente_id'] = $this->getUserId();
@@ -253,29 +255,37 @@ class ChamadaController extends BaseController
             'origem' => 'required|array',
             'chamada_id'=>'required|exists:transporte_chamadas,id'
         ])->validate();
-        $chamada = $this->chamadaRepository->find($idChamada);
-        if (empty($chamada['data'])) {
-            return parent::responseError(self::HTTP_CODE_BAD_REQUEST, 'Chamada inválida');
-        }
-        if ($chamada['data']['tipo'] == Chamada::TIPO_ATENDIMENTO) {
-            return parent::responseError(self::HTTP_CODE_BAD_REQUEST, 'Está chamada já está em atendimento.');
-        }
-        if (!$chamada['data']['habilitado']) {
-            return parent::responseError(self::HTTP_CODE_BAD_REQUEST, 'Você possui pendencia favor entrar em contato com a levez.');
-        }
 
-        \Validator::make($data, [
-            'endereco_origem' => 'required|string',
-            'origem' => 'required|array',
-        ])->validate();
-        $data['fornecedor_id'] = $this->getUserId();
-        $data['datahora_comfirmação'] = Carbon::now();
-        $data['tipo'] = Chamada::TIPO_ATENDIMENTO;
-        $this->getUser()->disponivel = false;
-        $this->getUser()->save();
         try {
             \DB::beginTransaction();
+            $chamada = $this->chamadaRepository->find($idChamada);
 
+            if (empty($chamada['data'])) {
+                return parent::responseError(self::HTTP_CODE_BAD_REQUEST, 'Chamada inválida');
+            }
+
+            if ($chamada['data']['tipo'] == Chamada::TIPO_ATENDIMENTO) {
+                return parent::responseError(self::HTTP_CODE_BAD_REQUEST, 'Está chamada já está em atendimento.');
+            }
+            if ($this->getUser()->perfil != User::FORNECEDOR) {
+                return parent::responseError(self::HTTP_CODE_BAD_REQUEST, 'Apenas fornecedores podem aceitar chamadas.');
+            }
+            if (!$this->getUser()->habilitado) {
+                return parent::responseError(self::HTTP_CODE_BAD_REQUEST, 'Você possui pendencia favor entrar em contato com a levez.');
+            }
+            if($chamada['data']['status'] == Chamada::STATUS_CANCELADO){
+                return parent::responseError(self::HTTP_CODE_BAD_REQUEST, 'Chamada já está cancelada por favor realize outra chamada.');
+            }
+
+            \Validator::make($data, [
+                'endereco_origem' => 'required|string',
+                'origem' => 'required|array',
+            ])->validate();
+            $data['fornecedor_id'] = $this->getUserId();
+            $data['datahora_comfirmação'] = Carbon::now();
+            $data['tipo'] = Chamada::TIPO_ATENDIMENTO;
+            $this->getUser()->disponivel = false;
+            $this->getUser()->save();
 			$configuracao = $this->configuracaoService->getConfiguracao();
 			$data['timedown'] = Carbon::now()->addMinute($configuracao['data']['tempo_cancel_cliente_min']);
 
