@@ -42,6 +42,7 @@ class VeiculoRepositoryEloquent extends BaseRepository implements VeiculoReposit
     {
         $veiculo = $this->skipPresenter(true)->find($id);
         $veiculo->habilitado = $habilitado;
+        $veiculo->status = (!$habilitado)?Veiculo::PENDENTE:Veiculo::ACEITO;
         $veiculo->save();
     }
 }

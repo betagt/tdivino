@@ -4,6 +4,7 @@ namespace Modules\Transporte\Repositories;
 
 use Modules\Core\Models\User;
 use Modules\Transporte\Models\Documento;
+use Modules\Transporte\Models\Veiculo;
 use Modules\Transporte\Presenters\TipoDocumentoPresenter;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
@@ -88,4 +89,52 @@ class TipoDocumentoRepositoryEloquent extends BaseRepository implements TipoDocu
         }
 
     }
+
+    public function validadeVeiculo(int $veiculoId)
+    {
+        $data = [];
+        $rs = $this->model
+            ->leftJoin('transporte_documentos', function ($join) use ($veiculoId) {
+                $join->on('transporte_tipo_documentos.id', '=', 'transporte_documentos.transporte_tipo_documento_id');
+                $join->where('transporte_documentos.documentotable_type', '=', Veiculo::class);
+                $join->where('transporte_documentos.documentotable_id', '=', $veiculoId);
+                $join->where('transporte_documentos.status', '=', Documento::STATUS_ACEITO);
+            })
+            ->groupby('transporte_tipo_documentos.id')
+            ->where('transporte_tipo_documentos.tipo', '=', 'veiculo')
+            ->select(['transporte_tipo_documentos.*', \DB::raw('count(transporte_documentos.id) AS contagem')])
+            ->get();
+
+        if($rs->count() == 0){
+            $data['data'] = [];
+            $data['habilitado'] = false;
+            $data['cor'] = 'red';
+            return $data;
+        }
+
+        $skypresenter = $this->skipPresenter;
+        $data = $this->skipPresenter(false)->parserResult($rs);
+        $contagem_array = array_column($data['data'],'contagem');
+        $max_documento_tipo = count($contagem_array);
+        $data['habilitado'] = !in_array(0, $contagem_array);
+        $selecao = array_count_values($contagem_array);
+
+        if(isset($selecao[1]) && $selecao[1] == $max_documento_tipo){
+            $data['cor'] = 'green';
+            $this->skipPresenter($skypresenter);
+            return $data;
+        }
+        if(isset($selecao[0]) && $selecao[0] == $max_documento_tipo){
+            $data['cor'] = 'red';
+            $this->skipPresenter($skypresenter);
+            return $data;
+        }
+        if($selecao[0] > 0 && $selecao[1] > 0){
+            $data['cor'] = 'yellow';
+            $this->skipPresenter($skypresenter);
+            return $data;
+        }
+
+    }
+
 }

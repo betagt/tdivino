@@ -10,5 +10,5 @@ use Prettus\Repository\Contracts\RepositoryInterface;
  */
 interface DocumentoRepository extends RepositoryInterface
 {
-    //
+    public function documentosVencidos($tipo = null);
 }

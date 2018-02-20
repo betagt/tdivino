@@ -9,9 +9,14 @@
 namespace Modules\Transporte\Services;
 
 
+use Modules\Core\Models\User;
+use Modules\Core\Repositories\UserRepository;
 use Modules\Core\Services\ImageUploadService;
 use Modules\Transporte\Models\Documento;
+use Modules\Transporte\Models\Veiculo;
 use Modules\Transporte\Repositories\DocumentoRepository;
+use Modules\Transporte\Repositories\TipoDocumentoRepository;
+use Modules\Transporte\Repositories\VeiculoRepository;
 
 class DocumentoService
 {
@@ -64,6 +69,20 @@ class DocumentoService
                 'princial' => false,
                 'prioridade' => $key + 1
             ]);
+        }
+    }
+
+
+    public static function validarDocumento($query){
+        if($query->documentotable_type == User::class){
+            $validado = app(TipoDocumentoRepository::class)->validadeUser($query->documentotable_id);
+            app(UserRepository::class)->habilitarDesabilitar($query->documentotable_id, $validado['habilitado']);
+        }
+
+        if($query->documentotable_type == Veiculo::class){
+            //TODO criar eventos para para esse tipo de ação.
+            $validado = app(TipoDocumentoRepository::class)->validadeVeiculo($query->documentotable_id);
+            app(VeiculoRepository::class)->habilitarDesabilitar($query->documentotable_id, $validado['habilitado']);
         }
     }
 

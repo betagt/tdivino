@@ -4,6 +4,7 @@ namespace Modules\Transporte\Transformers;
 
 use League\Fractal\TransformerAbstract;
 use Modules\Transporte\Models\Veiculo;
+use Modules\Transporte\Repositories\TipoDocumentoRepository;
 
 /**
  * Class VeiculoTransformer
@@ -20,8 +21,10 @@ class VeiculoTransformer extends TransformerAbstract
      */
     public function transform(Veiculo $model)
     {
+        $pendencias = app(TipoDocumentoRepository::class)->validadeVeiculo($model->id);
         return [
             'id' => (int)$model->id,
+            'pendencias' => $pendencias,
             'transporte_marca_carro_id' => (int)$model->transporte_marca_carro_id,
             'transporte_modelo_carro_id' => (int)$model->transporte_modelo_carro_id,
             'user_id' => (int)$model->user_id,

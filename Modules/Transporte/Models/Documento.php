@@ -3,16 +3,18 @@
 namespace Modules\Transporte\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 use Modules\Core\Models\User;
 use Modules\Core\Repositories\UserRepository;
 use Modules\Transporte\Repositories\TipoDocumentoRepository;
+use Modules\Transporte\Repositories\VeiculoRepository;
 use Portal\Models\Imagem;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
 class Documento extends Model implements Transformable
 {
-    use TransformableTrait;
+    use TransformableTrait, Notifiable;
 
     const CLRV_ID = 15;
     const VISTORIA_ID = 12;
@@ -21,6 +23,11 @@ class Documento extends Model implements Transformable
 	const STATUS_PENDENTE = 'pendente';
 	const STATUS_ACEITO = 'aceito';
 	const STATUS_INVALIDO = 'invalido';
+
+
+	const tipo_veiculo = 'veiculo';
+	const tipo_motorista = 'motorista';
+	const tipo_passageiro = 'cliente';
 
     protected $table = 'transporte_documentos';
 
@@ -62,6 +69,12 @@ class Documento extends Model implements Transformable
                 //TODO criar eventos para para esse tipo de ação.
                 $validado = app(TipoDocumentoRepository::class)->validadeUser($query->documentotable_id);
                 app(UserRepository::class)->habilitarDesabilitar($query->documentotable_id, $validado['habilitado']);
+            }
+
+            if($query->documentotable_type == Veiculo::class){
+                //TODO criar eventos para para esse tipo de ação.
+                $validado = app(TipoDocumentoRepository::class)->validadeVeiculo($query->documentotable_id);
+                app(VeiculoRepository::class)->habilitarDesabilitar($query->documentotable_id, $validado['habilitado']);
             }
         };
         self::created(function ($query) use ($ativar){
