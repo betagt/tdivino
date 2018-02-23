@@ -50,6 +50,7 @@ class DocumentoTransformer extends TransformerAbstract
             'nit' => (string) $model->nit,
 
 			'cidade'=> (string) $model->cidade,
+			'status'=> (string) $model->status,
 			'vistoriador'=> (string) $model->vistoriador,
 			'alienado'=> (boolean) $model->alienado,
 

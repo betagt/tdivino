@@ -60,6 +60,8 @@ class DocumentoRepositoryEloquent extends BaseRepository implements DocumentoRep
                 //TODO criar eventos para para esse tipo de ação.
                 app(UserRepository::class)->habilitarDesabilitar($documento->documentotable_id);
             }
+            $documento->status = Documento::STATUS_VENCIDO;
+            $documento->save();
         });
         return $this->parserResult($documentos);
     }

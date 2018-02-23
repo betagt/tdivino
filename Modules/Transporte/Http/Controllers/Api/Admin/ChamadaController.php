@@ -267,7 +267,8 @@ class ChamadaController extends BaseController
             if ($chamada['data']['tipo'] == Chamada::TIPO_ATENDIMENTO) {
                 return parent::responseError(self::HTTP_CODE_BAD_REQUEST, 'Está chamada já está em atendimento.');
             }
-            if ($this->getUser()->perfil != User::FORNECEDOR) {
+
+            if (!in_array(User::FORNECEDOR, $this->getUser()->getRoles())) {
                 return parent::responseError(self::HTTP_CODE_BAD_REQUEST, 'Apenas fornecedores podem aceitar chamadas.');
             }
             if (!$this->getUser()->habilitado) {
@@ -302,6 +303,7 @@ class ChamadaController extends BaseController
             $response = $this->chamadaRepository->skipPresenter(false)->find($idChamada);
             event(new ChamadaAceita($chamada->cliente->device_uuid, $response));
             \DB::commit();
+            unset($response['data']['fornecedor']['data']['pendencias']);
             return $response;
         } catch (ModelNotFoundException $e) {
             \DB::rollback();

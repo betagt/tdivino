@@ -23,6 +23,7 @@ class Documento extends Model implements Transformable
 	const STATUS_PENDENTE = 'pendente';
 	const STATUS_ACEITO = 'aceito';
 	const STATUS_INVALIDO = 'invalido';
+	const STATUS_VENCIDO = 'vencido';
 
 
 	const tipo_veiculo = 'veiculo';
@@ -64,7 +65,7 @@ class Documento extends Model implements Transformable
     protected static function boot()
     {
         parent::boot();
-        $ativar = function ($query){
+        /*$ativar = function ($query){
             if($query->documentotable_type == User::class){
                 //TODO criar eventos para para esse tipo de ação.
                 $validado = app(TipoDocumentoRepository::class)->validadeUser($query->documentotable_id);
@@ -94,7 +95,7 @@ class Documento extends Model implements Transformable
                 $b->delete();
             }
             $ativar($venue);
-        });
+        });*/
     }
 
     public function tipoDocumento(){
