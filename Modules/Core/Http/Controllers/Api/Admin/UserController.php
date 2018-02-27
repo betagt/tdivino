@@ -530,6 +530,31 @@ class UserController extends BaseController
     }
 
     /**
+     * Consultar Perfil Usuário
+     *
+     * Endpoint para consultar perfil do usuário passando o ID como parametro
+     *
+     * @param $id
+     * @return mixed
+     */
+    public function userPosicao(Request $request)
+    {
+        $data = $request->only(['lat','lng']);
+        $this->getUser()->lat = $data['lat'];
+        $this->getUser()->lng = $data['lng'];
+        $this->getUser()->save();
+        try {
+            return $this->userRepository->find($this->getUserId());
+        } catch (ModelNotFoundException $e) {
+            return parent::responseError(parent::HTTP_CODE_NOT_FOUND, $e->getMessage());
+        } catch (RepositoryException $e) {
+            return parent::responseError(parent::HTTP_CODE_NOT_FOUND, $e->getMessage());
+        } catch (\Exception $e) {
+            return parent::responseError(parent::HTTP_CODE_BAD_REQUEST, $e->getMessage());
+        }
+    }
+
+    /**
      * Solicitar Nova Senha
      *
      * Enviar email com link para usuário recuperar senha

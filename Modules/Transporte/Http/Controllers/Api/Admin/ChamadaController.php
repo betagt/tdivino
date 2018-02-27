@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Modules\Core\Models\User;
 use Modules\Localidade\Services\GeoService;
+use Modules\Transporte\Consts\ChamadaRemover;
 use Modules\Transporte\Criteria\ChamadaClienteCriteria;
 use Modules\Transporte\Criteria\ChamadaCriteria;
 use Modules\Transporte\Criteria\ChamadaFornecedorCriteria;
@@ -17,6 +18,7 @@ use Modules\Transporte\Events\ChamadaEmbarque;
 use Modules\Transporte\Events\ChamadaMotoristaNoLocal;
 use Modules\Transporte\Events\ChamarMotorista;
 use Modules\Transporte\Events\FinalizarChamada;
+use Modules\Transporte\Events\RemoverChamada;
 use Modules\Transporte\Http\Requests\ChamadaRequest;
 use Modules\Transporte\Notifications\IniciarChamadaNotify;
 use Modules\Transporte\Repositories\ChamadaRepository;
@@ -302,6 +304,7 @@ class ChamadaController extends BaseController
             ]);
             $response = $this->chamadaRepository->skipPresenter(false)->find($idChamada);
             event(new ChamadaAceita($chamada->cliente->device_uuid, $response));
+            event(new RemoverChamada($chamada->id, ChamadaRemover::REMOVE_CHAMADA));
             \DB::commit();
             unset($response['data']['fornecedor']['data']['pendencias']);
             return $response;
@@ -346,8 +349,10 @@ class ChamadaController extends BaseController
             $chamada['status'] = Chamada::STATUS_CANCELADO;
             $chamada = $this->chamadaRepository->skipPresenter(true)->update($chamada, $idChamada);
             $response = $this->chamadaRepository->skipPresenter(false)->find($idChamada);
-            if(!is_null($chamada->fornecedor))
-            	event(new FinalizarChamada($chamada->fornecedor->device_uuid, $response));
+            if(!is_null($chamada->fornecedor)){
+                event(new FinalizarChamada($chamada->fornecedor->device_uuid, 'chamada finalizada'));
+                event(new RemoverChamada($chamada->id, ChamadaRemover::REMOVE_CHAMADA));
+            }
             \DB::commit();
             return $response;
         } catch (ModelNotFoundException $e) {
@@ -412,7 +417,7 @@ class ChamadaController extends BaseController
             }
             $chamada['status'] = Chamada::STATUS_CANCELADO;
             $this->chamadaRepository->update($chamada, $idChamada);
-			event(new ChamadaCancelar($chamada['data']['cliente']['data']['device_uuid'], $chamada, User::CLIENTE));
+			event(new ChamadaCancelar($chamada['data']['cliente']['data']['device_uuid'], 'chama foi cancelada', User::CLIENTE));
 			\DB::commit();
             return $chamada;
         } catch (ModelNotFoundException $e) {

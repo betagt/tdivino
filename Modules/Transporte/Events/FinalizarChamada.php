@@ -19,7 +19,7 @@ class FinalizarChamada implements ShouldBroadcast
     /**
      * @var
      */
-    public $chamada;
+    public $message;
 
 
     /**
@@ -27,10 +27,10 @@ class FinalizarChamada implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct(string $uuid, $chamada)
+    public function __construct(string $uuid, $message)
     {
         $this->uuid = $uuid;
-        $this->chamada = $chamada;
+        $this->message = $message;
     }
 
     /**

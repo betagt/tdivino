@@ -25,6 +25,7 @@ class ChamadaTransformer extends TransformerAbstract
         $chamada = [
             'id'         => (int) $model->id,
             'fornecedor_id'=> (int) $model->fornecedor_id,
+            'forma_pagamento_id'=> (int) $model->forma_pagamento_id,
             'cliente_id'=> (int) $model->cliente_id,
             'cliente_nome' => (string)  ($model->cliente)?$model->cliente->name:null,
             'tipo'=> (string) $model->tipo,

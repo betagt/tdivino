@@ -65,7 +65,7 @@ class Documento extends Model implements Transformable
     protected static function boot()
     {
         parent::boot();
-        /*$ativar = function ($query){
+        $ativar = function ($query){
             if($query->documentotable_type == User::class){
                 //TODO criar eventos para para esse tipo de ação.
                 $validado = app(TipoDocumentoRepository::class)->validadeUser($query->documentotable_id);
@@ -78,10 +78,10 @@ class Documento extends Model implements Transformable
                 app(VeiculoRepository::class)->habilitarDesabilitar($query->documentotable_id, $validado['habilitado']);
             }
         };
-        self::created(function ($query) use ($ativar){
+        self::updated(function ($query) use ($ativar){
             $ativar($query);
         });
-        self::updated(function ($query) use ($ativar){
+        /*self::created(function ($query) use ($ativar){
             $ativar($query);
         });
         self::saved(function ($query) use ($ativar){

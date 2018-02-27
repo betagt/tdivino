@@ -20,7 +20,7 @@ class ChamadaCancelar implements ShouldBroadcast
     /**
      * @var
      */
-    public $chamada;
+    public $mensagem;
 
 	/**
 	 * @var
@@ -33,10 +33,10 @@ class ChamadaCancelar implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct(string $uuid, $chamada, $type)
+    public function __construct(string $uuid, $mensagem, $type)
     {
         $this->uuid = $uuid;
-        $this->chamada = $chamada;
+        $this->mensagem = $mensagem;
 		$this->type = $type;
 	}
 

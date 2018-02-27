@@ -52,6 +52,10 @@ class UserRoute implements ICustomRoute
 				'as' => 'user.meu_perfil',
 				'uses' => 'UserController@myProfile'
 			]);
+			Route::post('user/posicao', [
+				'as' => 'user.posicao',
+				'uses' => 'UserController@userPosicao'
+			]);
             Route::get('user/logout', [
                 'as' => 'user.meu_perfil',
                 'uses' => 'UserController@logout'

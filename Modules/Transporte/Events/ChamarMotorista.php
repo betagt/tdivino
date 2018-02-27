@@ -31,7 +31,20 @@ class ChamarMotorista implements ShouldBroadcast
     public function __construct(string $uuid, $chamada)
     {
         $this->uuid = $uuid;
-        $this->chamada = $chamada;
+        $this->chamada = [
+            'data' =>[
+                'id'=>$chamada['data']['id'],
+                'tipo'=>$chamada['data']['tipo'],
+                'forma_pagamento_id'=>$chamada['data']['forma_pagamento_id'],
+                'cliente'=>[
+                    'data'=>[
+                        'name'=>$chamada['data']['cliente']['data']['name'],
+                        'imagem'=>$chamada['data']['cliente']['data']['imagem'],
+                    ]
+                ],
+                'trajeto'=>$chamada['data']['trajeto'],
+            ]
+        ];
     }
 
     /**

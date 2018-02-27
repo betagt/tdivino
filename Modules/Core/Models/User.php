@@ -60,6 +60,7 @@ class User extends Authenticatable implements Transformable
         'codigo',
         'incicacao',
         'habilitado',
+        'avaliacao',
     ];
 
     public function __construct(array $attributes = [])
