@@ -35,6 +35,11 @@ class ChamadaAceita implements ShouldBroadcast
             'data' =>[
                 'id'=>$chamada['data']['id'],
                 'tipo'=>$chamada['data']['tipo'],
+                'valor'=>$chamada['data']['valor'],
+                'km_rodado'=> $chamada['data']['km_rodado'],
+                'tx_uso_malha'=> $chamada['data']['tx_uso_malha'],
+                'tarifa_operacao'=> $chamada['data']['tarifa_operacao'],
+                'valor_repasse'=> $chamada['data']['valor_repasse'],
                 'forma_pagamento_id'=>$chamada['data']['forma_pagamento_id'],
                 'veiculo_marca' => $chamada['data']['veiculo_marca'],
                 'veiculo_placa' => $chamada['data']['veiculo_placa'],
@@ -46,6 +51,8 @@ class ChamadaAceita implements ShouldBroadcast
                         'name'=>$chamada['data']['fornecedor']['data']['name'],
                         'email'=>$chamada['data']['fornecedor']['data']['email'],
                         'imagem'=>$chamada['data']['fornecedor']['data']['imagem'],
+                        'lat'=>$chamada['data']['fornecedor']['data']['lat'],
+                        'lng'=>$chamada['data']['fornecedor']['data']['lng'],
                         'nota_fornecedor' => $chamada['data']['fornecedor']['data']['nota_fornecedor'],
                         'endereco'=>[
                             'data'=>[

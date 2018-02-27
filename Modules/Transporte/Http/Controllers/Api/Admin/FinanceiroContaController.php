@@ -9,15 +9,29 @@
 namespace Modules\Transporte\Http\Controllers\Api\Admin;
 
 
+use Modules\Transporte\Criteria\FinanceiroContaCriteria;
+use Modules\Transporte\Repositories\FinanceiroContaRepository;
 use Portal\Criteria\OrderCriteria;
 use Portal\Http\Controllers\BaseController;
 
 class FinanceiroContaController extends BaseController
 {
 
-    public function __construct($defaultRepository, $defaultCriteria, string $defaultOrder = OrderCriteria::class)
+    /**
+     * @var FinanceiroContaCriteria
+     */
+    private $financeiroContaCriteria;
+
+    /**
+     * @var FinanceiroContaRepository
+     */
+    private $financeiroContaRepository;
+
+    public function __construct(FinanceiroContaRepository $financeiroContaRepository, FinanceiroContaCriteria $financeiroContaCriteria)
     {
-        parent::__construct($defaultRepository, $defaultCriteria, $defaultOrder);
+        parent::__construct($financeiroContaRepository, $financeiroContaCriteria);
+        $this->financeiroContaCriteria = $financeiroContaCriteria;
+        $this->financeiroContaRepository = $financeiroContaRepository;
     }
 
     public function getValidator($id = null)

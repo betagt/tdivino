@@ -349,9 +349,11 @@ class ChamadaController extends BaseController
             $chamada['status'] = Chamada::STATUS_CANCELADO;
             $chamada = $this->chamadaRepository->skipPresenter(true)->update($chamada, $idChamada);
             $response = $this->chamadaRepository->skipPresenter(false)->find($idChamada);
+            if(is_null($chamada->fornecedor)) {
+                event(new RemoverChamada($chamada->id, ChamadaRemover::REMOVE_CHAMADA));
+            }
             if(!is_null($chamada->fornecedor)){
                 event(new FinalizarChamada($chamada->fornecedor->device_uuid, 'chamada finalizada'));
-                event(new RemoverChamada($chamada->id, ChamadaRemover::REMOVE_CHAMADA));
             }
             \DB::commit();
             return $response;

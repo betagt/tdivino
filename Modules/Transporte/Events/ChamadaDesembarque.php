@@ -48,11 +48,11 @@ class ChamadaDesembarque implements ShouldBroadcast
                 'veiculo_modelo' => $chamada['data']['veiculo_modelo'],
                 'fornecedor'=>[
                     'data'=>[
-                        'name'=>$chamada['data']['cliente']['data']['name'],
-                        'email'=>$chamada['data']['cliente']['data']['email'],
-                        'imagem'=>$chamada['data']['cliente']['data']['imagem'],
-                        'lat'=>$chamada['data']['cliente']['data']['lat'],
-                        'lng'=>$chamada['data']['cliente']['data']['lng'],
+                        'name'=>$chamada['data']['fornecedor']['data']['name'],
+                        'email'=>$chamada['data']['fornecedor']['data']['email'],
+                        'imagem'=>$chamada['data']['fornecedor']['data']['imagem'],
+                        'lat'=>$chamada['data']['fornecedor']['data']['lat'],
+                        'lng'=>$chamada['data']['fornecedor']['data']['lng'],
                     ]
                 ],
                 'trajeto'=>$chamada['data']['trajeto'],
