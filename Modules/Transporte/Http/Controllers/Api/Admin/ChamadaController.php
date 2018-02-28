@@ -508,7 +508,7 @@ class ChamadaController extends BaseController
             }
             $chamada['data']['tipo'] = Chamada::TIPO_FINALIZADO;
             $chamada['data']['avaliacao'] = $data['avaliacao'];
-            $this->chamadaRepository->update($chamada, $data['chamada_id']);
+            $this->chamadaRepository->update($chamada['data'], $data['chamada_id']);
             return $chamada;
         } catch (ModelNotFoundException $e) {
             return parent::responseError(self::HTTP_CODE_NOT_FOUND, $e->getMessage());

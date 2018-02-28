@@ -60,14 +60,14 @@ class UserTransformer extends BaseTransformer
 		];
 		switch ($perfil) {
 			case User::FORNECEDOR :
-				$soma = $model->chamadas_fornecedor->where('tipo', Chamada::TIPO_FINALIZADO)->sum('avaliacao');
+				$soma = (double)$model->chamadas_fornecedor->where('tipo', Chamada::TIPO_FINALIZADO)->sum('avaliacao');
 				$avaliacao = 0;
 				if ($soma > 0) {
-					$avaliacao = $soma / $model->chamadas_fornecedor->where('tipo', Chamada::TIPO_FINALIZADO)->count('avaliacao');
+					$avaliacao = $soma / (int)$model->chamadas_fornecedor->where('tipo', Chamada::TIPO_FINALIZADO)->count('avaliacao');
 				}
 				$pendencias = app(TipoDocumentoRepository::class)->validadeUser($model->id);
 				$result = array_merge($result, [
-					'nota_fornecedor' => $avaliacao,
+					'nota_fornecedor' => round($avaliacao, 2),
 					'contagem_chamadas' => $model->chamadas_fornecedor->count(),
 					'km_mes_rodado' => $model->chamadas_fornecedor->sum('km_rodado'),
                     'habilitado' => (boolean) $model->habilitado,
