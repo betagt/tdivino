@@ -7,8 +7,9 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Queue\SerializesModels;
+use Portal\Events\BaseEvent;
 
-class ChamadaCancelar implements ShouldBroadcast
+class ChamadaCancelar extends BaseEvent implements ShouldBroadcast
 {
     use InteractsWithSockets, SerializesModels;
 
@@ -47,6 +48,6 @@ class ChamadaCancelar implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return  ["chamada.cancelar.$this->type.".$this->uuid];
+        return  [self::checkProd()."chamada.cancelar.$this->type.".$this->uuid];
     }
 }

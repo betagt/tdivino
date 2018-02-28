@@ -5,8 +5,9 @@ namespace Modules\Transporte\Events;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Queue\SerializesModels;
+use Portal\Events\BaseEvent;
 
-class RemoverChamada implements ShouldBroadcast
+class RemoverChamada extends BaseEvent implements ShouldBroadcast
 {
     use InteractsWithSockets, SerializesModels;
 
@@ -41,6 +42,6 @@ class RemoverChamada implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return  ['chamada.remove'];
+        return  [self::checkProd().'chamada.remove'];
     }
 }

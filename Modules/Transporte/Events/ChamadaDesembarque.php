@@ -7,8 +7,9 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Queue\SerializesModels;
+use Portal\Events\BaseEvent;
 
-class ChamadaDesembarque implements ShouldBroadcast
+class ChamadaDesembarque extends BaseEvent implements ShouldBroadcast
 {
     use InteractsWithSockets, SerializesModels;
 
@@ -68,6 +69,6 @@ class ChamadaDesembarque implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return  ["chamada.desembarque.$this->type.".$this->uuid];
+        return  [self::checkProd()."chamada.desembarque.$this->type.".$this->uuid];
     }
 }

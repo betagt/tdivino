@@ -7,8 +7,9 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Queue\SerializesModels;
+use Portal\Events\BaseEvent;
 
-class FinalizarChamada implements ShouldBroadcast
+class FinalizarChamada extends BaseEvent implements ShouldBroadcast
 {
     use InteractsWithSockets, SerializesModels;
 
@@ -40,6 +41,6 @@ class FinalizarChamada implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return  ['chamada.cacelada.motorista.'.$this->uuid];
+        return  [self::checkProd().'chamada.cacelada.motorista.'.$this->uuid];
     }
 }

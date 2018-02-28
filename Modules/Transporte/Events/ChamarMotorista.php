@@ -8,8 +8,9 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Modules\Core\Models\User;
+use Portal\Events\BaseEvent;
 
-class ChamarMotorista implements ShouldBroadcast
+class ChamarMotorista extends BaseEvent implements ShouldBroadcast
 {
     use InteractsWithSockets, SerializesModels;
 
@@ -54,7 +55,7 @@ class ChamarMotorista implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return  ['chamada.motorista'];
+        return  [self::checkProd().'chamada.motorista'];
     }
 }
 
