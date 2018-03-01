@@ -55,6 +55,17 @@ class CoreServiceProvider extends ServiceProvider
     public function register()
     {
 
+        \Validator::extend('cpf_validator', function ($attribute, $value, $parameters, $validator) {
+            $valid = false;
+            if(validar_cnpj($value)){
+                $valid = true;
+            }
+            if(validar_cpf($value)){
+                $valid = true;
+            }
+            return $valid;
+        },'CPF Inválido!');
+
         $this->app->register(EventServiceProvider::class);
 
         $this->app->bind(

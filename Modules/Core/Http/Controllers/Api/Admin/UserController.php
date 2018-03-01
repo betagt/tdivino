@@ -262,6 +262,9 @@ class UserController extends BaseController
                     $user->telefone()->create($data);
                 }
             }
+            $user->pessoa()->create([
+                'cpf_cnpj'=>$data['cpf_cnpj']
+            ]);
             \DB::commit();
             event(new Registered($user));
             return $this->userRepository->skipPresenter(false)->find($user->id);
@@ -313,17 +316,6 @@ class UserController extends BaseController
      */
     public function update(Request $request, $id){
         $data = $request->all();
-        \Validator::extend('cpf_validator', function ($attribute, $value, $parameters, $validator) {
-            $valid = false;
-            if(validar_cnpj($value)){
-                $valid = true;
-            }
-            if(validar_cpf($value)){
-                $valid = true;
-            }
-            return $valid;
-        },'CPF Inválido!');
-
         if(isset($data['pessoa']['data_nascimento']) and !is_null($data['pessoa']['data_nascimento']))
 			$data['pessoa']['data_nascimento'] = implode('-', array_reverse(explode('/', $data['pessoa']['data_nascimento'])));
 
