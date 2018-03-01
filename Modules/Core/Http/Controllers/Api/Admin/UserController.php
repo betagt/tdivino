@@ -345,6 +345,8 @@ class UserController extends BaseController
         \Validator::make($data, $validator)->validate();
         try{
             \DB::beginTransaction();
+            if(is_null($data['password']))unset($data['password']);
+            if(is_null($data['password_confirmation']))unset($data['password_confirmation']);
             $user = $this->userRepository->skipPresenter(true)->update($data,$id);
             $documento = $user->documentos();
             foreach ($data['documentos'] as $doc){
