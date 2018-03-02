@@ -47,7 +47,6 @@ class TipoDocumentoController extends BaseController
 
 
     public function todos(){
-        dd($this->userRepositoryEloquent->documentosPententes(214));
         try{
             return $this->tipoDocumentoRepository->all();
         }catch (ModelNotFoundException $e){
@@ -63,7 +62,7 @@ class TipoDocumentoController extends BaseController
 
     public function pessoa(){
         try{
-            return $this->tipoDocumentoRepository->findWhere(['tipo'=>TipoDocumento::TIPO_PESSOA]);
+            return $this->tipoDocumentoRepository->orderBy('nome','asc')->findWhere(['tipo'=>TipoDocumento::TIPO_PESSOA]);
         }catch (ModelNotFoundException $e){
             return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
         }
@@ -77,7 +76,7 @@ class TipoDocumentoController extends BaseController
 
     public function veiculo(){
         try{
-            return $this->tipoDocumentoRepository->findWhere(['tipo'=>'veiculo']);
+            return $this->tipoDocumentoRepository->orderBy('nome','asc')->findWhere(['tipo'=>'veiculo']);
         }catch (ModelNotFoundException $e){
             return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
         }

@@ -320,7 +320,7 @@ class UserController extends BaseController
 			$data['pessoa']['data_nascimento'] = implode('-', array_reverse(explode('/', $data['pessoa']['data_nascimento'])));
 
         $validator = array_merge($this->getValidator($id), [
-			'pessoa.cpf_cnpj' => 'required|cpf_validator|unique:pessoas,cpf_cnpj',
+			'pessoa.cpf_cnpj' => 'required|cpf_validator|unique:pessoas,cpf_cnpj,'.$id,
 			'pessoa.data_nascimento' => 'required|date',
 			/*'pessoa.rg' => 'required',
 			'pessoa.orgao_emissor' => 'required',*/

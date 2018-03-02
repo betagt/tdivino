@@ -55,6 +55,7 @@ class TipoDocumentoRepositoryEloquent extends BaseRepository implements TipoDocu
             })
             ->groupby('transporte_tipo_documentos.id')
             ->where('transporte_tipo_documentos.tipo', '=', $tipo)
+            ->where('transporte_tipo_documentos.obrigatorio', '=', true)
             ->select(['transporte_tipo_documentos.*', \DB::raw('count(transporte_documentos.id) AS contagem')])
             ->get();
 
@@ -102,6 +103,7 @@ class TipoDocumentoRepositoryEloquent extends BaseRepository implements TipoDocu
             })
             ->groupby('transporte_tipo_documentos.id')
             ->where('transporte_tipo_documentos.tipo', '=', 'veiculo')
+            ->where('transporte_tipo_documentos.obrigatorio', '=', true)
             ->select(['transporte_tipo_documentos.*', \DB::raw('count(transporte_documentos.id) AS contagem')])
             ->get();
 
