@@ -155,7 +155,7 @@ class ChamadaController extends BaseController
             'endereco_origem' => 'required|string',
             'endereco_destino' => 'required|string',
             'origem' => 'required|array',
-            'forma_pagamento_id' => 'integer',
+            'forma_pagamento_id' => 'required|integer',
             'destino' => 'required|array'
         ])->validate();
         $data['cliente_id'] = $this->getUserId();
