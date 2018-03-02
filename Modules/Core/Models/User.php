@@ -76,7 +76,6 @@ class User extends Authenticatable implements Transformable
         $ativar = function ($query){
             //TODO criar eventos para para esse tipo de ação.
             if(!is_null($query->id) && in_array(User::FORNECEDOR, $query->getRoles())){
-                die;
                 $validado = app(TipoDocumentoRepository::class)->validadeUser($query->id);
                 $query->status = (!$validado['habilitado'])?User::BLOQUEADO:User::ATIVO;
                 return $query;
