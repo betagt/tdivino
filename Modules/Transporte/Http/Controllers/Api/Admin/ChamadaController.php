@@ -302,7 +302,7 @@ class ChamadaController extends BaseController
                 'lng' => $data['origem']['lng'],
                 'passageiro' => false
             ]);
-            
+
             $response = $this->chamadaRepository->skipPresenter(false)->find($idChamada);
             event(new ChamadaAceita($chamada->cliente->device_uuid, $response));
             event(new RemoverChamada($chamada->id, ChamadaRemover::REMOVE_CHAMADA));

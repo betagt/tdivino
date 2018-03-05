@@ -37,6 +37,16 @@ class ChamarMotorista extends BaseEvent implements ShouldBroadcast
                 'id'=>$chamada['data']['id'],
                 'tipo'=>$chamada['data']['tipo'],
                 'forma_pagamento_id'=>$chamada['data']['forma_pagamento_id'],
+                'valor'=>$chamada['data']['valor'],
+                'km_rodado'=> $chamada['data']['km_rodado'],
+                'tx_uso_malha'=> $chamada['data']['tx_uso_malha'],
+                'tarifa_operacao'=> $chamada['data']['tarifa_operacao'],
+                'valor_repasse'=> $chamada['data']['valor_repasse'],
+                'veiculo_marca' => $chamada['data']['veiculo_marca'],
+                'veiculo_placa' => $chamada['data']['veiculo_placa'],
+                'veiculo_cor' => $chamada['data']['veiculo_cor'],
+                'veiculo_status' => $chamada['data']['veiculo_status'],
+                'veiculo_modelo' => $chamada['data']['veiculo_modelo'],
                 'cliente'=>[
                     'data'=>[
                         'name'=>$chamada['data']['cliente']['data']['name'],
