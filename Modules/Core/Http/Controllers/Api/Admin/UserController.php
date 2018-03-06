@@ -333,6 +333,7 @@ class UserController extends BaseController
             'endereco.cep' => 'required',
             'endereco.numero' => 'required',
             'endereco.endereco' => 'required',
+            'perfil' => 'required|string|in:fornecedor,cliente',
 		]);
         \Validator::make($data, $validator)->validate();
         try{
@@ -347,18 +348,17 @@ class UserController extends BaseController
 			if(is_null($user->pessoa)){
                 $pessoa = Pessoa::create($data['pessoa']);
                 $user->pessoa_id = $pessoa->id;
-                $user->save();
 			}else{
-                $user->pessoa()->update($data['pessoa']);
+                $user->pessoa->update($data['pessoa']);
 			}
-			if(isset($data['perfil'])){
+			if(isset($data['perfil']) && is_string($data['perfil'])){
                 $user->revokeAllRoles();
                 switch ($data['perfil']){
                     case 'fornecedor':
-                        $user->assignRole('fornecedor');
+                        $user->syncRoles(['fornecedor']);
                         break;
                     case 'cliente':
-                        $user->assignRole('cliente');
+                        $user->syncRoles(['cliente']);
                         break;
                 }
             }
@@ -394,6 +394,7 @@ class UserController extends BaseController
                     }
                 }
             }
+			$user->save();
             $result = $this->userRepository->skipPresenter(false)->find($user->id);
             \DB::commit();
             return  $result;
