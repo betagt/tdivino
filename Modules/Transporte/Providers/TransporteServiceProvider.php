@@ -3,6 +3,7 @@
 namespace Modules\Transporte\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Portal\Providers\BroadcastServiceProvider;
 
 class TransporteServiceProvider extends ServiceProvider
 {
@@ -72,6 +73,7 @@ class TransporteServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->register(EventServiceProvider::class);
+        //$this->app->register(BroadcastServiceProvider::class);
         $this->app->register(RepositoryServiceProvider::class);
         $this->bootValidators();
     }

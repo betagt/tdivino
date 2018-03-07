@@ -65,6 +65,7 @@ class UserController extends BaseController
         $this->setPathFile(public_path('arquivos/img/user'));
         $this->imageUploadService = $imageUploadService;
         $this->documentoService = $documentoService;
+        parent::$_PAGINATION_COUNT = 13;
     }
 
     /**

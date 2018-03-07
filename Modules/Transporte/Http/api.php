@@ -10,4 +10,5 @@ Route::group(['prefix'=>'v1','middleware' => ['cors']], function () {
     \Modules\Transporte\Rotas\ChamadaRoute::run();
     \Modules\Transporte\Rotas\ContaRoute::run();
     \Modules\Transporte\Rotas\BancoRoute::run();
+    \Modules\Transporte\Rotas\FinanceiroContaRoute::run();
 });

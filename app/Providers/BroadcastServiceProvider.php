@@ -5,7 +5,7 @@ namespace Portal\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Broadcast;
 
-class BroadcastServiceProvider extends ServiceProvider
+class BroadcastServiceProvider extends \Illuminate\Broadcasting\BroadcastServiceProvider
 {
     /**
      * Bootstrap any application services.

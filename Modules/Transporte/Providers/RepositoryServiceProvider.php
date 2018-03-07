@@ -11,12 +11,16 @@ use Modules\Transporte\Repositories\ContaRepository;
 use Modules\Transporte\Repositories\ContaRepositoryEloquent;
 use Modules\Transporte\Repositories\DocumentoRepository;
 use Modules\Transporte\Repositories\DocumentoRepositoryEloquent;
+use Modules\Transporte\Repositories\FinanceiroContaRepository;
+use Modules\Transporte\Repositories\FinanceiroContaRepositoryEloquent;
 use Modules\Transporte\Repositories\GeoPosicaoRepository;
 use Modules\Transporte\Repositories\GeoPosicaoRepositoryEloquent;
 use Modules\Transporte\Repositories\MarcaCarroRepository;
 use Modules\Transporte\Repositories\MarcaCarroRepositoryEloquent;
 use Modules\Transporte\Repositories\ModeloCarroRepository;
 use Modules\Transporte\Repositories\ModeloCarroRepositoryEloquent;
+use Modules\Transporte\Repositories\MovimentacaoRepository;
+use Modules\Transporte\Repositories\MovimentacaoRepositoryEloquent;
 use Modules\Transporte\Repositories\TipoDocumentoRepository;
 use Modules\Transporte\Repositories\TipoDocumentoRepositoryEloquent;
 use Modules\Transporte\Repositories\ServicoRepository;
@@ -72,6 +76,14 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             BancoRepository::class,
 			BancoRepositoryEloquent::class
+        );
+        $this->app->bind(
+            FinanceiroContaRepository::class,
+            FinanceiroContaRepositoryEloquent::class
+        );
+        $this->app->bind(
+            MovimentacaoRepository::class,
+            MovimentacaoRepositoryEloquent::class
         );
     }
 }
