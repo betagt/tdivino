@@ -263,9 +263,11 @@ class UserController extends BaseController
                     $user->telefone()->create($data);
                 }
             }
-            $user->pessoa()->create([
-                'cpf_cnpj'=>$data['cpf_cnpj']
-            ]);
+            $pessoa = Pessoa::create([
+				'cpf_cnpj'=>$data['cpf_cnpj']
+			]);
+            $user->pessoa_id = $pessoa->id;
+			$user->save();
             \DB::commit();
             event(new Registered($user));
             return $this->userRepository->skipPresenter(false)->find($user->id);
