@@ -230,6 +230,7 @@ class UserController extends BaseController
             'chk_newsletter',
             'ddd',
             'numero',
+            'indicacao',
             'aceita_termos',
             'status',
         ]);
@@ -237,6 +238,7 @@ class UserController extends BaseController
             'name'=>'required|min:3|string',
             'email'=>'required|email|unique:users,email',
             'password'=>'required|min:3',
+            'indicacao'=>'max:6',
             'cpf_cnpj'=>'required|cpf_validator|min:3|unique:pessoas,cpf_cnpj',
             'email_alternativo'     => 'nullable|email',
             'data_nascimento'       => 'date|nullable',
@@ -526,6 +528,25 @@ class UserController extends BaseController
             return parent::responseError(parent::HTTP_CODE_BAD_REQUEST, $e->getMessage());
         }
     }
+
+	/**
+	 * user/operacao
+	 * @return array|\Illuminate\Http\JsonResponse
+	 */
+	public function onlineOffline(){
+		try {
+			$user = $this->getUser();
+			$user->disponivel = !$user->disponivel;
+			$user->save();
+			return ['disponibilidade'=> $user->disponivel];
+		} catch (ModelNotFoundException $e) {
+			return parent::responseError(parent::HTTP_CODE_NOT_FOUND, $e->getMessage());
+		} catch (RepositoryException $e) {
+			return parent::responseError(parent::HTTP_CODE_NOT_FOUND, $e->getMessage());
+		} catch (\Exception $e) {
+			return parent::responseError(parent::HTTP_CODE_BAD_REQUEST, $e->getMessage());
+		}
+	}
 
     /**
      * Consultar Perfil Usuário

@@ -84,6 +84,10 @@ class UserRoute implements ICustomRoute
                     'as' => 'user.alterar_senha',
                     'uses' => 'UserController@updateCurrentUser',
                 ]);
+                Route::get('user/operacao', [
+                    'as' => 'user.operacao',
+                    'uses' => 'UserController@onlineOffline',
+                ]);
                 Route::put('user/update-user-pessoa', [
                     'as' => 'user.alterar_senha',
                     'uses' => 'UserController@updatePessoa',
