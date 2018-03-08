@@ -27,7 +27,6 @@ class UsuarioCadastrado
      */
     public function __construct(User $user, string $role = null)
     {
-        //
         $this->user = $user;
         $this->role = $role;
     }

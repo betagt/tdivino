@@ -7,6 +7,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Kodeine\Acl\Traits\HasRole;
 use Laravel\Passport\HasApiTokens;
+use Modules\Core\Events\AtualizaDados;
 use Modules\Core\Repositories\UserRepository;
 use Modules\Localidade\Models\Endereco;
 use Modules\Localidade\Models\Telefone;
@@ -85,6 +86,8 @@ class User extends Authenticatable implements Transformable
             return $ativar($query);
         });
         self::updating(function ($query) use ($ativar){
+            if(!is_null($query->device_uuid))
+                event(new AtualizaDados($query->device_uuid, 'Seu cadastro foi atualizardo!'));
             return $ativar($query);
         });
         self::saving(function ($query) use ($ativar){

@@ -16,7 +16,7 @@ class UserCriteria extends BaseCriteria implements CriteriaInterface
         'users.name' => 'ilike',
         'users.email' => 'like',
         'pessoas.cpf_cnpj' => 'like',
-        'roles.slug' => '=',
+        'roles.slug' => 'in',
         'users.sexo' => '=',
         'users.created_at' => 'between',
     ];

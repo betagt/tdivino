@@ -26,6 +26,10 @@ class ChamadaFornecedorCriteria extends BaseCriteria
     }
 
     protected $filterCriteria = [
+        'users.name' => 'ilike',
+        'users.email' => 'like',
+        'pessoas.cpf_cnpj' => 'like',
+        'roles.slug' => 'in',
         'fornecedor_id' => '='
     ];
 
@@ -33,6 +37,10 @@ class ChamadaFornecedorCriteria extends BaseCriteria
     {
         $model = parent::apply($model, $repository);
         return $model
+            ->join('users', 'transporte_chamadas.fornecedor_id', 'users.id')
+            ->join('pessoas', 'users.pessoa_id', 'pessoas.id')
+            ->join('role_user', 'users.id', 'role_user.user_id')
+            ->join('roles', 'roles.id', 'role_user.role_id')
             ->where('fornecedor_id', $this->id)
             ->select(array_merge($this->defaultTable));
     }

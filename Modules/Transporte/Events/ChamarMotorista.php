@@ -44,7 +44,7 @@ class ChamarMotorista extends BaseEvent implements ShouldBroadcast
                 'valor_repasse'=> isset($chamada['data']['valor_repasse'])?$chamada['data']['valor_repasse']:null,
                 'veiculo_marca' => isset($chamada['data']['veiculo_marca'])?$chamada['data']['veiculo_marca']:null,
                 'veiculo_placa' => isset($chamada['data']['veiculo_placa'])?$chamada['data']['veiculo_placa']:null,
-                'veiculo_cor' => $chamada['data']['veiculo_cor'],
+                'veiculo_cor' =>   isset($chamada['data']['veiculo_cor'])?$chamada['data']['veiculo_cor']:null,
                 'veiculo_status' => isset($chamada['data']['veiculo_status'])?$chamada['data']['veiculo_status']:null,
                 'veiculo_modelo' => isset($chamada['data']['veiculo_modelo'])?$chamada['data']['veiculo_modelo']:null,
                 'cliente'=>[

@@ -99,10 +99,10 @@ class UserController extends BaseController
                 $query->orWhere('email', $like);
             })->limit(100)->get());
         }catch (ModelNotFoundException $e){
-            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
+            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.undefined', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
         }
         catch (RepositoryException $e){
-            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
+            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.undefined', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
         }
         catch (\Exception $e){
             return self::responseError(self::HTTP_CODE_BAD_REQUEST, trans('errors.undefined', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
@@ -196,10 +196,10 @@ class UserController extends BaseController
             return $this->userRepository->skipPresenter(false)->find($user->id);
         } catch (ModelNotFoundException $e) {
 			\DB::rollBack();
-            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code' => $e->getCode(), 'line' => $e->getLine()]));
+            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.undefined', ['status_code' => $e->getCode(), 'line' => $e->getLine()]));
         } catch (RepositoryException $e) {
 			\DB::rollBack();
-            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code' => $e->getCode(), 'line' => $e->getLine()]));
+            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.undefined', ['status_code' => $e->getCode(), 'line' => $e->getLine()]));
         } catch (\Exception $e) {
 			\DB::rollBack();
             return self::responseError(self::HTTP_CODE_BAD_REQUEST, trans('errors.undefined', ['status_code' => $e->getCode(), 'line' => $e->getLine()]));
@@ -218,7 +218,7 @@ class UserController extends BaseController
     {
         $request->merge(['email_alternativo'=>$request->get('email')]);
         $request->merge(['remember_token' => str_random(10)]);
-        $request->merge(['status'=>User::ATIVO]);
+        $request->merge(['status'=>User::BLOQUEADO]);
         $data = $request->only([
             'name',
             'email',
@@ -266,22 +266,32 @@ class UserController extends BaseController
                 }
             }
             $pessoa = Pessoa::create([
-				'cpf_cnpj'=>$data['cpf_cnpj']
-			]);
+                'cpf_cnpj'=>$data['cpf_cnpj']
+            ]);
             $user->pessoa_id = $pessoa->id;
-			$user->save();
+            $user->save();
             \DB::commit();
-            event(new Registered($user));
+            //event(new Registered($user));
             return $this->userRepository->skipPresenter(false)->find($user->id);
         } catch (ModelNotFoundException $e) {
             \DB::rollBack();
-            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code' => $e->getCode(), 'line' => $e->getLine()]));
+            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.undefined', ['status_code' => $e->getCode(), 'line' => $e->getLine()]));
         } catch (RepositoryException $e) {
             \DB::rollBack();
-            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code' => $e->getCode(), 'line' => $e->getLine()]));
+            return self::responseError(self::HTTP_CODE_BAD_REQUEST, trans('errors.undefined', [
+                'status_code' => $e->getCode(),
+                'message' => $e->getMessage(),
+                'arquivo' => $e->getFile(),
+                'linha' => $e->getLine()
+            ]));
         } catch (\Exception $e) {
             \DB::rollBack();
-            return self::responseError(self::HTTP_CODE_BAD_REQUEST, trans('errors.undefined', ['status_code' => $e->getCode(), 'line' => $e->getLine()]));
+            return self::responseError(self::HTTP_CODE_BAD_REQUEST, trans('errors.undefined', [
+                'status_code' => $e->getCode(),
+                'message' => $e->getMessage(),
+                'arquivo' => $e->getFile(),
+                'linha' => $e->getLine()
+            ]));
         }
     }
 
@@ -302,9 +312,9 @@ class UserController extends BaseController
         try {
             return $this->userRepository->update($request->all(), $id);
         } catch (ModelNotFoundException $e) {
-            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code' => $e->getCode(), 'line' => $e->getLine()]));
+            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.undefined', ['status_code' => $e->getCode(), 'line' => $e->getLine()]));
         } catch (RepositoryException $e) {
-            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code' => $e->getCode(), 'line' => $e->getLine()]));
+            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.undefined', ['status_code' => $e->getCode(), 'line' => $e->getLine()]));
         } catch (\Exception $e) {
             return self::responseError(self::HTTP_CODE_BAD_REQUEST, trans('errors.undefined', ['status_code' => $e->getCode(), 'line' => $e->getLine()]));
         }
@@ -405,11 +415,11 @@ class UserController extends BaseController
             return  $result;
         }catch (ModelNotFoundException $e){
             \DB::rollBack();
-            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
+            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.undefined', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
         }
         catch (RepositoryException $e){
             \DB::rollBack();
-            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
+            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.undefined', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
         }
         catch (\Exception $e){
             \DB::rollBack();
@@ -686,10 +696,10 @@ class UserController extends BaseController
 				->pushCriteria(new OrderCriteria($request))
 				->paginate(self::$_PAGINATION_COUNT);
 		}catch (ModelNotFoundException $e){
-			return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
+			return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.undefined', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
 		}
 		catch (RepositoryException $e){
-			return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
+			return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.undefined', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
 		}
 		catch (\Exception $e){
 			return self::responseError(self::HTTP_CODE_BAD_REQUEST, trans('errors.undefined', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
@@ -708,10 +718,10 @@ class UserController extends BaseController
         try{
             return $this->userRepository->visualizarFornecedor($id);
         }catch (ModelNotFoundException $e){
-            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
+            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.undefined', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
         }
         catch (RepositoryException $e){
-            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
+            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.undefined', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
         }
         catch (\Exception $e){
             return self::responseError(self::HTTP_CODE_BAD_REQUEST, trans('errors.undefined', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
