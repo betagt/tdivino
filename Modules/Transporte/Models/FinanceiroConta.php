@@ -17,5 +17,6 @@ class FinanceiroConta extends Model implements Transformable
         'saldo',
         'codigo',
         'tipo',
+        'descricao',
     ];
 }

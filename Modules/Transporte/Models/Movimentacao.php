@@ -16,6 +16,7 @@ class Movimentacao extends Model implements Transformable
         'valor',
         'saldo',
         'codigo',
+        'descricao',
         'tipo',
     ];
 }

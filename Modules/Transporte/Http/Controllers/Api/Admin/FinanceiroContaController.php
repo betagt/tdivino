@@ -32,6 +32,7 @@ class FinanceiroContaController extends BaseController
         parent::__construct($financeiroContaRepository, $financeiroContaCriteria);
         $this->financeiroContaCriteria = $financeiroContaCriteria;
         $this->financeiroContaRepository = $financeiroContaRepository;
+        self::$_PAGINATION_COUNT = 13;
     }
 
     public function getValidator($id = null)

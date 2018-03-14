@@ -18,10 +18,10 @@ class FinanceiroContaRoute implements ICustomRoute
     {
         Route::group(['prefix'=>'admin','middleware' => ['auth:api'],'namespace'=>'Api\Admin'],function () {
             Route::group(['middleware' => ['acl'],'is' => 'administrador|moderador', 'protect_alias'  => 'user'],function (){
-                Route::resource('financeiro-conta', 'FinanceiroContaController',
-                    [
-                        'except' => ['create', 'edit']
-                    ]);
+                Route::resource('contas-a-pagar', 'FinanceiroContaController',
+                [
+                    'except' => ['create', 'edit']
+                ]);
             });
         });
     }
