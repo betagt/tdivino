@@ -30,9 +30,9 @@ return [
     ],
 
     'stripe' => [
-        'model' => Portal\User::class,
+        'model' => \Modules\Core\Models\User::class,
         'key' => env('STRIPE_KEY'),
         'secret' => env('STRIPE_SECRET'),
-    ],
+],
 
 ];

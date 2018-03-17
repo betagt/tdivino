@@ -40,7 +40,9 @@ return [
 				"encrypted" => false
             ],
         ],
-
+        'fcm'=>[
+            'driver'=>'fcm'
+        ],
         'redis' => [
             'driver' => 'redis',
             'connection' => 'default',

@@ -28,7 +28,10 @@
         "nwidart/laravel-modules": "^1.27.2",
         "browner12/helpers": "^1.1",
         "folklore/image": "^0.3.20",
-        "laravel-notification-channels/pusher-push-notifications": "^1.0"
+        "laravel-notification-channels/pusher-push-notifications": "^1.0",
+        "pusher/pusher-push-notifications": "^0.10.2",
+        "brozot/laravel-fcm": "^1.2",
+        "berkayk/onesignal-laravel": "^0.9.9"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

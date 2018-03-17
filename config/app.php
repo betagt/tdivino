@@ -191,6 +191,8 @@ return [
         browner12\helpers\HelperServiceProvider::class,
         Folklore\Image\ImageServiceProvider::class,
 		//NotificationChannels\PusherPushNotifications\PusherPushNotificationsServiceProvider::class,
+        LaravelFCM\FCMServiceProvider::class,
+        Berkayk\OneSignal\OneSignalServiceProvider::class
 
     ],
 
@@ -241,6 +243,9 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Module' => Nwidart\Modules\Facades\Module::class,
         'Image' => Folklore\Image\Facades\Image::class,
+        'FCM'      => \LaravelFCM\Facades\FCM::class,
+        'FCMGroup' => \LaravelFCM\Facades\FCMGroup::class, // Optional
+        'OneSignal' => \Berkayk\OneSignal\OneSignalFacade::class
     ],
 
 ];

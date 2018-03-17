@@ -386,7 +386,8 @@ class ChamadaController extends BaseController
             if (!($chamada->fornecedor_id == $this->getUserId())) {
                 throw new \Exception('chamada não pertence a você');
             }
-            event(new ChamadaMotoristaNoLocal($chamada->cliente->device_uuid, "Motorista aguardando no local indicado!"));
+            \OneSignal::sendNotificationToAll("Some Message AVEVRAE AEFAE ");
+            //event(new ChamadaMotoristaNoLocal($chamada->cliente->device_uuid, "Motorista aguardando no local indicado!"));
         } catch (ModelNotFoundException $e) {
             return parent::responseError(self::HTTP_CODE_NOT_FOUND, $e->getMessage());
         } catch (RepositoryException $e) {

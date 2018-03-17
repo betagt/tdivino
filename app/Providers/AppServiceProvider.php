@@ -2,6 +2,8 @@
 
 namespace Portal\Providers;
 
+use Illuminate\Broadcasting\BroadcastManager;
+use Illuminate\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 use Portal\Rotas\Registros\ResourceRegistrar;
 
@@ -12,9 +14,11 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(BroadcastManager $broadcastManager)
     {
-        //
+        $broadcastManager->extend('fcm', function (Application $app, array $config) {
+            return new \FCM;
+        });
     }
 
     /**
