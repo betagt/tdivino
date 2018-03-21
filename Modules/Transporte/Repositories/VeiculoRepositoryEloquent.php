@@ -5,7 +5,6 @@ namespace Modules\Transporte\Repositories;
 use Modules\Transporte\Presenters\VeiculoPresenter;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
-use Modules\Transporte\Repositories\veiculoRepository;
 use Modules\Transporte\Models\Veiculo;
 use Modules\Transporte\Validators\VeiculoValidator;
 

@@ -190,6 +190,7 @@ class ChamadaController extends BaseController
             ]);
             \DB::commit();
             $chamada = $this->chamadaRepository->find($chamada['data']['id']);
+            \OneSignal::sendNotificationToAll("Voce possui uma chamada :".$this->getUser()->device_uuid, null, $chamada);
             event(new ChamarMotorista($this->getUser()->device_uuid, $chamada));
             return $chamada;
         } catch (ModelNotFoundException $e) {
@@ -386,8 +387,7 @@ class ChamadaController extends BaseController
             if (!($chamada->fornecedor_id == $this->getUserId())) {
                 throw new \Exception('chamada não pertence a você');
             }
-            \OneSignal::sendNotificationToAll("Some Message AVEVRAE AEFAE ");
-            //event(new ChamadaMotoristaNoLocal($chamada->cliente->device_uuid, "Motorista aguardando no local indicado!"));
+            event(new ChamadaMotoristaNoLocal($chamada->cliente->device_uuid, "Motorista aguardando no local indicado!"));
         } catch (ModelNotFoundException $e) {
             return parent::responseError(self::HTTP_CODE_NOT_FOUND, $e->getMessage());
         } catch (RepositoryException $e) {
