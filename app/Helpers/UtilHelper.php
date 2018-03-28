@@ -141,4 +141,9 @@ if (!function_exists('DummyFunction')) {
             return $cpf{10} == ($resto < 2 ? 0 : 11 - $resto);
         }
     }
+    if (!function_exists('checkProd')) {
+        function checkProd(){
+            return !env('PUSHER_PROD')?"dev.":null;
+        }
+    }
 }
