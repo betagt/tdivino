@@ -25,6 +25,7 @@ use Modules\Transporte\Repositories\ChamadaRepository;
 use Modules\Transporte\Repositories\GeoPosicaoRepository;
 use Modules\Transporte\Services\ChamadaNotificacaoService;
 use Modules\Transporte\Services\ChamadaOneSginalService;
+use Modules\Transporte\Services\PagamentoMoipService;
 use Portal\Criteria\OrderCriteria;
 use Portal\Http\Controllers\BaseController;
 
@@ -62,13 +63,18 @@ class ChamadaController extends BaseController
      * @var ChamadaNotificacaoService
      */
     private $chamadaNotificacaoService;
+    /**
+     * @var PagamentoMoipService
+     */
+    private $pagamentoMoipService;
 
     public function __construct(
         ChamadaRepository $chamadaRepository,
         GeoService $geoService,
         GeoPosicaoRepository $geoPosicaoRepository,
         ConfiguracaoService $configuracaoService,
-        ChamadaNotificacaoService $chamadaNotificacaoService)
+        ChamadaNotificacaoService $chamadaNotificacaoService,
+        PagamentoMoipService $pagamentoMoipService)
     {
         parent::__construct($chamadaRepository, ChamadaCriteria::class);
         $this->chamadaRepository = $chamadaRepository;
@@ -76,6 +82,7 @@ class ChamadaController extends BaseController
         $this->geoPosicaoRepository = $geoPosicaoRepository;
         $this->configuracaoService = $configuracaoService;
         $this->chamadaNotificacaoService = $chamadaNotificacaoService;
+        $this->pagamentoMoipService = $pagamentoMoipService;
     }
 
 
@@ -198,7 +205,7 @@ class ChamadaController extends BaseController
             ]);
             \DB::commit();
             $chamada = $this->chamadaRepository->find($chamada['data']['id']);
-            $this->chamadaNotificacaoService->iniciarChamada($chamada);
+            //$this->chamadaNotificacaoService->iniciarChamada($chamada);
             /*ChamadaOneSginalService::sendNotificationUsingTags("Voce possui uma chamada :".$this->getUser()->device_uuid,[[
                 'key'=>'chamada_type',
                 'relation'=>'is',
@@ -206,7 +213,7 @@ class ChamadaController extends BaseController
             ],null, ['teste','teste']);*/
             //\OneSignal::sendNotificationToAll("Voce possui uma chamada :".$this->getUser()->device_uuid, null, ['teste'=>'teste'], null, '566f88f5-99f0-4aec-8b9d-f76b3a3cff59');
             //\OneSignal::sendNotificationToSegment('teste', '566f88f5-99f0-4aec-8b9d-f76b3a3cff59', $chamada);
-            //event(new ChamarMotorista($this->getUser()->device_uuid, $chamada));
+            event(new ChamarMotorista($this->getUser()->device_uuid, $chamada));
             return $chamada;
         } catch (ModelNotFoundException $e) {
             \DB::rollback();
@@ -370,8 +377,8 @@ class ChamadaController extends BaseController
                 event(new RemoverChamada($chamada->id, ChamadaRemover::REMOVE_CHAMADA));
             }
             if(!is_null($chamada->fornecedor)){
-                //event(new FinalizarChamada($chamada->fornecedor->device_uuid, 'chamada finalizada'));
-                $this->chamadaNotificacaoService->cancelar_chamada( 'chamada finalizada', 'motorista');
+                event(new FinalizarChamada($chamada->fornecedor->device_uuid, 'chamada finalizada'));
+                //$this->chamadaNotificacaoService->cancelar_chamada( 'chamada finalizada', $chamada->fornecedor->device_uuid, 'motorista');
             }
             \DB::commit();
             return $response;
@@ -437,8 +444,8 @@ class ChamadaController extends BaseController
             }
             $chamada['status'] = Chamada::STATUS_CANCELADO;
             $this->chamadaRepository->update($chamada, $idChamada);
-			//event(new ChamadaCancelar($chamada['data']['cliente']['data']['device_uuid'], 'chama foi cancelada', User::CLIENTE));
-            $this->chamadaNotificacaoService->cancelar_chamada( 'chamada finalizada', 'passageiro');
+			event(new ChamadaCancelar($chamada['data']['cliente']['data']['device_uuid'], 'chama foi cancelada', User::CLIENTE));
+            //$this->chamadaNotificacaoService->cancelar_chamada( 'chamada finalizada', 'passageiro');
 			\DB::commit();
             return $chamada;
         } catch (ModelNotFoundException $e) {
@@ -468,8 +475,8 @@ class ChamadaController extends BaseController
             }
             $chamada['data']['datahora_embarque'] = Carbon::now();
 			$response = $this->chamadaRepository->skipPresenter(true)->find($idChamada);
-			$this->chamadaNotificacaoService->embarque_motorista($chamada);
-			//event(new ChamadaEmbarque($response->cliente->device_uuid, $chamada, 'fornecedor'));
+			//$this->chamadaNotificacaoService->embarque_motorista($chamada, $response->cliente->device_uuid);
+			event(new ChamadaEmbarque($response->cliente->device_uuid, $chamada, 'fornecedor'));
             return $this->chamadaRepository->skipPresenter(false)->update($chamada['data'], $idChamada);
         } catch (ModelNotFoundException $e) {
             return parent::responseError(self::HTTP_CODE_NOT_FOUND, $e->getMessage());
@@ -554,5 +561,8 @@ class ChamadaController extends BaseController
         return ['data' => $this->geoService->distanceCalculate($data['origem'], $data['destino'])];
     }
 
+    function pagar($idPagamento){
+        return $this->pagamentoMoipService->capturarPagamento($idPagamento);
+    }
 
 }

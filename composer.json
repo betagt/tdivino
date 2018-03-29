@@ -31,7 +31,8 @@
         "laravel-notification-channels/pusher-push-notifications": "^1.0",
         "pusher/pusher-push-notifications": "^0.10.2",
         "brozot/laravel-fcm": "^1.2",
-        "berkayk/onesignal-laravel": "^0.9.9"
+        "berkayk/onesignal-laravel": "^0.9.9",
+        "artesaos/moip": "^1.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

@@ -192,7 +192,8 @@ return [
         Folklore\Image\ImageServiceProvider::class,
 		//NotificationChannels\PusherPushNotifications\PusherPushNotificationsServiceProvider::class,
         LaravelFCM\FCMServiceProvider::class,
-        Berkayk\OneSignal\OneSignalServiceProvider::class
+        Berkayk\OneSignal\OneSignalServiceProvider::class,
+        Artesaos\Moip\Providers\MoipServiceProvider::class,
 
     ],
 
@@ -245,7 +246,8 @@ return [
         'Image' => Folklore\Image\Facades\Image::class,
         'FCM'      => \LaravelFCM\Facades\FCM::class,
         'FCMGroup' => \LaravelFCM\Facades\FCMGroup::class, // Optional
-        'OneSignal' => \Berkayk\OneSignal\OneSignalFacade::class
+        'OneSignal' => \Berkayk\OneSignal\OneSignalFacade::class,
+        'Moip'    => Artesaos\Moip\Facades\Moip::class,
     ],
 
 ];

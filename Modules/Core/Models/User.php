@@ -78,7 +78,9 @@ class User extends Authenticatable implements Transformable
             //TODO criar eventos para para esse tipo de ação.
             if(!is_null($query->id) && in_array(User::FORNECEDOR, $query->getRoles())){
                 $validado = app(TipoDocumentoRepository::class)->validadeUser($query->id);
-                $query->status = ((!$validado['habilitado'] && is_null($query->veiculoAtivo)) || ($validado['habilitado'] && is_null($query->veiculoAtivo)))?User::BLOQUEADO:User::ATIVO;
+                $verificacao = ((!$validado['habilitado'] && is_null($query->veiculoAtivo)) || ($validado['habilitado'] && is_null($query->veiculoAtivo)));
+                $query->status = $verificacao?User::BLOQUEADO:User::ATIVO;
+                $query->habilitado = !$verificacao;
                 return $query;
             }
         };

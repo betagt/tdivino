@@ -1,7 +1,7 @@
 <?php
 /**
  * A helper file for Laravel 5, to provide autocomplete information to your IDE
- * Generated for Laravel 5.3.31 on 2018-03-16.
+ * Generated for Laravel 5.3.31 on 2018-03-29.
  *
  * @author Barry vd. Heuvel <barryvdh@gmail.com>
  * @see https://github.com/barryvdh/laravel-ide-helper
@@ -12075,6 +12075,124 @@ namespace Berkayk\OneSignal {
  
 }
 
+namespace Artesaos\Moip\Facades { 
+
+    class Moip {
+        
+        /**
+         * Return a intance of package.
+         *
+         * @return \Moip\Moip 
+         * @static 
+         */ 
+        public static function getApi()
+        {
+            return \Artesaos\Moip\Moip::getApi();
+        }
+        
+        /**
+         * Start Moip sdk.
+         *
+         * @deprecated 
+         * @static 
+         */ 
+        public static function start()
+        {
+            return \Artesaos\Moip\Moip::start();
+        }
+        
+        /**
+         * Create a new Accounts instance.
+         *
+         * @return \Moip\Resource\Account 
+         * @static 
+         */ 
+        public static function accounts()
+        {
+            return \Artesaos\Moip\Moip::accounts();
+        }
+        
+        /**
+         * Create a new Customer instance.
+         *
+         * @return \Moip\Resource\Customer 
+         * @static 
+         */ 
+        public static function customers()
+        {
+            return \Artesaos\Moip\Moip::customers();
+        }
+        
+        /**
+         * Create a new Entry instance.
+         *
+         * @return \Moip\Resource\Entry 
+         * @static 
+         */ 
+        public static function entries()
+        {
+            return \Artesaos\Moip\Moip::entries();
+        }
+        
+        /**
+         * Create a new Order instance.
+         *
+         * @return \Moip\Resource\Orders 
+         * @static 
+         */ 
+        public static function orders()
+        {
+            return \Artesaos\Moip\Moip::orders();
+        }
+        
+        /**
+         * Create a new Payment instance.
+         *
+         * @return \Moip\Resource\Payment 
+         * @static 
+         */ 
+        public static function payments()
+        {
+            return \Artesaos\Moip\Moip::payments();
+        }
+        
+        /**
+         * Create a new Multiorders instance.
+         *
+         * @return \Moip\Resource\Multiorders 
+         * @static 
+         */ 
+        public static function multiorders()
+        {
+            return \Artesaos\Moip\Moip::multiorders();
+        }
+        
+        /**
+         * Create a new Notifications instance.
+         *
+         * @return \Moip\Resource\NotificationPreferences 
+         * @static 
+         */ 
+        public static function notifications()
+        {
+            return \Artesaos\Moip\Moip::notifications();
+        }
+        
+        /**
+         * Create a new Tranfers instance.
+         *
+         * @return \Moip\Resource\Transfers 
+         * @static 
+         */ 
+        public static function transfers()
+        {
+            return \Artesaos\Moip\Moip::transfers();
+        }
+         
+    }
+ 
+}
+
 
 namespace  { 
 
@@ -13984,6 +14102,8 @@ namespace  {
     class FCMGroup extends \LaravelFCM\Facades\FCMGroup {}
 
     class OneSignal extends \Berkayk\OneSignal\OneSignalFacade {}
+
+    class Moip extends \Artesaos\Moip\Facades\Moip {}
  
 }
 

@@ -57,6 +57,9 @@ class Veiculo extends Model implements Transformable
         self::updating(function ($query) use ($ativar){
             return $ativar($query);
         });
+        self::updated(function ($query){
+            return $query->usuario->save();
+        });
         self::saving(function ($query) use ($ativar){
             return $ativar($query);
         });
