@@ -462,6 +462,9 @@ class ChamadaController extends BaseController
 
     function embarquePassageiro(Request $request, $idChamada){
         $data = ['chamada_id' => $idChamada];
+        $embarque = $request->only([
+            'hash_pagamento'
+        ]);
         \Validator::make($data, [
             'chamada_id'=>'required|exists:transporte_chamadas,id'
         ])->validate();
@@ -472,6 +475,11 @@ class ChamadaController extends BaseController
             }
             if (!($chamada['data']['fornecedor_id'] == $this->getUserId())) {
                 throw new \Exception('chamada não pertence a você');
+            }
+            if(is_null($embarque['hash_pagamento']) && $chamada['data']['forma_pagamento_id'] == 3){
+                throw new \Exception('pagamento não informado');
+            }else if(!is_null($embarque['hash_pagamento']) && $chamada['data']['forma_pagamento_id'] == 3){
+               $pagamento = $this->pagamentoMoipService->capturarPagamento($embarque['hash_pagamento']);
             }
             $chamada['data']['datahora_embarque'] = Carbon::now();
 			$response = $this->chamadaRepository->skipPresenter(true)->find($idChamada);
@@ -546,6 +554,32 @@ class ChamadaController extends BaseController
         }
     }
 
+    function finalizarChamda($idChamada){
+        try {
+            $chamada = $this->chamadaRepository->find($idChamada);
+            if ($chamada->status == Chamada::STATUS_CANCELADO) {
+                throw new \Exception('chamada já cancelada');
+            }
+            if (is_null($chamada)) {
+                throw new \Exception('chamada invalida');
+            }
+            if (!($chamada->cliente_id == $this->getUserId())) {
+                throw new \Exception('chamada não pertence a você');
+            }
+
+            $chamada['tipo'] = Chamada::TIPO_FINALIZADO;
+            $chamada = $this->chamadaRepository->skipPresenter(true)->update($chamada, $idChamada);
+            $response = $this->chamadaRepository->skipPresenter(false)->find($idChamada);
+            event(new FinalizarChamada($chamada->fornecedor->device_uuid, 'chamada finalizada'));
+            return $response;
+        } catch (ModelNotFoundException $e) {
+            return parent::responseError(self::HTTP_CODE_NOT_FOUND, $e->getMessage());
+        } catch (RepositoryException $e) {
+            return parent::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code' => $e->getCode(), 'message' => $e->getMessage()]));
+        } catch (\Exception $e) {
+            return parent::responseError(self::HTTP_CODE_BAD_REQUEST, $e->getMessage());
+        }
+    }
     /**
      * @param Request $request
      * @return array

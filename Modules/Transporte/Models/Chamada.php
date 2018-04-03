@@ -15,7 +15,7 @@ class Chamada extends BaseModel implements Transformable
 
     const TIPO_SOLICITACAO = 'solicitacao';
     const TIPO_ATENDIMENTO = 'atendimento';
-    const TIPO_FINALIZADO= 'finalizado';
+    const TIPO_FINALIZADO = 'finalizado';
 
     const STATUS_PENDENTE = 'pendente';
     const STATUS_PAGO = 'pago';
