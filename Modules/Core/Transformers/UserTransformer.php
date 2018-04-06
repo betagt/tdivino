@@ -57,6 +57,7 @@ class UserTransformer extends BaseTransformer
 			'excluido' => (boolean)$model->trashed(),
 			'created_at' => $model->created_at,
 			'updated_at' => $model->updated_at,
+            'apto_agencia' => (boolean)$model->apto_agencia,
 		];
 		switch ($perfil) {
 			case User::FORNECEDOR :

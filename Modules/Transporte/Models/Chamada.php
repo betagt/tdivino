@@ -14,6 +14,7 @@ class Chamada extends BaseModel implements Transformable
     use TransformableTrait;
 
     const TIPO_SOLICITACAO = 'solicitacao';
+    const TIPO_EMBARCADO = 'embarcado';
     const TIPO_ATENDIMENTO = 'atendimento';
     const TIPO_FINALIZADO = 'finalizado';
 

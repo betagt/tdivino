@@ -27,6 +27,7 @@ class UserAgenciaReguladoraCriteria extends BaseCriteria implements CriteriaInte
             ->join('role_user','users.id','role_user.user_id')
             ->join('roles','roles.id','role_user.role_id')
 			->where('roles.slug', User::FORNECEDOR)
+			->where('users.apto_agencia', true)
             ->select(array_merge($this->defaultTable));
     }
 }

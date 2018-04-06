@@ -62,6 +62,7 @@ class User extends Authenticatable implements Transformable
         'incicacao',
         'habilitado',
         'avaliacao',
+        'apto_agencia',
     ];
 
     public function __construct(array $attributes = [])
@@ -78,9 +79,12 @@ class User extends Authenticatable implements Transformable
             //TODO criar eventos para para esse tipo de ação.
             if(!is_null($query->id) && in_array(User::FORNECEDOR, $query->getRoles())){
                 $validado = app(TipoDocumentoRepository::class)->validadeUser($query->id);
-                $verificacao = ((!$validado['habilitado'] && is_null($query->veiculoAtivo)) || ($validado['habilitado'] && is_null($query->veiculoAtivo)));
-                $query->status = $verificacao?User::BLOQUEADO:User::ATIVO;
-                $query->habilitado = !$verificacao;
+                $verificacao = is_null($query->veiculoAtivo)? false : $validado['habilitado'];
+                $query->status = $verificacao?User::ATIVO:User::BLOQUEADO;
+                if(!$query->apto_agencia && $verificacao){
+                    $query->apto_agencia = true;
+                }
+                $query->habilitado = $verificacao;
                 return $query;
             }
         };

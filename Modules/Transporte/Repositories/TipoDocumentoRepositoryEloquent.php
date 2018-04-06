@@ -72,7 +72,6 @@ class TipoDocumentoRepositoryEloquent extends BaseRepository implements TipoDocu
         $max_documento_tipo = count($contagem_array);
         $data['habilitado'] = !in_array(0, $contagem_array);
         $selecao = array_count_values($contagem_array);
-
         if(isset($selecao[1]) && $selecao[1] == $max_documento_tipo){
             $data['cor'] = 'green';
             $this->skipPresenter($skypresenter);
@@ -90,21 +89,42 @@ class TipoDocumentoRepositoryEloquent extends BaseRepository implements TipoDocu
         }
 
     }
-
+/*
+ SELECT DISTINCT
+  transporte_tipo_documentos.*,
+  (select count(transporte_documentos.id) from transporte_documentos
+  where (transporte_tipo_documentos.id = transporte_documentos.transporte_tipo_documento_id)
+  AND (transporte_documentos.documentotable_type = 'Modules\Transporte\Models\Veiculo')
+  AND (transporte_documentos.documentotable_id = 40)
+  AND (transporte_documentos.status = 'aceito')) AS contagem
+FROM
+  transporte_tipo_documentos
+WHERE
+  transporte_tipo_documentos.tipo = 'veiculo' AND
+  transporte_tipo_documentos.obrigatorio = true
+GROUP BY
+  transporte_tipo_documentos.id
+ * */
     public function validadeVeiculo(int $veiculoId)
     {
         $data = [];
         $rs = $this->model
-            ->leftJoin('transporte_documentos', function ($join) use ($veiculoId) {
+            /*->leftJoin('transporte_documentos', function ($join) use ($veiculoId) {
                 $join->on('transporte_tipo_documentos.id', '=', 'transporte_documentos.transporte_tipo_documento_id');
                 $join->where('transporte_documentos.documentotable_type', '=', Veiculo::class);
                 $join->where('transporte_documentos.documentotable_id', '=', $veiculoId);
                 $join->where('transporte_documentos.status', '=', Documento::STATUS_ACEITO);
-            })
+            })*/
             ->groupby('transporte_tipo_documentos.id')
             ->where('transporte_tipo_documentos.tipo', '=', 'veiculo')
             ->where('transporte_tipo_documentos.obrigatorio', '=', true)
-            ->select(['transporte_tipo_documentos.*', \DB::raw('count(transporte_documentos.id) AS contagem')])
+            ->select(['transporte_tipo_documentos.*', \DB::raw("
+            (select count(transporte_documentos.id) from transporte_documentos
+                where (transporte_tipo_documentos.id = transporte_documentos.transporte_tipo_documento_id)
+              AND (transporte_documentos.documentotable_type = '".Veiculo::class."')
+              AND (transporte_documentos.documentotable_id = $veiculoId)
+              AND (transporte_documentos.status = '".Documento::STATUS_ACEITO."')) AS contagem
+            ")])
             ->get();
 
         if($rs->count() == 0){

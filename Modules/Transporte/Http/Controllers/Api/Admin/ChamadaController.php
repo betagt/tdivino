@@ -482,6 +482,7 @@ class ChamadaController extends BaseController
                $pagamento = $this->pagamentoMoipService->capturarPagamento($embarque['hash_pagamento']);
             }
             $chamada['data']['datahora_embarque'] = Carbon::now();
+            $chamada['data']['tipo'] = Chamada::TIPO_EMBARCADO;
 			$response = $this->chamadaRepository->skipPresenter(true)->find($idChamada);
 			//$this->chamadaNotificacaoService->embarque_motorista($chamada, $response->cliente->device_uuid);
 			event(new ChamadaEmbarque($response->cliente->device_uuid, $chamada, 'fornecedor'));
