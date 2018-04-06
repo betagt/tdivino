@@ -96,8 +96,8 @@ class ChamadaController extends BaseController
     {
         try {
             $result = $this->chamadaRepository
-                ->pushCriteria(new ChamadaFornecedorCriteria($request, $this->getUserId()))
                 ->pushCriteria(new OrderCriteria($request))
+                ->pushCriteria(new ChamadaFornecedorCriteria($request, $this->getUserId()))
                 ->paginate(self::$_PAGINATION_COUNT);
 
             $result['meta']['financeiro']['total'] = $this->chamadaRepository->somaFornecedorTotais($this->getUserId());
