@@ -479,7 +479,7 @@ class ChamadaController extends BaseController
             if(is_null($embarque['hash_pagamento']) && $chamada['data']['forma_pagamento_id'] == 3){
                 throw new \Exception('pagamento não informado');
             }else if(!is_null($embarque['hash_pagamento']) && $chamada['data']['forma_pagamento_id'] == 3){
-               $pagamento = $this->pagamentoMoipService->capturarPagamento($embarque['hash_pagamento']);
+                $pagamento = $this->pagamentoMoipService->capturarPagamento($embarque['hash_pagamento']);
             }
             $chamada['data']['datahora_embarque'] = Carbon::now();
             $chamada['data']['tipo'] = Chamada::TIPO_EMBARCADO;

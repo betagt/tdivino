@@ -17,6 +17,7 @@ use Modules\Core\Repositories\UserRepository;
 use Modules\Core\Services\ImageUploadService;
 use Portal\Services\MailService;
 use Prettus\Repository\Exceptions\RepositoryException;
+use Modules\Core\Models\Pessoa;
 use Validator;
 
 /**
@@ -128,6 +129,9 @@ class UserController extends BaseController
 					$user->telefone()->create($data);
 				}
 			}
+            $pessoa = Pessoa::create();
+            $user->pessoa_id = $pessoa->id;
+            $user->save();
             $user = $this->userRepository->skipPresenter(false)->find($user->id);
             //event(new UsuarioCadastrado($this->userRepository->skipPresenter(true)->find($user['data']['id']),'cliente'));
             return $user;

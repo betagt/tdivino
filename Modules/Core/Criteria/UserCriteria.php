@@ -25,7 +25,7 @@ class UserCriteria extends BaseCriteria implements CriteriaInterface
     {
         $model = parent::apply($model, $repository);
         return $model
-            ->join('pessoas', 'users.pessoa_id', 'pessoas.id')
+            ->leftJoin('pessoas', 'users.pessoa_id', 'pessoas.id')
             ->join('role_user', 'users.id', 'role_user.user_id')
             ->join('roles', 'roles.id', 'role_user.role_id')
             ->select(array_merge($this->defaultTable));

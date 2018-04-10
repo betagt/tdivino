@@ -43,7 +43,6 @@ class ChamadaMotoristaNoLocal extends BaseEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        dd($this->socket);
         return  [self::checkProd().'chamada.motorista_no_local.cliente.'.$this->uuid];
     }
 }
