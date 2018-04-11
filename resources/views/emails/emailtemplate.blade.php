@@ -26,7 +26,7 @@
             <div class="header-left" style="width: 50%; float: left; display: flex; align-items: center">
                 <a href="tel:(63)%203225-7500" value="+556332257500" rel="noreferrer" target="_blank" style="color: #fff; text-decoration: none; font-size: 14px; margin-right: 30px">(63) 0000-7500</a>
                 <!--<span style="color: #fff; margin-right: 10px; font-weight: bold">(63) 3225-7500</span>-->
-                <a href="mailto:atendimento@qimob.com.br" target="_blank" style="color: #fff; text-decoration: none; font-size: 14px">atendimento@levez.com.br</a>
+                <a href="mailto:atendimento@qimob.com.br" target="_blank" style="color: #fff; text-decoration: none; font-size: 14px">sac@levez.biz</a>
                 <!--<span style="color: #fff; margin-right: 10px; font-weight: bold">atendimento@qimob.com.br</span>-->
             </div>
             <div class="header-right" style="width: 50%; float: right">
@@ -46,7 +46,7 @@
         <div class="header" style="background-color: #f7931e">
             <div style="padding: 10px; height: 60px; display: flex; align-items: center; width: 90%;margin: 0 auto">
                 <div class="header-left" style="width: 50%; float: left" >
-                    <img alt="qAtive Tecnologia" class="img-logo" src="http://qative.com.br/wp-content/uploads/files/logo_qimob.png" style="width: 120px">
+                    <img alt="qAtive Tecnologia" class="img-logo" src="http://admin.levez.biz/wp-content/uploads/files/logo_qimob.png" style="width: 120px">
                 </div>
                 <div class="header-right" style="width: 50%; float: right">
                     <nav>

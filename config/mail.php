@@ -56,8 +56,8 @@ return [
     */
 
     'from' => [
-        'address' => 'qimob@qative.com.br',
-        'name' => 'Qimob',
+        'address' => 'sac@levez.biz',
+        'name' => 'SAC',
     ],
 
     /*
