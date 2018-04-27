@@ -112,8 +112,8 @@ class UserController extends BaseController
             'data_nascimento'       => 'date|nullable',
             'sexo'                  => 'integer|in:1,2|nullable',
             'chk_newsletter'        => 'boolean|nullable',
-			'ddd'        => 'required|numeric|nullable|max:2',
-			'numero'        => 'required|numeric|nullable|max:15',
+			'ddd'        => 'required|nullable',
+			'numero'        => 'required|nullable',
         ])->validate();
         try {
             $user = $this->userRepository->skipPresenter(true)->create($data);

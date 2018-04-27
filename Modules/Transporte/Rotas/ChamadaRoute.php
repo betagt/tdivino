@@ -80,6 +80,10 @@ class ChamadaRoute implements ICustomRoute
                 ]);
             });
             Route::group(['middleware' => ['acl'],'is' => 'administrador|moderador,or', 'protect_alias'  => 'user'],function (){
+                Route::get('chamada/monitor-chamadas', [
+                    'as' => 'chamda.monitor.chamadas',
+                    'uses' => 'ChamadaController@monitoChamadas'
+                ]);
                 Route::resource('veiculo', 'VeiculoController',
                     [
                         'except' => ['create', 'edit']
