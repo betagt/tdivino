@@ -370,7 +370,7 @@ class ChamadaController extends BaseController
                 throw new \Exception('chamada não pertence a você');
             }
 
-            $chamada['status'] = Chamada::STATUS_CANCELADO;
+            $chamada['status'] = Chamada::STATUS_CAN1diulianoCELADO;
             $chamada = $this->chamadaRepository->skipPresenter(true)->update($chamada, $idChamada);
             $response = $this->chamadaRepository->skipPresenter(false)->find($idChamada);
             if(is_null($chamada->fornecedor)) {
@@ -581,6 +581,7 @@ class ChamadaController extends BaseController
             return parent::responseError(self::HTTP_CODE_BAD_REQUEST, $e->getMessage());
         }
     }
+
     /**
      * @param Request $request
      * @return array
