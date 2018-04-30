@@ -154,13 +154,6 @@ class ChamadaController extends BaseController
         }
     }
 
-    /**8
-     * Iniciar a chamada
-     *
-     *
-     * Endpoint para dar inicio ao serviço de chamada de taxi
-     * @return mixed
-     */
     function iniciarChamada(Request $request)
     {
 
@@ -370,7 +363,7 @@ class ChamadaController extends BaseController
                 throw new \Exception('chamada não pertence a você');
             }
 
-            $chamada['status'] = Chamada::STATUS_CAN1diulianoCELADO;
+            $chamada['status'] = Chamada::STATUS_CANCELADO;
             $chamada = $this->chamadaRepository->skipPresenter(true)->update($chamada, $idChamada);
             $response = $this->chamadaRepository->skipPresenter(false)->find($idChamada);
             if(is_null($chamada->fornecedor)) {
@@ -582,10 +575,6 @@ class ChamadaController extends BaseController
         }
     }
 
-    /**
-     * @param Request $request
-     * @return array
-     */
     function calcularRota(Request $request)
     {
         $data = $request->only(['origem', 'destino', 'forma_pagamento_id']);
@@ -599,6 +588,12 @@ class ChamadaController extends BaseController
 
     function pagar($idPagamento){
         return $this->pagamentoMoipService->capturarPagamento($idPagamento);
+    }
+
+    function monitoChamadas(){
+        return $this->chamadaRepository->scopeQuery(function ($query){
+            return $query->whereBetween('transporte_chamadas.created_at', [Carbon::now()->subHour(3), Carbon::now()])->orderBy('id','DESC');
+        })->all();
     }
 
 }
