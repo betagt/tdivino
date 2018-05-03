@@ -191,7 +191,7 @@ return [
         browner12\helpers\HelperServiceProvider::class,
         Folklore\Image\ImageServiceProvider::class,
 		//NotificationChannels\PusherPushNotifications\PusherPushNotificationsServiceProvider::class,
-        LaravelFCM\FCMServiceProvider::class,
+        \LaravelFCM\FCMServiceProvider::class,
         Berkayk\OneSignal\OneSignalServiceProvider::class,
         Artesaos\Moip\Providers\MoipServiceProvider::class,
 

@@ -34,6 +34,7 @@ class Chamada extends BaseModel implements Transformable
         'datahora_comfirmação',
         'datahora_embarque',
         'datahora_desembarcou',
+        'datahora_encerramento',
         'valor',
         'avaliacao',
         'observacao',

@@ -50,11 +50,17 @@ class ChamadaNotificacaoService
                 ]
             ]
         ];
-        $this->chamadaOneSginalService->sendNotificationToCategoryAndTag("Voce possui uma chamada", [[
+        ChamadaOneSginalService::sendNotificationUsingTags("Voce possui uma chamada",[[
+            'key'=>'chamada_type',
+            'relation'=>'is',
+            'value'=>checkProd() . 'motorista']
+            //'value'=>checkProd() . 'motorista']
+        ],null, $chamada);
+        /*$this->chamadaOneSginalService->sendNotificationToCategoryAndTag("Voce possui uma chamada", [[
             'key' => 'chamada_type',
             'relation' => 'is',
             'value' => checkProd() . 'motorista']
-        ], 'a8e40325-b9cd-4b9b-b88a-a9d7b0baa861', null, $chamada);
+        ], null, null, $chamada);*/
 
     }
 
