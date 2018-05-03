@@ -206,7 +206,7 @@ class ChamadaController extends BaseController
             ],null, ['teste','teste']);*/
             //\OneSignal::sendNotificationToAll("Voce possui uma chamada :".$this->getUser()->device_uuid, null, ['teste'=>'teste'], null, '566f88f5-99f0-4aec-8b9d-f76b3a3cff59');
             //\OneSignal::sendNotificationToSegment('teste', '566f88f5-99f0-4aec-8b9d-f76b3a3cff59', $chamada);
-            event(new ChamarMotorista($this->getUser()->device_uuid, $chamada));
+            //event(new ChamarMotorista($this->getUser()->device_uuid, $chamada));
             return $chamada;
         } catch (ModelNotFoundException $e) {
             \DB::rollback();
