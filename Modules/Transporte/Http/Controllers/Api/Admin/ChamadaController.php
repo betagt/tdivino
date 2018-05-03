@@ -600,12 +600,24 @@ class ChamadaController extends BaseController
     }
 
     function listaChamadasAtivas(){
-        return $this->chamadaRepository->scopeQuery(function ($query){
+        $chamadas = $this->chamadaRepository->scopeQuery(function ($query){
             return $query
                 ->where('transporte_chamadas.tipo', '=', Chamada::TIPO_SOLICITACAO)
                 ->where('transporte_chamadas.status', '=', Chamada::STATUS_PENDENTE)
                 ->orderBy('id','ASC');
         })->all();
+        return array_map(function($chamada){
+            return [
+                'id' => $chamada['data']['id'],
+                'cliente' => [
+                    'data' => [
+                        'lat' => $chamada['data']['cliente']['data']['lat'],
+                        'lng' => $chamada['data']['cliente']['data']['lng'],
+                    ]
+                ],
+                'trajeto' => $chamada['data']['trajeto'],
+            ];
+        }, $chamadas['data']);
     }
 
 }
