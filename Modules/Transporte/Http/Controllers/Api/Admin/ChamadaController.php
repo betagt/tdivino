@@ -608,14 +608,14 @@ class ChamadaController extends BaseController
         })->all();
         return array_map(function($chamada){
             return [
-                'id' => $chamada['data']['id'],
+                'id' => $chamada['id'],
                 'cliente' => [
                     'data' => [
-                        'lat' => $chamada['data']['cliente']['data']['lat'],
-                        'lng' => $chamada['data']['cliente']['data']['lng'],
+                        'lat' => $chamada['cliente']['data']['lat'],
+                        'lng' => $chamada['cliente']['data']['lng'],
                     ]
                 ],
-                'trajeto' => $chamada['data']['trajeto'],
+                'trajeto' => $chamada['trajeto'],
             ];
         }, $chamadas['data']);
     }
