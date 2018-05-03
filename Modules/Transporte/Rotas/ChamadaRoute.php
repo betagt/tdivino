@@ -72,6 +72,10 @@ class ChamadaRoute implements ICustomRoute
                     'as' => 'chamda.cancelar-fornecedor',
                     'uses' => 'ChamadaController@motoristaNoLocal'
                 ]);
+                Route::get('chamada/chamadas-ativas', [
+                    'as' => 'chamda.cancelar-fornecedor',
+                    'uses' => 'ChamadaController@listaChamadasAtivas'
+                ]);
             });
             Route::group(['middleware' => ['acl'],'is' => 'administrador|agencia-reguladora|moderator,or', 'protect_alias'  => 'user'],function (){
                 Route::get('chamada/chamadas-agencia/{id}', [

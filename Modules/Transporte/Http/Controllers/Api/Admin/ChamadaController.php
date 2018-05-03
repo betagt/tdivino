@@ -599,4 +599,13 @@ class ChamadaController extends BaseController
         })->all();
     }
 
+    function listaChamadasAtivas(){
+        return $this->chamadaRepository->scopeQuery(function ($query){
+            return $query
+                ->where('transporte_chamadas.tipo', '=', Chamada::TIPO_SOLICITACAO)
+                ->where('transporte_chamadas.status', '=', Chamada::STATUS_PENDENTE)
+                ->orderBy('id','ASC');
+        })->all();
+    }
+
 }
