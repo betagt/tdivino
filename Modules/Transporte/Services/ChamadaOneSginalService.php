@@ -4,7 +4,7 @@ namespace Modules\Transporte\Services;
 
 class ChamadaOneSginalService
 {
-    public static function sendNotificationUsingTags($message, $tags, $url = null, $data = null, $buttons = null, $schedule = null){
+    public function sendNotificationUsingTags($message, $tags, $url = null, $data = null, $buttons = null, $schedule = null){
         \OneSignal::sendNotificationUsingTags($message, $tags, $url = null, $data = null, $buttons = null, $schedule = null);
     }
 
