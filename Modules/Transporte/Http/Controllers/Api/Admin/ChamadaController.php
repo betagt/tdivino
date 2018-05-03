@@ -198,7 +198,7 @@ class ChamadaController extends BaseController
             ]);
             \DB::commit();
             $chamada = $this->chamadaRepository->find($chamada['data']['id']);
-            //$this->chamadaNotificacaoService->iniciarChamada($chamada);
+            $this->chamadaNotificacaoService->iniciarChamada($chamada);
             /*ChamadaOneSginalService::sendNotificationUsingTags("Voce possui uma chamada :".$this->getUser()->device_uuid,[[
                 'key'=>'chamada_type',
                 'relation'=>'is',
@@ -364,6 +364,7 @@ class ChamadaController extends BaseController
             }
 
             $chamada['status'] = Chamada::STATUS_CANCELADO;
+            $chamada['datahora_encerramento'] = Carbon::now();
             $chamada = $this->chamadaRepository->skipPresenter(true)->update($chamada, $idChamada);
             $response = $this->chamadaRepository->skipPresenter(false)->find($idChamada);
             if(is_null($chamada->fornecedor)) {
@@ -436,6 +437,7 @@ class ChamadaController extends BaseController
                 throw new \Exception('O tmepo de cancelamento está expirado');
             }
             $chamada['status'] = Chamada::STATUS_CANCELADO;
+            $chamada['datahora_encerramento'] = Carbon::now();
             $this->chamadaRepository->update($chamada, $idChamada);
 			event(new ChamadaCancelar($chamada['data']['cliente']['data']['device_uuid'], 'chama foi cancelada', User::CLIENTE));
             //$this->chamadaNotificacaoService->cancelar_chamada( 'chamada finalizada', 'passageiro');
@@ -504,7 +506,9 @@ class ChamadaController extends BaseController
                 throw new \Exception('chamada não pertence a você');
             }
             $chamada['data']['datahora_desembarcou'] = Carbon::now();
+            $chamada['data']['datahora_encerramento'] = Carbon::now();
             $chamada['data']['tipo'] = Chamada::TIPO_FINALIZADO;
+            $chamada['data']['status'] = Chamada::STATUS_PAGO;
             $this->getUser()->disponivel = true;
             $this->getUser()->save();
 			$response = $this->chamadaRepository->skipPresenter(true)->find($idChamada);
