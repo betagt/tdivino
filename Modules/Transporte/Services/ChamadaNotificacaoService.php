@@ -53,7 +53,11 @@ class ChamadaNotificacaoService
         $this->chamadaOneSginalService->sendNotificationUsingTags("Voce possui uma chamada",[[
             'key'=>'chamada_type',
             'relation'=>'is',
-            'value'=>checkProd() . 'motorista']
+            'value'=>checkProd() . 'motorista'],
+            [
+                'key'=>'motorista_online',
+                'relation'=>'is',
+                'value'=>'online']
             //'value'=>checkProd() . 'motorista']
         ],null, $chamada);
         /*$this->chamadaOneSginalService->sendNotificationToCategoryAndTag("Voce possui uma chamada", [[
