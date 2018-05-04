@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    dd(date("Y-m-t"));
+	//dd(bcrypt('ag040518'));
     //\Cookie::queue(cookie('user_1_anuncio_18', 'teste', 1));
     /*$query = http_build_query([
         'client_id'=>3,
