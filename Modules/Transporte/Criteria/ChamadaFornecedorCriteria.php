@@ -2,6 +2,7 @@
 
 namespace Modules\Transporte\Criteria;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Portal\Criteria\BaseCriteria;
 use Prettus\Repository\Contracts\CriteriaInterface;
@@ -41,6 +42,7 @@ class ChamadaFornecedorCriteria extends BaseCriteria
             ->join('pessoas', 'users.pessoa_id', 'pessoas.id')
             ->join('role_user', 'users.id', 'role_user.user_id')
             ->join('roles', 'roles.id', 'role_user.role_id')
+            ->whereBetween('transporte_chamadas.created_at', [date('Y-m-01'), date('Y-m-t')])
             ->where('fornecedor_id', $this->id)
             ->select(array_merge($this->defaultTable));
     }
