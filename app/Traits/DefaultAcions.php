@@ -30,13 +30,13 @@ trait DefaultAcions
                 ->pushCriteria(new $this->defaultOrder($request))
                 ->paginate(self::$_PAGINATION_COUNT);
         }catch (ModelNotFoundException $e){
-            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
+            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.undefined', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
         }
         catch (RepositoryException $e){
-            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
+            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.undefined', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
         }
         catch (\Exception $e){
-            return self::responseError(self::HTTP_CODE_BAD_REQUEST, trans('errors.undefined', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
+            return self::responseError(self::HTTP_CODE_BAD_REQUEST, $e->getMessage());
         }
     }
 
@@ -52,10 +52,10 @@ trait DefaultAcions
         try{
             return $this->defaultRepository->find($id);
         }catch (ModelNotFoundException $e){
-            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
+            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.undefined', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
         }
         catch (RepositoryException $e){
-            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
+            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.undefined', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
         }
         catch (\Exception $e){
             return self::responseError(self::HTTP_CODE_BAD_REQUEST, trans('errors.undefined', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
@@ -76,10 +76,10 @@ trait DefaultAcions
         try{
             return $this->defaultRepository->create($data);
         }catch (ModelNotFoundException $e){
-            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
+            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.undefined', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
         }
         catch (RepositoryException $e){
-            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
+            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.undefined', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
         }
         catch (\Exception $e){
             return self::responseError(self::HTTP_CODE_BAD_REQUEST, trans('errors.undefined', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
@@ -101,10 +101,10 @@ trait DefaultAcions
         try{
             return $this->defaultRepository->update($data,$id);
         }catch (ModelNotFoundException $e){
-            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
+            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.undefined', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
         }
         catch (RepositoryException $e){
-            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
+            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.undefined', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
         }
         catch (\Exception $e){
             return self::responseError(self::HTTP_CODE_BAD_REQUEST, trans('errors.undefined', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
@@ -121,9 +121,9 @@ trait DefaultAcions
             $this->defaultRepository->delete($id);
             return self::responseSuccess(self::HTTP_CODE_OK, self::MSG_REGISTRO_EXCLUIDO);
         }catch (ModelNotFoundException $e){
-            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
+            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.undefined', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
         }catch (RepositoryException $e){
-            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
+            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.undefined', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
         }catch (\Exception $e){
             return self::responseError(self::HTTP_CODE_BAD_REQUEST, trans('errors.undefined', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
         }
@@ -144,9 +144,9 @@ trait DefaultAcions
             app($this->defaultRepository->model())->destroy($data['ids']);
             return self::responseSuccess(self::HTTP_CODE_OK, self::MSG_REGISTRO_EXCLUIDO);
         }catch (ModelNotFoundException $e){
-            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
+            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.undefined', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
         }catch (RepositoryException $e){
-            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
+            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.undefined', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
         }catch (\Exception $e){
             return self::responseError(self::HTTP_CODE_BAD_REQUEST, trans('errors.undefined', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
         }
@@ -160,9 +160,9 @@ trait DefaultAcions
                 ->pushCriteria(new $this->defaultOrder($request))
                 ->paginate(self::$_PAGINATION_COUNT);
         }catch (ModelNotFoundException $e){
-            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
+            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.undefined', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
         }catch (RepositoryException $e){
-            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
+            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.undefined', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
         }catch (\Exception $e){
             return self::responseError(self::HTTP_CODE_BAD_REQUEST, trans('errors.undefined', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
         }
@@ -185,9 +185,9 @@ trait DefaultAcions
                 ->restore();
             return self::responseSuccess(self::HTTP_CODE_OK, self::MSG_REGISTRO_RESTAURADO);
         }catch (ModelNotFoundException $e){
-            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
+            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.undefined', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
         }catch (RepositoryException $e){
-            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
+            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.undefined', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
         }catch (\Exception $e){
             return self::responseError(self::HTTP_CODE_BAD_REQUEST, trans('errors.undefined', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
         }
