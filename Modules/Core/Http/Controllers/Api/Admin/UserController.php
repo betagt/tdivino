@@ -706,6 +706,15 @@ class UserController extends BaseController
 		}
 	}
 
+	public function motoristas(){
+
+    }
+	public function clientes(){
+
+    }
+
+
+
     /**
      * Consulta  por ID
      *
