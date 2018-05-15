@@ -706,14 +706,6 @@ class UserController extends BaseController
 		}
 	}
 
-	public function motoristas(){
-
-    }
-	public function clientes(){
-
-    }
-
-
 
     /**
      * Consulta  por ID
@@ -734,6 +726,149 @@ class UserController extends BaseController
         }
         catch (\Exception $e){
             return self::responseError(self::HTTP_CODE_BAD_REQUEST, trans('errors.undefined', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
+        }
+    }
+
+
+    /**
+     cliente
+     */
+
+    /**
+     * Alterar
+     *
+     * Endpoint para alterar
+     *
+     * @param Request $request
+     * @param $id
+     * @return retorna registro alterado
+     */
+    public function updateCliente(Request $request, $id){
+        $data = $request->all();
+        $data = array_remove_null($data);
+        if(isset($data['pessoa']['data_nascimento']) and !is_null($data['pessoa']['data_nascimento']))
+            $data['pessoa']['data_nascimento'] = implode('-', array_reverse(explode('/', $data['pessoa']['data_nascimento'])));
+        \Validator::make($data, $this->getValidator($id))->validate();
+        try{
+            \DB::beginTransaction();
+            if(isset($data['password']))unset($data['password']);
+            if(isset($data['password_confirmation']))unset($data['password_confirmation']);
+            $user = $this->userRepository->skipPresenter(true)->update($data,$id);
+            if(is_null($user->pessoa)){
+                $pessoa = Pessoa::create($data['pessoa']);
+                $user->pessoa_id = $pessoa->id;
+            }else{
+                $user->pessoa->update($data['pessoa']);
+            }
+            if(isset($data['perfil'])){
+                $user->assignRole($data['perfil']);
+            }
+            if (isset($data['endereco']) && count($data['endereco']) > 0) {
+                if(isset($data['endereco']['id']) && $data['endereco']['id']){
+                    $model = Endereco::findOrFail($data['endereco']['id']);
+                    $model->fill($data['endereco']);
+                    $model->save();
+                }else{
+                    $user->endereco()->save(Endereco::create($data['endereco']));
+                }
+            }
+            if (isset($data['telefone'])) {
+                foreach ($data['telefone']['ddd'] as $key => $ddd) {
+                    $id_telecone = $data['telefone']['id'][$key];
+                    if(is_null($ddd)){
+                        continue;
+                    }
+                    if($id_telecone){
+                        $user->telefones()->update([
+                            'ddd' => $ddd,
+                            'numero' => $data['telefone']['numero'][$key],
+                            'principal' => $data['telefone']['principal'][$key],
+                            'tipo' => $data['telefone']['tipo'][$key],
+                        ],$id_telecone);
+                    }else{
+                        $user->telefones()->create([
+                            'ddd' => $ddd,
+                            'numero' => $data['telefone']['numero'][$key],
+                            'principal' => $data['telefone']['principal'][$key],
+                            'tipo' => $data['telefone']['tipo'][$key],
+                        ]);
+                    }
+                }
+            }
+            $user->save();
+            $result = $this->userRepository->skipPresenter(false)->find($user->id);
+            \DB::commit();
+            return  $result;
+        }catch (ModelNotFoundException $e){
+            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
+        }catch (RepositoryException $e){
+            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
+        }catch (\Exception $e){
+            return self::responseError(self::HTTP_CODE_BAD_REQUEST, $e->getMessage());
+        }
+    }
+
+    /**
+     * Cadastrar
+     *
+     * Endpoint para cadastrar
+     *
+     * @param Request $request
+     * @return retorna um registro criado
+     */
+    public function storeCliente(Request $request)
+    {
+        $data = $request->all();
+        if(isset($data['pessoa']['data_nascimento']))
+            $data['pessoa']['data_nascimento'] = implode('-', array_reverse(explode('/', $data['pessoa']['data_nascimento'])));
+
+        \Validator::make($data, $this->getValidator())->validate();
+        try {
+            \DB::beginTransaction();
+            if(!isset($data['status']))
+                $data['status'] = User::INATIVO;
+            $user = $this->userRepository->skipPresenter(true)->create($data);
+            $documento = $user->documentos();
+            if(isset($data['documentos'])){
+                foreach ($data['documentos'] as $doc){
+                    $this->documentoService->cadastrarDocumento($doc, $documento);
+                }
+            }
+            //event(new Registered($user));
+            if(is_null($user->pessoa)){
+                $pessoa = Pessoa::create($data['pessoa']);
+                $user->pessoa_id = $pessoa->id;
+                $user->save();
+            }else{
+                $user->pessoa()->update($data['pessoa']);
+            }
+            if(isset($data['perfil'])){
+                $user->assignRole($data['perfil']);
+            }
+            if (isset($data['endereco'])) {
+                $user->endereco()->save(Endereco::create($data['endereco']));
+            }
+            if (isset($data['telefone'])) {
+                foreach ($data['telefone']['ddd'] as $key => $ddd) {
+                    $user->telefones()->create([
+                        'ddd' => $ddd,
+                        'numero' => $data['telefone']['numero'][$key],
+                        'principal' => $data['telefone']['principal'][$key],
+                        'tipo' => $data['telefone']['tipo'][$key],
+                    ]);
+                }
+            }
+            \DB::commit();
+            return $this->userRepository->skipPresenter(false)->find($user->id);
+        } catch (ModelNotFoundException $e) {
+            \DB::rollBack();
+            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.undefined', ['status_code' => $e->getCode(), 'line' => $e->getLine()]));
+        } catch (RepositoryException $e) {
+            \DB::rollBack();
+            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.undefined', ['status_code' => $e->getCode(), 'line' => $e->getLine()]));
+        } catch (\Exception $e) {
+            \DB::rollBack();
+            return self::responseError(self::HTTP_CODE_BAD_REQUEST, trans('errors.undefined', ['status_code' => $e->getCode(), 'line' => $e->getLine()]));
         }
     }
 }

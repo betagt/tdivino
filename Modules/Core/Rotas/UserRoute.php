@@ -64,6 +64,15 @@ class UserRoute implements ICustomRoute
                 'as' => 'user.select-list',
                 'uses' => 'UserController@vizualizarFornecedor',
             ])->where('id', '[0-9\s+]+');
+
+            Route::post('user/cliente-cadastrar', [
+                'as' => 'user.posicao',
+                'uses' => 'UserController@storeCliente'
+            ]);
+            Route::put('user/cliente-update/{id}', [
+                'as' => 'user.posicao',
+                'uses' => 'UserController@updateCliente'
+            ]);
         });
 
         Route::group(['prefix'=>'admin','middleware' => ['auth:api'],'namespace'=>'Api\Admin'],function (){

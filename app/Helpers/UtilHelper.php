@@ -146,4 +146,26 @@ if (!function_exists('DummyFunction')) {
             return !env('PUSHER_PROD')?"dev.":null;
         }
     }
+
+    if (!function_exists('array_remove_null')) {
+        function array_remove_null($item) {
+            if (!is_array($item)) {
+                return $item;
+            }
+
+            return collect($item)
+                ->reject(function ($item) {
+                    return is_null($item);
+                })
+                ->flatMap(function ($item, $key) {
+
+                    return is_numeric($key)
+                        ? [array_remove_null($item)]
+                        : [$key => array_remove_null($item)];
+                })
+                ->toArray();
+        }
+    }
+
+
 }
