@@ -17,7 +17,7 @@ class DocumentoRoute implements ICustomRoute
     public static function run()
     {
         Route::group(['prefix'=>'admin','middleware' => ['auth:api'],'namespace'=>'Api\Admin'],function () {
-            Route::group(['middleware' => ['acl'],'is' => 'administrador|fornecedor', 'protect_alias'  => 'user'],function (){
+            Route::group(['middleware' => ['acl'],'is' => 'administrador|fornecedor|taxista|mototaxista', 'protect_alias'  => 'user'],function (){
                 Route::get('documento/meus-docuemntos', [
                     'as' => 'documento.meus_docuemntos',
                     'uses' => 'DocumentoController@meusdocumentos'

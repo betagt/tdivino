@@ -140,7 +140,6 @@ GROUP BY
         $max_documento_tipo = count($contagem_array);
         $data['habilitado'] = !in_array(0, $contagem_array);
         $selecao = array_count_values($contagem_array);
-
         if(isset($selecao[1]) && $selecao[1] == $max_documento_tipo){
             $data['cor'] = 'green';
             $this->skipPresenter($skypresenter);

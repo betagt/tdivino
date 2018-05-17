@@ -168,14 +168,7 @@ class UserController extends BaseController
 				$user->pessoa()->update($data['pessoa']);
 			}
 			if(isset($data['perfil'])){
-                switch ($data['perfil']){
-                    case 'fornecedor':
-                        $user->assignRole('fornecedor');
-                        break;
-                    case 'cliente':
-                        $user->assignRole('cliente');
-                        break;
-                }
+				$user->assignRole($data['perfil']);
             }else{
                 $user->assignRole('fornecedor');
             }
@@ -202,7 +195,7 @@ class UserController extends BaseController
             return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.undefined', ['status_code' => $e->getCode(), 'line' => $e->getLine()]));
         } catch (\Exception $e) {
 			\DB::rollBack();
-            return self::responseError(self::HTTP_CODE_BAD_REQUEST, trans('errors.undefined', ['status_code' => $e->getCode(), 'line' => $e->getLine()]));
+            return self::responseError(self::HTTP_CODE_BAD_REQUEST, $e->getMessage());
         }
     }
 
@@ -820,7 +813,7 @@ class UserController extends BaseController
     public function storeCliente(Request $request)
     {
         $data = $request->all();
-        $data = array_remove_null($data);
+		$data = array_remove_null($data);
         if(isset($data['pessoa']['data_nascimento']))
             $data['pessoa']['data_nascimento'] = implode('-', array_reverse(explode('/', $data['pessoa']['data_nascimento'])));
 
@@ -847,7 +840,7 @@ class UserController extends BaseController
             if(isset($data['perfil'])){
                 $user->assignRole($data['perfil']);
             }
-            if (isset($data['endereco']) && count($data['endereco']) > 0) {
+			if (isset($data['endereco']) && count($data['endereco']) > 0) {
                 $user->endereco()->save(Endereco::create($data['endereco']));
             }
             if (isset($data['telefone'])) {
@@ -870,7 +863,7 @@ class UserController extends BaseController
             return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.undefined', ['status_code' => $e->getCode(), 'line' => $e->getLine()]));
         } catch (\Exception $e) {
             \DB::rollBack();
-            return self::responseError(self::HTTP_CODE_BAD_REQUEST, $e->getMessage());
+			return self::responseError(self::HTTP_CODE_BAD_REQUEST, $e->getMessage());
         }
     }
 }

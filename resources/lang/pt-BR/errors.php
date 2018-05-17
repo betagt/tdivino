@@ -5,7 +5,8 @@ return [
         "registre_not_found"=>"Registro não encontrado"
     ],
     'undefined'=>'Não foi possivel realizar a requisção tente novamente mais tarde. Erro: [:status_code] Message: [:message]',
-    'duplicate'=>'Registo já inserido, exclua ou edit o registro existente',
+	'undefined_details'=>'Não foi possivel realizar a requisção tente novamente mais tarde. Erro: [:status_code] Message: [:message], Arquivo [:arquivo], Linha [:linha]',
+	'duplicate'=>'Registo já inserido, exclua ou edit o registro existente',
     'authentication'=>[
         'inactive'=>"Usuário inativo entre em contato para normalizarmos a situação."
     ],
