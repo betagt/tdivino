@@ -17,7 +17,7 @@ class ModeloCarroRoute implements ICustomRoute
     public static function run()
     {
         Route::group(['prefix'=>'admin','middleware' => ['auth:api'],'namespace'=>'Api\Admin'],function () {
-            Route::group(['middleware' => ['acl'],'is' => 'administrador|fornecedor', 'protect_alias'  => 'user'],function (){
+            Route::group(['middleware' => ['acl'],'is' => 'administrador|fornecedor|taxista|mototaxista', 'protect_alias'  => 'user'],function (){
                 Route::get('modelo-carro/todos/{marca}', [
                     'as' => 'marcaCarro.todos',
                     'uses' => 'ModeloCarroController@todos'

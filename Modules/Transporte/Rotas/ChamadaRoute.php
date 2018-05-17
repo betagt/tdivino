@@ -17,7 +17,7 @@ class ChamadaRoute implements ICustomRoute
     public static function run()
     {
         Route::group(['prefix'=>'admin','middleware' => ['auth:api'],'namespace'=>'Api\Admin'],function () {
-            Route::group(['middleware' => ['acl'],'is' => 'administrador|fornecedor|cliente', 'protect_alias'  => 'user'],function (){
+            Route::group(['middleware' => ['acl'],'is' => 'administrador|fornecedor|taxista|mototaxista|cliente', 'protect_alias'  => 'user'],function (){
                 Route::get('chamada/cliente-chamadas', [
                     'as' => 'chamda.atender',
                     'uses' => 'ChamadaController@listarByCliente'
@@ -43,7 +43,7 @@ class ChamadaRoute implements ICustomRoute
                     'uses' => 'ChamadaController@calcularRota'
                 ]);
             });
-            Route::group(['middleware' => ['acl'],'is' => 'administrador|fornecedor', 'protect_alias'  => 'user'],function (){
+            Route::group(['middleware' => ['acl'],'is' => 'administrador|fornecedor|taxista|mototaxista', 'protect_alias'  => 'user'],function (){
                 Route::post('chamada/atender/{idChamada}', [
                     'as' => 'chamda.atender',
                     'uses' => 'ChamadaController@atender'
