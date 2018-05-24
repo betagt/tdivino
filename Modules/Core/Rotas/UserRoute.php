@@ -43,7 +43,7 @@ class UserRoute implements ICustomRoute
 			]);
 		});
 
-        Route::group(['prefix'=>'admin','middleware' => ['auth:api','acl'],'is' => 'administrador|agencia-reguladora|fornecedor|taxista|mototaxista|cliente|moderator','namespace'=>'Api\Admin'],function (){
+        Route::group(['prefix'=>'admin','middleware' => ['auth:api','acl'],'is' => 'administrador|agencia-reguladora|fornecedor|taxista|mototaxista|cliente|moderador','protect_alias'=>'user','namespace'=>'Api\Admin'],function (){
             Route::post('user/device_register', [
                 'as' => 'user.device_register',
                 'uses' => 'UserController@deviceRegister',
@@ -84,7 +84,7 @@ class UserRoute implements ICustomRoute
                 'as' => 'user.alterar_senha',
                 'uses' => 'UserController@alterarSenha',
             ]);
-            Route::group(['middleware'=>['acl'],'is' => 'administrador|fornecedor|taxista|mototaxista|moderator','protect_alias'=>'user'],function (){
+            Route::group(['middleware'=>['acl'],'is' => 'administrador|fornecedor|taxista|mototaxista|moderador','protect_alias'=>'user'],function (){
                 Route::post('user/alterar_imagem', [
                     'as' => 'user.alterar_imagem',
                     'uses' => 'UserController@changeImage',
@@ -103,7 +103,7 @@ class UserRoute implements ICustomRoute
                 ]);
             });
             //Route::group(['middleware' => ['acl'],'is' => 'administrador', 'protect_alias'  => 'user'],function (){
-            Route::group(['middleware'=>['acl'],'is'=>'administrador','protect_alias'=>'user'],function (){
+            Route::group(['middleware'=>['acl'],'is'=>'administrador|moderador','protect_alias'=>'user'],function (){
                /* Route::post('user/password/reset', [
                     'as' => 'user.solicitar_nova_senha',
                     'uses' => 'UserController@solicitarNovaSenha'
@@ -126,7 +126,7 @@ class UserRoute implements ICustomRoute
                 ]);
             });
         });
-        Route::group(['prefix'=>'front','middleware' => ['auth:api','acl'],'is' => 'administrador|cliente|moderator','namespace'=>'Api\Front'],function (){
+        Route::group(['prefix'=>'front','middleware' => ['auth:api','acl'],'is' => 'administrador|cliente|moderador','namespace'=>'Api\Front'],function (){
 
 
             Route::put('user/userupdate', [
