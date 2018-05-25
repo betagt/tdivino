@@ -341,7 +341,7 @@ class UserController extends BaseController
             'endereco.cep' => 'required',
             'endereco.numero' => 'required',
             'endereco.endereco' => 'required',
-            'perfil' => 'required|string|in:fornecedor,cliente',
+            'perfil' => 'required|string|in:fornecedor,cliente,taxista,mototaxista',
 		]);
         \Validator::make($data, $validator)->validate();
         try{
