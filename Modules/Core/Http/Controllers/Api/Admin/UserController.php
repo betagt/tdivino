@@ -368,6 +368,12 @@ class UserController extends BaseController
                     case 'cliente':
                         $user->syncRoles(['cliente']);
                         break;
+                    case 'taxista':
+                        $user->syncRoles(['taxista']);
+                        break;
+                    case 'mototaxista':
+                        $user->syncRoles(['taxista']);
+                        break;
                 }
             }
             if (isset($data['endereco'])) {
