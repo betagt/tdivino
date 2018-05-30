@@ -66,7 +66,7 @@ class UserTransformer extends BaseTransformer
 				if ($soma > 0) {
 					$avaliacao = $soma / (int)$model->chamadas_fornecedor->where('tipo', Chamada::TIPO_FINALIZADO)->count('avaliacao');
 				}
-				$pendencias = app(TipoDocumentoRepository::class)->validadeUser($model->id, $perfil);
+				$pendencias = app(TipoDocumentoRepository::class)->validadeUser($model->id);
 				$result = array_merge($result, [
 					'nota_fornecedor' => round($avaliacao, 2),
 					'contagem_chamadas' => $model->chamadas_fornecedor->count(),

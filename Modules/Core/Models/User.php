@@ -80,17 +80,7 @@ class User extends Authenticatable implements Transformable
         $ativar = function ($query){
             //TODO criar eventos para para esse tipo de ação.
             if(!is_null($query->id) && in_array(User::FORNECEDOR, $query->getRoles())){
-                $validado = app(TipoDocumentoRepository::class)->validadeUser($query->id);
-                $verificacao = is_null($query->veiculoAtivo)? false : $validado['habilitado'];
-                $query->status = $verificacao?User::ATIVO:User::BLOQUEADO;
-                if(!$query->apto_agencia && $verificacao){
-                    $query->apto_agencia = true;
-                }
-                $query->habilitado = $verificacao;
-                return $query;
-            } else if(!is_null($query->id) && in_array(User::TAXISTA, $query->getRoles())){
-                dd('teste');
-                $validado = app(TipoDocumentoRepository::class)->validadeUser($query->id, User::TAXISTA);
+                $validado = app(TipoDocumentoRepository::class)->validadeUser($query->id, User::FORNECEDOR);
                 $verificacao = is_null($query->veiculoAtivo)? false : $validado['habilitado'];
                 $query->status = $verificacao?User::ATIVO:User::BLOQUEADO;
                 if(!$query->apto_agencia && $verificacao){
@@ -99,6 +89,16 @@ class User extends Authenticatable implements Transformable
                 $query->habilitado = $verificacao;
                 return $query;
             }
+            /*else if(!is_null($query->id) && in_array(User::TAXISTA, $query->getRoles())){
+                $validado = app(TipoDocumentoRepository::class)->validadeUser($query->id, User::TAXISTA);
+                $verificacao = is_null($query->veiculoAtivo)? false : $validado['habilitado'];
+                $query->status = $verificacao?User::ATIVO:User::BLOQUEADO;
+                if(!$query->apto_agencia && $verificacao){
+                    $query->apto_agencia = true;
+                }
+                $query->habilitado = $verificacao;
+                return $query;
+            }*/
         };
         self::creating(function ($query) use ($ativar){
             return $ativar($query);
