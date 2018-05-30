@@ -3,6 +3,7 @@
 namespace Modules\Core\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Modules\Localidade\Models\Cidade;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
@@ -14,7 +15,20 @@ class Pessoa extends Model implements Transformable
     const PESSOA_JURIDICA = 2;
 
     protected $fillable = [
-        'cpf_cnpj', 'nec_especial', 'data_nascimento', 'rg', 'orgao_emissor', 'escolaridade', 'sexo', 'estado_civil', 'fantasia', 'contato', 'contato_segudo', 'telefone_contato', 'telefone_segundo_contato', 'tipo_sanguineo',
+        'cpf_cnpj',
+        'nec_especial',
+        'data_nascimento',
+        'rg', 'orgao_emissor',
+        'escolaridade',
+        'sexo',
+        'estado_civil',
+        'fantasia',
+        'contato',
+        'contato_segudo',
+        'telefone_contato',
+        'telefone_segundo_contato',
+        'tipo_sanguineo',
+        'naturalidade',
     ];
 
 
@@ -36,5 +50,9 @@ class Pessoa extends Model implements Transformable
 
     public function tipo(){
         return (validar_cnpj($this->attributes['cpf_cnpj']))?self::PESSOA_JURIDICA:self::PESSOA_FISICA;
+    }
+
+    public function naturalidade(){
+        return $this->belongsTo(Cidade::class, 'naturalidade');
     }
 }

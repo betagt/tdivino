@@ -110,7 +110,7 @@ class ChamadaController extends BaseController
         } catch (RepositoryException $e) {
             return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code' => $e->getCode(), 'message' => $e->getMessage()]));
         } catch (\Exception $e) {
-            return self::responseError(self::HTTP_CODE_BAD_REQUEST, trans('errors.undefined', ['status_code' => $e->getCode(), 'message' => $e->getMessage()]));
+            return self::responseError(self::HTTP_CODE_BAD_REQUEST, $e->getMessage());
         }
     }
 
@@ -150,7 +150,7 @@ class ChamadaController extends BaseController
         } catch (RepositoryException $e) {
             return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code' => $e->getCode(), 'message' => $e->getMessage()]));
         } catch (\Exception $e) {
-            return self::responseError(self::HTTP_CODE_BAD_REQUEST, trans('errors.undefined', ['status_code' => $e->getCode(), 'message' => $e->getMessage()]));
+            return self::responseError(self::HTTP_CODE_BAD_REQUEST, $e->getMessage());
         }
     }
 

@@ -114,6 +114,7 @@ class UserController extends BaseController
             'chk_newsletter'        => 'boolean|nullable',
 			'ddd'        => 'required|nullable',
 			'numero'        => 'required|nullable',
+            'naturalidade'=> 'exists:cidades,id'
         ])->validate();
         try {
             $user = $this->userRepository->skipPresenter(true)->create($data);
@@ -130,6 +131,10 @@ class UserController extends BaseController
 				}
 			}
             $pessoa = Pessoa::create();
+			if(isset($data['naturalidade'])){
+			    $pessoa->naturalidade = $data['naturalidade'];
+                $pessoa->save();
+            }
             $user->pessoa_id = $pessoa->id;
             $user->save();
             $user = $this->userRepository->skipPresenter(false)->find($user->id);

@@ -36,6 +36,7 @@ class PessoaTransformer extends TransformerAbstract
             'contato_segudo' => (string)$model->contato_segudo,
             'telefone_contato' => (string)$model->telefone_contato,
             'telefone_segundo_contato' => (string)$model->telefone_segundo_contato,
+            'naturalidade' => (string)$model->naturalidade,
 			'sexo_label' => ($model->sexo) ? (string)User::$_SEXO[$model->sexo] : null,
             'sexo' => (int)$model->sexo,
             'tipo' => (int)$model->tipo(),

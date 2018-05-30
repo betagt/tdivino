@@ -60,13 +60,13 @@ class UserTransformer extends BaseTransformer
             'apto_agencia' => (boolean)$model->apto_agencia,
 		];
 		switch ($perfil) {
-			case User::FORNECEDOR :
+			case User::FORNECEDOR || User::TAXISTA ||  User::MOTOTAXISTA :
 				$soma = (double)$model->chamadas_fornecedor->where('tipo', Chamada::TIPO_FINALIZADO)->sum('avaliacao');
 				$avaliacao = 0;
 				if ($soma > 0) {
 					$avaliacao = $soma / (int)$model->chamadas_fornecedor->where('tipo', Chamada::TIPO_FINALIZADO)->count('avaliacao');
 				}
-				$pendencias = app(TipoDocumentoRepository::class)->validadeUser($model->id);
+				$pendencias = app(TipoDocumentoRepository::class)->validadeUser($model->id, $perfil);
 				$result = array_merge($result, [
 					'nota_fornecedor' => round($avaliacao, 2),
 					'contagem_chamadas' => $model->chamadas_fornecedor->count(),

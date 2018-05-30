@@ -695,7 +695,7 @@ class UserController extends BaseController
 			return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.undefined', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
 		}
 		catch (\Exception $e){
-			return self::responseError(self::HTTP_CODE_BAD_REQUEST, trans('errors.undefined', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
+            return self::responseError(self::HTTP_CODE_BAD_REQUEST, $e->getMessage());
 		}
 	}
 
