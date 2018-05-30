@@ -51,14 +51,8 @@ trait DefaultAcions
     public function show($id){
         try{
             return $this->defaultRepository->find($id);
-        }catch (ModelNotFoundException $e){
-            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.undefined', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
-        }
-        catch (RepositoryException $e){
-            return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.undefined', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
-        }
-        catch (\Exception $e){
-            return self::responseError(self::HTTP_CODE_BAD_REQUEST, trans('errors.undefined', ['status_code'=>$e->getCode(),'message'=>$e->getMessage()]));
+        }catch (\Exception $e){
+            return self::responseError(self::HTTP_CODE_BAD_REQUEST, $e->getMessage());
         }
     }
 
