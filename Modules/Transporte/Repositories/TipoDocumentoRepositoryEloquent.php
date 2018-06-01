@@ -43,7 +43,7 @@ class TipoDocumentoRepositoryEloquent extends BaseRepository implements TipoDocu
         return TipoDocumentoPresenter::class;
     }
 
-    public function validadeUser(int $userId, $tipo = User::MOTORISTA)
+    public function validadeUser(int $userId, $tipo = User::FORNECEDOR)
     {
         $data = [];
         $rs = $this->model

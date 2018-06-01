@@ -10,7 +10,7 @@ use Prettus\Repository\Exceptions\RepositoryException;
 /**
  * @resource API Plano de Anúncio - Frontend
  *
- * Essa API é responsável pelo gerenciamento de planos de anúncio no portal qImob.
+ * Essa API é responsável pelo gerenciamento de planos de anúncio no levez.
  * Os próximos tópicos apresenta os endpoints de Consulta, Cadastro, Edição e Deleção.
  *
  * Class PlanoController

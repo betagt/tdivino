@@ -7,14 +7,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
    {{-- <meta name="description" content="portal imobiliário qative tecnologia">
     <meta name="keywords" content="imoveis, alugar, comprar, casas, imobiliária, portal imobiliário, palmas, tocantins">
-    <meta property="og:title" content="Portal qImob"/>
-    <meta property="og:site_name" content="Portal qImob"/>
+    <meta property="og:title" content="levez"/>
+    <meta property="og:site_name" content="levez"/>
     <meta property="og:description" content="Uma nova experiência para encontrar o seu imovel"/>
     <meta property="og:type" content="website"/>
-    <meta property="og:image" content="http://www.qimob.com.br/assets/img/og-qimob-thumbnail.jpg"/>
-    <meta property="og:url" content="http://www.qimob.com.br"/>
-    <link rel="icon" type="image/x-icon" href="http://www.qimob.com.br/assets/img/ico/favicon.png">
-    <link rel="shortcut icon" href="http://www.qimob.com.br/assets/img/ico/favicon.png">--}}
+    <meta property="og:image" content="http://www.levez.com.br/assets/img/og-levez-thumbnail.jpg"/>
+    <meta property="og:url" content="http://www.levez.com.br"/>
+    <link rel="icon" type="image/x-icon" href="http://www.levez.com.br/assets/img/ico/favicon.png">
+    <link rel="shortcut icon" href="http://www.levez.com.br/assets/img/ico/favicon.png">--}}
     <title>Levez</title>
 
 </head>
@@ -26,8 +26,8 @@
             <div class="header-left" style="width: 50%; float: left; display: flex; align-items: center">
                 <a href="tel:(63)%203225-7500" value="+556332257500" rel="noreferrer" target="_blank" style="color: #fff; text-decoration: none; font-size: 14px; margin-right: 30px">(63) 0000-7500</a>
                 <!--<span style="color: #fff; margin-right: 10px; font-weight: bold">(63) 3225-7500</span>-->
-                <a href="mailto:atendimento@qimob.com.br" target="_blank" style="color: #fff; text-decoration: none; font-size: 14px">sac@levez.biz</a>
-                <!--<span style="color: #fff; margin-right: 10px; font-weight: bold">atendimento@qimob.com.br</span>-->
+                <a href="mailto:atendimento@levez.com.br" target="_blank" style="color: #fff; text-decoration: none; font-size: 14px">sac@levez.biz</a>
+                <!--<span style="color: #fff; margin-right: 10px; font-weight: bold">atendimento@levez.com.br</span>-->
             </div>
             <div class="header-right" style="width: 50%; float: right">
                 <ul style="display: inline-flex;padding: 0; float: right">
@@ -46,16 +46,16 @@
         <div class="header" style="background-color: #f7931e">
             <div style="padding: 10px; height: 60px; display: flex; align-items: center; width: 90%;margin: 0 auto">
                 <div class="header-left" style="width: 50%; float: left" >
-                    <img alt="qAtive Tecnologia" class="img-logo" src="http://admin.levez.biz/wp-content/uploads/files/logo_qimob.png" style="width: 120px">
+                    <img alt="qAtive Tecnologia" class="img-logo" src="http://admin.levez.biz/wp-content/uploads/files/logo_levez.png" style="width: 120px">
                 </div>
                 <div class="header-right" style="width: 50%; float: right">
                     <nav>
                         {{--<ul class="nav nav-pills pull-right" style="display: inline-flex; float: right!important; padding-left: 0; margin-bottom: 0; list-style: none">
-                            <li><a href="http://qimob.com.br" rel="noreferrer" target="_blank" style="color: #fff; position: relative; display: block; padding: 10px 15px; text-decoration: none"
-                                   onMouseOver="this.style.backgroundColor='#f28111'" onMouseOut="this.style.backgroundColor='#f7931e'">qImob</a></li>
-                            <li><a href="http://www.qimob.com.br/sobre-nos" rel="noreferrer" target="_blank"  style="color: #fff; position: relative; display: block; padding: 10px 15px; text-decoration: none"
+                            <li><a href="http://levez.com.br" rel="noreferrer" target="_blank" style="color: #fff; position: relative; display: block; padding: 10px 15px; text-decoration: none"
+                                   onMouseOver="this.style.backgroundColor='#f28111'" onMouseOut="this.style.backgroundColor='#f7931e'">levez</a></li>
+                            <li><a href="http://www.levez.com.br/sobre-nos" rel="noreferrer" target="_blank"  style="color: #fff; position: relative; display: block; padding: 10px 15px; text-decoration: none"
                                    onMouseOver="this.style.backgroundColor='#f28111'" onMouseOut="this.style.backgroundColor='#f7931e'">Sobre nós</a></li>
-                            <li><a href="http://www.qimob.com.br/fale-conosco" rel="noreferrer" target="_blank" style="color: #fff; position: relative; display: block; padding: 10px 15px; text-decoration: none"
+                            <li><a href="http://www.levez.com.br/fale-conosco" rel="noreferrer" target="_blank" style="color: #fff; position: relative; display: block; padding: 10px 15px; text-decoration: none"
                                    onMouseOver="this.style.backgroundColor='#f28111'" onMouseOut="this.style.backgroundColor='#f7931e'">Contato</a></li>
                         </ul>--}}
                     </nav>

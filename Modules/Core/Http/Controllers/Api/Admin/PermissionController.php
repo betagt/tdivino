@@ -20,7 +20,7 @@ use Validator;
 /**
  * @resource API Permissão de Usuários - Backend
  *
- * Essa API é responsável pelo gerenciamento de Permissão de Usuários no portal qImob.
+ * Essa API é responsável pelo gerenciamento de Permissão de Usuários no levez.
  * Os próximos tópicos apresenta os endpoints de Consulta, Cadastro, Edição e Deleção.
  */
 class PermissionController extends BaseController

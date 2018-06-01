@@ -13,7 +13,7 @@ use Prettus\Repository\Exceptions\RepositoryException;
 /**
  * @resource API Configuração - Backend
  *
- * Essa API é responsável pelo gerenciamento da Configuração no portal qImob.
+ * Essa API é responsável pelo gerenciamento da Configuração no levez.
  * Os próximos tópicos apresentara os endpoints de Consulta, Cadastro, Edição e Deleção.
  *
  * Class ConfiguracaoController

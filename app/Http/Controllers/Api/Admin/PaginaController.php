@@ -15,7 +15,7 @@ use Prettus\Repository\Exceptions\RepositoryException;
 /**
  * @resource API Página - Backend
  *
- * Essa API é responsável pelo gerenciamento de Página no portal qImob.
+ * Essa API é responsável pelo gerenciamento de Página no levez.
  * Os próximos tópicos apresentara os endpoints de Consulta, Cadastro, Edição e Deleção.
  */
 class PaginaController extends BaseController

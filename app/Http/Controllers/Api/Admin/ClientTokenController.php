@@ -15,7 +15,7 @@ use Portal\Repositories\ClientRepository;
 /**
  * @resource API Client Token - Backend
  *
- * Essa API é responsável pelo gerenciamento dos tokens no portal qImob.
+ * Essa API é responsável pelo gerenciamento dos tokens no levez.
  * Os próximos tópicos apresentara os endpoints de Consulta, Cadastro, Edição e Deleção.
  */
 class ClientTokenController extends BaseController

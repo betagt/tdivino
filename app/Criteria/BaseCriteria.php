@@ -29,7 +29,7 @@ use Prettus\Repository\Contracts\RepositoryInterface;
  *
  * Condicional {In}:
  *    Ex:
- *    http://localhost:8000/api/v1/front/plano/consulta?consulta={"filtro":{"plano.tipo":"anunciante;imobiliaria;qimob-erp"}}
+ *    http://localhost:8000/api/v1/front/plano/consulta?consulta={"filtro":{"plano.tipo":"anunciante;imobiliaria;levez-erp"}}
  *
  * Class BaseCriteria
  * @package Portal\Criteria

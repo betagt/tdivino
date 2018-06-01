@@ -19,7 +19,7 @@ use Validator;
 /**
  * @resource API Regras de Acesso - Backend
  *
- * Essa API é responsável pelo gerenciamento de regras de Usuários no portal qImob.
+ * Essa API é responsável pelo gerenciamento de regras de Usuários no levez.
  * Os próximos tópicos apresenta os endpoints de Consulta, Cadastro, Edição e Deleção.
  */
 class RoleController extends BaseController

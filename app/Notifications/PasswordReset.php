@@ -51,7 +51,7 @@ class PasswordReset extends Notification
         return (new MailMessage)
                     ->subject('Alterar senha!')
                     ->line('Você está recebendo este e-mail porque recebemos um pedido de redefinição de senha para sua conta.')
-                    ->action('Alterar Senha', 'http://www.qimob.com.br/alterar-senha/'.$this->token)
+                    ->action('Alterar Senha', 'http://www.levez.com.br/alterar-senha/'.$this->token)
                     ->line('Obrigado por usar nossos serviços!');
     }
 
