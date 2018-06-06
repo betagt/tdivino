@@ -83,7 +83,7 @@ class Veiculo extends Model implements Transformable
     }
 
     public function clrvAtivo(){
-		return $this->morphOne(Documento::class, 'documentotable');
+		return $this->morphOne(Documento::class, 'documentotable')->where('transporte_tipo_documento_id', '=', Documento::CLRV_ID)->where('status', '=', Documento::STATUS_ACEITO);
 	}
 
     public function vistoriaAtivo(){

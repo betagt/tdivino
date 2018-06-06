@@ -10,7 +10,7 @@ class TipoDocumento extends Model implements Transformable
 {
     use TransformableTrait;
 
-    const TIPO_PESSOA = 'motorista';
+    const TIPO_PESSOA = 'fornecedor';
 
     const TIPO_veiculo = 'veiculo';
 
