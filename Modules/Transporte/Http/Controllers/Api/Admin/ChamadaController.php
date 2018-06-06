@@ -156,7 +156,7 @@ class ChamadaController extends BaseController
 
     function iniciarChamada(Request $request)
     {
-        $data = $request->only(['origem', 'destino', 'forma_pagamento_id', 'endereco_origem', 'endereco_destino']);
+        $data = $request->only(['origem', 'destino', 'forma_pagamento_id', 'endereco_origem', 'endereco_destino', 'id_pagamento_moip']);
 
         \Validator::make($data, [
             'endereco_origem' => 'required|string',

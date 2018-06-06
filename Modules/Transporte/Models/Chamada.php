@@ -49,6 +49,7 @@ class Chamada extends BaseModel implements Transformable
 		'tarifa_operacao',
 		'valor_repasse',
 		'forma_pagamento_id',
+		'id_pagamento_moip',
     ];
 
     public function lancamentos()

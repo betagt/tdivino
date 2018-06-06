@@ -30,7 +30,7 @@ class RotaAcesso extends Model implements Transformable
     }
 
     public function child(){
-        return $this->hasMany(RotaAcesso::class, 'parent_id');
+        return $this->hasMany(RotaAcesso::class, 'parent_id')->orderBy('prioridade', 'asc');
     }
 
     public function pai(){
