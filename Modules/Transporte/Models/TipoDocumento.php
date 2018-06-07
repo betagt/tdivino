@@ -3,6 +3,7 @@
 namespace Modules\Transporte\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Validation\Rule;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
@@ -27,5 +28,9 @@ class TipoDocumento extends Model implements Transformable
         'obrigatorio',
         'possui_vencimento',
     ];
+
+    public function tipos(){
+		return $this->belongsToMany(Rule::class, 'transporte_tipo_documento_perfil', 'transporte_tipo_documento_id', 'rule_id');
+	}
 
 }
