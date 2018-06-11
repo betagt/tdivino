@@ -11,6 +11,7 @@ use Modules\Core\Criteria\UserCriteria;
 use Modules\Core\Events\UsuarioCadastrado;
 use Modules\Core\Http\Requests\UserResetSendEmailRequest;
 use Modules\Core\Models\User;
+use Modules\Localidade\Models\Endereco;
 use Portal\Http\Controllers\BaseController;
 use Modules\Core\Http\Requests\UserResetPasswordRequest;
 use Modules\Core\Repositories\UserRepository;
@@ -172,9 +173,15 @@ class UserController extends BaseController
             'ddd'        => 'numeric|nullable|max:2',
             'numero'        => 'numeric|nullable|max:15',
             'old_password' => 'nullable|alphaNum|min:8',
-            'new_password' => 'nullable|alphaNum|min:8|confirmed'
+            'new_password' => 'nullable|alphaNum|min:8|confirmed',
+			'endereco.estado_id' => 'required|exists:estados,id',
+			'endereco.cidade_id' => 'required|exists:cidades,id',
+			'endereco.cep' => 'required',
+			'endereco.numero' => 'required',
+			'endereco.endereco' => 'required',
         ])->validate();
         try {
+			\DB::beginTransaction();
             $user = $this->userRepository->skipPresenter(true)->update($data, $id);
             if(!empty($data['ddd']) && !empty($data['numero'])){
                 if(!is_null($user->telefone)){
@@ -187,12 +194,25 @@ class UserController extends BaseController
                     $user->telefone()->create($data);
                 }
             }
+			if (isset($data['endereco'])) {
+				if(isset($data['endereco']['id']) && $data['endereco']['id']){
+					$model = Endereco::findOrFail($data['endereco']['id']);
+					$model->fill($data['endereco']);
+					$model->save();
+				}else{
+					$user->endereco()->save(Endereco::create($data['endereco']));
+				}
+			}
+			\DB::commit();
             return $this->userRepository->skipPresenter(false)->parserResult($user);
         } catch (ModelNotFoundException $e) {
+			\DB::rollBack();
             return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code' => $e->getCode(), 'line' => $e->getLine()]));
         } catch (RepositoryException $e) {
+			\DB::rollBack();
             return self::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code' => $e->getCode(), 'line' => $e->getLine()]));
         } catch (\Exception $e) {
+			\DB::rollBack();
             return self::responseError(self::HTTP_CODE_BAD_REQUEST, $e->getMessage());
         }
     }
