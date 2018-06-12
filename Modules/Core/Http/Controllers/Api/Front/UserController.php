@@ -179,6 +179,8 @@ class UserController extends BaseController
 			'endereco.cep' => 'required',
 			'endereco.numero' => 'required',
 			'endereco.endereco' => 'required',
+			'pessoa.cpf_cnpj' => 'required|cpf_validator|unique:pessoas,cpf_cnpj,' . $id,
+			'pessoa.data_nascimento' => 'required|date',
         ])->validate();
         try {
 			\DB::beginTransaction();
@@ -194,6 +196,12 @@ class UserController extends BaseController
                     $user->telefone()->create($data);
                 }
             }
+			if (is_null($user->pessoa)) {
+				$pessoa = Pessoa::create($data['pessoa']);
+				$user->pessoa_id = $pessoa->id;
+			} else {
+				$user->pessoa->update($data['pessoa']);
+			}
 			if (isset($data['endereco'])) {
 				if(isset($data['endereco']['id']) && $data['endereco']['id']){
 					$model = Endereco::findOrFail($data['endereco']['id']);

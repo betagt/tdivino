@@ -167,5 +167,15 @@ if (!function_exists('DummyFunction')) {
         }
     }
 
+	if (!function_exists('transformer_data')) {
+		/**
+		 * @param $data
+		 * @param $classPresenter
+		 */
+		function transformer_data($data, $classPresenter)
+		{
+			return app($classPresenter)->present($data);
+		}
+	}
 
 }
