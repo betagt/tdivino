@@ -29,10 +29,4 @@ class TipoDocumento extends Model implements Transformable
         'possui_vencimento',
     ];
 
-    public function tipos(){
-		if(){
-
-        }
-	}
-
 }

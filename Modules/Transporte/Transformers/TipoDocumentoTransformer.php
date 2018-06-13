@@ -12,29 +12,37 @@ use Modules\Transporte\Models\TipoDocumento;
 class TipoDocumentoTransformer extends TransformerAbstract
 {
 
-    /**
-     * Transform the \TipoDocumento entity
-     * @param \TipoDocumento $model
-     *
-     * @return array
-     */
-    public function transform(TipoDocumento $model)
-    {
-        return [
-            'id'         => (int) $model->id,
-            'nome' => (string) $model->nome,
-            'descricao' => (string) $model->descricao,
-            'observacao' => (string) $model->observacao,
-            'precisa_de_documento' => (boolean) $model->precisa_de_documento,
-            'tipo' => (string) $model->tipo,
-            'tipo_select' => (string) $model->tipo,
-            'possui_vencimento' => (boolean) $model->possui_vencimento,
-            'obrigatorio' => (boolean) $model->obrigatorio,
-            'contagem' => $model->contagem,
-            /* place your other model properties here */
+	/**
+	 * Transform the \TipoDocumento entity
+	 * @param \TipoDocumento $model
+	 *
+	 * @return array
+	 */
+	public function transform(TipoDocumento $model)
+	{
+		return [
+			'id' => (int)$model->id,
+			'nome' => (string)$model->nome,
+			'descricao' => (string)$model->descricao,
+			'observacao' => (string)$model->observacao,
+			'precisa_de_documento' => (boolean)$model->precisa_de_documento,
+			'tipo' => (string)$model->tipo,
+			'tipo_list' => $this->getList($model->tipo),
+			'tipo_select' => (string)$model->tipo,
+			'possui_vencimento' => (boolean)$model->possui_vencimento,
+			'obrigatorio' => (boolean)$model->obrigatorio,
+			'contagem' => $model->contagem,
+			'created_at' => $model->created_at,
+			'updated_at' => $model->updated_at
+		];
+	}
 
-            'created_at' => $model->created_at,
-            'updated_at' => $model->updated_at
-        ];
-    }
+	private function getList($tipo)
+	{
+		$aux = explode(',', $tipo);
+		if (is_array($aux)) {
+			return $aux;
+		}
+		return [$aux];
+	}
 }

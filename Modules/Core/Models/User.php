@@ -89,16 +89,7 @@ class User extends Authenticatable implements Transformable
                 $query->habilitado = $verificacao;
                 return $query;
             }
-            /*else if(!is_null($query->id) && in_array(User::TAXISTA, $query->getRoles())){
-                $validado = app(TipoDocumentoRepository::class)->validadeUser($query->id, User::TAXISTA);
-                $verificacao = is_null($query->veiculoAtivo)? false : $validado['habilitado'];
-                $query->status = $verificacao?User::ATIVO:User::BLOQUEADO;
-                if(!$query->apto_agencia && $verificacao){
-                    $query->apto_agencia = true;
-                }
-                $query->habilitado = $verificacao;
-                return $query;
-            }*/
+			return $query;
         };
         self::creating(function ($query) use ($ativar){
             return $ativar($query);
