@@ -377,7 +377,6 @@ class UserController extends BaseController
 				}
 			}
 			if (isset($data['endereco'])) {
-				$user->endereco()->delete();
 				if (isset($data['endereco']['id']) && $data['endereco']['id']) {
 					$model = Endereco::findOrFail($data['endereco']['id']);
 					$model->fill($data['endereco']);
