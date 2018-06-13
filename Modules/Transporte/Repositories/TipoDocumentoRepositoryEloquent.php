@@ -165,4 +165,19 @@ GROUP BY
 
     }
 
+    public function pessoa(){
+        $tipo_documento = $this->model
+                    ->where('transporte_tipo_documento_perfil.role_id', 4)
+                    ->get();
+        return $this->parserResult($tipo_documento);
+    }
+
+    public function veiculo(){
+        $tipo_documento = $this->model
+                    ->where('transporte_tipo_documento_perfil.role_id', 4)
+                    ->select(['transporte_tipo_documentos.*'])
+                    ->get();
+        return $this->parserResult($tipo_documento);
+    }
+
 }

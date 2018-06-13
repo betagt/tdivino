@@ -30,7 +30,9 @@ class TipoDocumento extends Model implements Transformable
     ];
 
     public function tipos(){
-		return $this->belongsToMany(Rule::class, 'transporte_tipo_documento_perfil', 'transporte_tipo_documento_id', 'rule_id');
+		if(){
+
+        }
 	}
 
 }
