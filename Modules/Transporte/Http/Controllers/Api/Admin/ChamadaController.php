@@ -457,7 +457,7 @@ class ChamadaController extends BaseController
     function embarquePassageiro(Request $request, $idChamada){
         $data = ['chamada_id' => $idChamada];
         $embarque = $request->only([
-            'hash_pagamento'
+            'id_pagamento_moip'
         ]);
         \Validator::make($data, [
             'chamada_id'=>'required|exists:transporte_chamadas,id'
@@ -470,10 +470,10 @@ class ChamadaController extends BaseController
             if (!($chamada['data']['fornecedor_id'] == $this->getUserId())) {
                 throw new \Exception('chamada não pertence a você');
             }
-            if(is_null($embarque['hash_pagamento']) && $chamada['data']['forma_pagamento_id'] == 3){
+            if(is_null($embarque['id_pagamento_moip']) && $chamada['data']['forma_pagamento_id'] == 3){
                 throw new \Exception('pagamento não informado');
-            }else if(!is_null($embarque['hash_pagamento']) && $chamada['data']['forma_pagamento_id'] == 3){
-                $pagamento = $this->pagamentoMoipService->capturarPagamento($embarque['hash_pagamento']);
+            }else if(!is_null($embarque['id_pagamento_moip']) && $chamada['data']['forma_pagamento_id'] == 3){
+                $pagamento = $this->pagamentoMoipService->capturarPagamento($embarque['id_pagamento_moip']);
             }
             $chamada['data']['datahora_embarque'] = Carbon::now();
             $chamada['data']['tipo'] = Chamada::TIPO_EMBARCADO;
