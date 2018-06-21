@@ -470,10 +470,10 @@ class ChamadaController extends BaseController
             if (!($chamada['data']['fornecedor_id'] == $this->getUserId())) {
                 throw new \Exception('chamada não pertence a você');
             }
-            if(is_null($embarque['id_pagamento_moip']) && $chamada['data']['forma_pagamento_id'] == 3){
+            if(is_null($chamada['data']['id_pagamento_moip']) && $chamada['data']['forma_pagamento_id'] == 3){
                 throw new \Exception('pagamento não informado');
-            }else if(!is_null($embarque['id_pagamento_moip']) && $chamada['data']['forma_pagamento_id'] == 3){
-                $pagamento = $this->pagamentoMoipService->capturarPagamento($embarque['id_pagamento_moip']);
+            }else if(!is_null($chamada['data']['id_pagamento_moip']) && $chamada['data']['forma_pagamento_id'] == 3){
+                $pagamento = $this->pagamentoMoipService->capturarPagamento($chamada['data']['id_pagamento_moip']);
             }
             $chamada['data']['datahora_embarque'] = Carbon::now();
             $chamada['data']['tipo'] = Chamada::TIPO_EMBARCADO;
