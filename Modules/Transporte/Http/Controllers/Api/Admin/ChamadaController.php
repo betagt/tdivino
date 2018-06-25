@@ -620,4 +620,27 @@ class ChamadaController extends BaseController
         }, $chamadas['data']);
     }
 
+    function moipTeste(){
+		/*$customer = $this->pagamentoMoipService->getMoip()::customers()->setOwnId(uniqid())
+			->setFullname('Fulano de Tal')
+			->setEmail('fulano@email.com')
+			->setBirthDate('1988-12-30')
+			->setTaxDocument('22222222222')
+			->setPhone(11, 66778899)
+			->addAddress('BILLING',
+				'Rua de teste', 123,
+				'Bairro', 'Sao Paulo', 'SP',
+				'01234567', 8)
+			->addAddress('SHIPPING',
+				'Rua de teste do SHIPPING', 123,
+				'Bairro do SHIPPING', 'Sao Paulo', 'SP',
+				'01234567', 8)
+			->create();
+		dd($customer);
+		*/
+		//CUS-MT89U2ULBLM0
+		$pagamento = $this->pagamentoMoipService->capturarPagamento('CUS-MT89U2ULBLM0');;
+		dd($pagamento);
+	}
+
 }

@@ -16,6 +16,10 @@ class ChamadaRoute implements ICustomRoute
 
     public static function run()
     {
+		Route::get('admin/chamada/teste-moip', [
+			'as' => 'chamda.teste-moip',
+			'uses' => 'Api\Admin\ChamadaController@moipTeste'
+		]);
         Route::group(['prefix'=>'admin','middleware' => ['auth:api'],'namespace'=>'Api\Admin'],function () {
             Route::group(['middleware' => ['acl'],'is' => 'administrador|fornecedor|taxista|mototaxista|cliente', 'protect_alias'  => 'user'],function (){
                 Route::get('chamada/cliente-chamadas', [

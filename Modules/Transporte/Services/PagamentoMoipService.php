@@ -18,6 +18,10 @@ class PagamentoMoipService
         $this->moip = $moip;
     }
 
+    function getMoip(){
+    	return $this->moip;
+	}
+
     /**
      * @param $idPagamento
      * @return mixed
@@ -46,8 +50,14 @@ class PagamentoMoipService
         }
     }
 
-
     private function getPagamento($idPagamento){
-        return $this->moip->payments()->get($idPagamento);;
+		$orders = $this->moip::orders()->get('ORD-AT1CLXNAI1WW');
+		/** @var \Moip\Resource\Orders $orders */
+    	//dd($orders->getPaymentIterator()->current()->capture());//MPA-ED4A20C187A4
+		/** @var \Moip\Resource\Payment $payment */
+		$payment = $orders->getPaymentIterator()->current();
+		dd($payment->capture());
+        return $orders->getPaymentIterator()->current();
     }
+
 }
