@@ -636,10 +636,26 @@ class ChamadaController extends BaseController
 				'Bairro do SHIPPING', 'Sao Paulo', 'SP',
 				'01234567', 8)
 			->create();
-		dd($customer);
-		*/
+		//dd($customer);
+        $order = $this->pagamentoMoipService->getMoip()::orders()->setOwnId(uniqid())
+            ->addItem("bicicleta 1",1, "sku1", 10000)
+            ->addItem("bicicleta 2",1, "sku2", 11000)
+            ->addItem("bicicleta 3",1, "sku3", 12000)
+            ->addItem("bicicleta 4",1, "sku4", 13000)
+            ->addItem("bicicleta 5",1, "sku5", 14000)
+            ->addItem("bicicleta 6",1, "sku6", 15000)
+            ->addItem("bicicleta 7",1, "sku7", 16000)
+            ->addItem("bicicleta 8",1, "sku8", 17000)
+            ->addItem("bicicleta 9",1, "sku9", 18000)
+            ->addItem("bicicleta 10",1, "sku10", 19000)
+            ->setShippingAmount(3000)->setAddition(1000)->setDiscount(5000)
+            ->setCustomer($customer)
+            ->create();
+        $payment = $order->payments()->setCreditCard(12, 21, '4073020000000002', '123', $customer)
+            ->execute();
+        dd($payment);*/
 		//CUS-MT89U2ULBLM0
-		$pagamento = $this->pagamentoMoipService->capturarPagamento('CUS-MT89U2ULBLM0');;
+		$pagamento = $this->pagamentoMoipService->capturarPagamento('ORD-36ULIIKO8MRL');
 		dd($pagamento);
 	}
 

@@ -30,7 +30,7 @@ class PagamentoMoipService
         $payment = $this->getPagamento($idPagamento);
         /** @var \Moip\Resource\Payment $payment */
         try{
-            return $payment->capture();
+            return $payment->authorize();
         }catch (\Exception $e){
             return $e;
         }
@@ -51,12 +51,13 @@ class PagamentoMoipService
     }
 
     private function getPagamento($idPagamento){
-		$orders = $this->moip::orders()->get('ORD-AT1CLXNAI1WW');
+		$orders = $this->moip::orders()->get($idPagamento);
 		/** @var \Moip\Resource\Orders $orders */
     	//dd($orders->getPaymentIterator()->current()->capture());//MPA-ED4A20C187A4
 		/** @var \Moip\Resource\Payment $payment */
-		$payment = $orders->getPaymentIterator()->current();
-		dd($payment->capture());
+		/*$payment = $orders->getPaymentIterator()->current();
+		$payment = $payment->setDelayCapture();
+		dd($payment->capture());*/
         return $orders->getPaymentIterator()->current();
     }
 
