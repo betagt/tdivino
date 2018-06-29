@@ -604,6 +604,7 @@ class ChamadaController extends BaseController
             return $query
                 ->where('transporte_chamadas.tipo', '=', Chamada::TIPO_SOLICITACAO)
                 ->where('transporte_chamadas.status', '=', Chamada::STATUS_PENDENTE)
+                ->whereBetween('transporte_chamadas.created_at', [Carbon::now()->subMinute(8), Carbon::now()])
                 ->orderBy('id','ASC');
         })->all();
         return array_map(function($chamada){

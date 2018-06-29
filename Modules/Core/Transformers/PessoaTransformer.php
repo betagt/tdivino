@@ -30,6 +30,7 @@ class PessoaTransformer extends TransformerAbstract
             'orgao_emissor' => (string)$model->orgao_emissor,
             'escolaridade' => (string)$model->escolaridade,
             'estado_civil' => (string)$model->estado_civil,
+            'nome_da_mae' => (string)$model->nome_da_mae,
             'fantasia' => (string)$model->fantasia,
             'contato' => (string)$model->contato,
             'tipo_sanguineo' => (string)$model->tipo_sanguineo,
