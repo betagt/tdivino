@@ -30,6 +30,7 @@ class Pessoa extends Model implements Transformable
         'telefone_segundo_contato',
         'tipo_sanguineo',
         'naturalidade',
+        'nome_da_mae',
     ];
 
 
