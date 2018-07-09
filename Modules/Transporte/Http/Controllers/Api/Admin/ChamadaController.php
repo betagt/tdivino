@@ -270,7 +270,7 @@ class ChamadaController extends BaseController
         \Validator::make($data, [
             'endereco_origem' => 'required|string',
             'origem' => 'required|array',
-            'chamada_id'=>'required|exists:transporte_chamadas,id'
+            'chamada_id' => 'required|exists:transporte_chamadas,id'
         ])->validate();
 
         try {
@@ -291,7 +291,7 @@ class ChamadaController extends BaseController
             if (!$this->getUser()->habilitado) {
                 return parent::responseError(self::HTTP_CODE_BAD_REQUEST, 'Você possui pendencia favor entrar em contato com a levez.');
             }
-            if($chamada['data']['status'] == Chamada::STATUS_CANCELADO){
+            if ($chamada['data']['status'] == Chamada::STATUS_CANCELADO) {
                 return parent::responseError(self::HTTP_CODE_BAD_REQUEST, 'Chamada já está cancelada por favor realize outra chamada.');
             }
 
@@ -304,8 +304,8 @@ class ChamadaController extends BaseController
             $data['tipo'] = Chamada::TIPO_ATENDIMENTO;
             $this->getUser()->disponivel = false;
             $this->getUser()->save();
-			$configuracao = $this->configuracaoService->getConfiguracao();
-			$data['timedown'] = Carbon::now()->addMinute($configuracao['data']['tempo_cancel_cliente_min']);
+            $configuracao = $this->configuracaoService->getConfiguracao();
+            $data['timedown'] = Carbon::now()->addMinute($configuracao['data']['tempo_cancel_cliente_min']);
 
             $chamada = $this->chamadaRepository->skipPresenter(true)->update($data, $idChamada);
             $this->geoPosicaoRepository->create([
@@ -340,7 +340,7 @@ class ChamadaController extends BaseController
     {
         $data = ['chamada_id' => $idChamada];
         \Validator::make($data, [
-            'chamada_id'=>'required|exists:transporte_chamadas,id'
+            'chamada_id' => 'required|exists:transporte_chamadas,id'
         ])->validate();
         try {
             \DB::beginTransaction();
@@ -348,13 +348,14 @@ class ChamadaController extends BaseController
             if ($chamada['data']['status'] == Chamada::STATUS_CANCELADO) {
                 throw new \Exception('chamada já cancelada');
             }
-            if ($chamada['data']['tipo'] == Chamada::TIPO_ATENDIMENTO) {
-				$endTime = new \DateTime($chamada['data']['timedown']);
-				$currentTime = Carbon::now();
-				if ($currentTime > $endTime) {
-					throw new \Exception('O tmepo de cancelamento está expirado');
-				}
-            }
+            /*  ajuste do tempo de cancelamento
+             if ($chamada['data']['tipo'] == Chamada::TIPO_ATENDIMENTO) {
+                $endTime = new \DateTime($chamada['data']['timedown']);
+                $currentTime = Carbon::now();
+                if ($currentTime > $endTime) {
+                    throw new \Exception('O tmepo de cancelamento está expirado');
+                }
+            }*/
             if (is_null($chamada['data'])) {
                 throw new \Exception('chamada invalida');
             }
@@ -364,33 +365,77 @@ class ChamadaController extends BaseController
 
             $chamada['status'] = Chamada::STATUS_CANCELADO;
             $chamada['datahora_encerramento'] = Carbon::now();
+            $chamada['cancelado_por'] = $this->getUserId();
             $chamada = $this->chamadaRepository->skipPresenter(true)->update($chamada, $idChamada);
             $response = $this->chamadaRepository->skipPresenter(false)->find($idChamada);
-            if(is_null($chamada->fornecedor)) {
+            if (is_null($chamada->fornecedor)) {
                 event(new RemoverChamada($chamada->id, ChamadaRemover::REMOVE_CHAMADA));
             }
-            if(!is_null($chamada->fornecedor)){
+            if (!is_null($chamada->fornecedor)) {
                 event(new FinalizarChamada($chamada->fornecedor->device_uuid, 'chamada finalizada'));
                 //$this->chamadaNotificacaoService->cancelar_chamada( 'chamada finalizada', $chamada->fornecedor->device_uuid, 'motorista');
             }
             \DB::commit();
             return $response;
         } catch (ModelNotFoundException $e) {
-			\DB::rollBack();
+            \DB::rollBack();
             return parent::responseError(self::HTTP_CODE_NOT_FOUND, $e->getMessage());
         } catch (RepositoryException $e) {
-			\DB::rollBack();
+            \DB::rollBack();
             return parent::responseError(self::HTTP_CODE_NOT_FOUND, trans('errors.registre_not_found', ['status_code' => $e->getCode(), 'message' => $e->getMessage()]));
         } catch (\Exception $e) {
-			\DB::rollBack();
+            \DB::rollBack();
             return parent::responseError(self::HTTP_CODE_BAD_REQUEST, $e->getMessage());
         }
     }
 
-    public function motoristaNoLocal($idChamada){
+    function cancelarForcedor($idChamada)
+    {
+        $data = ['chamada_id' => $idChamada];
+        \Validator::make($data, ['chamada_id' => 'required']);
+        try {
+            \DB::beginTransaction();
+            $chamada = $this->chamadaRepository->find($data['chamada_id']);
+            if ($chamada['data']['status'] == Chamada::STATUS_CANCELADO) {
+                throw new \Exception('chamada já cancelada');
+            }
+            if (is_null($chamada['data'])) {
+                throw new \Exception('chamada invalida');
+            }
+            if (!($chamada['data']['fornecedor_id'] == $this->getUserId())) {
+                throw new \Exception('chamada não pertence a você');
+            }
+            /* ajuste do tempo de cancelamento
+            $endTime = new \DateTime($chamada['data']['timedown']);
+            $currentTime = Carbon::now();
+            if ($currentTime > $endTime) {
+                throw new \Exception('O tmepo de cancelamento está expirado');
+            }*/
+            $chamada['status'] = Chamada::STATUS_CANCELADO;
+            $chamada['datahora_encerramento'] = Carbon::now();
+            $chamada['cancelado_por'] = $this->getUserId();
+            $this->chamadaRepository->update($chamada, $idChamada);
+            event(new ChamadaCancelar($chamada['data']['cliente']['data']['device_uuid'], 'chama foi cancelada', User::CLIENTE));
+            //$this->chamadaNotificacaoService->cancelar_chamada( 'chamada finalizada', 'passageiro');
+            \DB::commit();
+            return $chamada;
+        } catch (ModelNotFoundException $e) {
+            \DB::rollBack();
+            return parent::responseError(self::HTTP_CODE_NOT_FOUND, $e->getMessage());
+        } catch (RepositoryException $e) {
+            \DB::rollBack();
+            return parent::responseError(self::HTTP_CODE_NOT_FOUND, $e->getMessage());
+        } catch (\Exception $e) {
+            \DB::rollBack();
+            return parent::responseError(self::HTTP_CODE_BAD_REQUEST, trans('errors.undefined', ['status_code' => $e->getCode(), 'message' => $e->getMessage()]));
+        }
+    }
+
+    public function motoristaNoLocal($idChamada)
+    {
         $data = ['chamada_id' => $idChamada];
         \Validator::make($data, [
-            'chamada_id'=>'required|exists:transporte_chamadas,id'
+            'chamada_id' => 'required|exists:transporte_chamadas,id'
         ])->validate();
         try {
             $chamada = $this->chamadaRepository->skipPresenter(true)->find($data['chamada_id']);
@@ -414,53 +459,14 @@ class ChamadaController extends BaseController
 
     }
 
-    function cancelarForcedor($idChamada)
+    function embarquePassageiro(Request $request, $idChamada)
     {
-        $data = ['chamada_id' => $idChamada];
-        \Validator::make($data, ['chamada_id' => 'required']);
-        try {
-			\DB::beginTransaction();
-            $chamada = $this->chamadaRepository->find($data['chamada_id']);
-            if ($chamada['data']['status'] == Chamada::STATUS_CANCELADO) {
-                throw new \Exception('chamada já cancelada');
-            }
-            if (is_null($chamada['data'])) {
-                throw new \Exception('chamada invalida');
-            }
-            if (!($chamada['data']['fornecedor_id'] == $this->getUserId())) {
-                throw new \Exception('chamada não pertence a você');
-            }
-            $endTime = new \DateTime($chamada['data']['timedown']);
-            $currentTime = Carbon::now();
-            if ($currentTime > $endTime) {
-                throw new \Exception('O tmepo de cancelamento está expirado');
-            }
-            $chamada['status'] = Chamada::STATUS_CANCELADO;
-            $chamada['datahora_encerramento'] = Carbon::now();
-            $this->chamadaRepository->update($chamada, $idChamada);
-			event(new ChamadaCancelar($chamada['data']['cliente']['data']['device_uuid'], 'chama foi cancelada', User::CLIENTE));
-            //$this->chamadaNotificacaoService->cancelar_chamada( 'chamada finalizada', 'passageiro');
-			\DB::commit();
-            return $chamada;
-        } catch (ModelNotFoundException $e) {
-			\DB::rollBack();
-            return parent::responseError(self::HTTP_CODE_NOT_FOUND, $e->getMessage());
-        } catch (RepositoryException $e) {
-			\DB::rollBack();
-            return parent::responseError(self::HTTP_CODE_NOT_FOUND, $e->getMessage());
-        } catch (\Exception $e) {
-			\DB::rollBack();
-            return parent::responseError(self::HTTP_CODE_BAD_REQUEST, trans('errors.undefined', ['status_code' => $e->getCode(), 'message' => $e->getMessage()]));
-        }
-    }
-
-    function embarquePassageiro(Request $request, $idChamada){
         $data = ['chamada_id' => $idChamada];
         $embarque = $request->only([
             'id_pagamento_moip'
         ]);
         \Validator::make($data, [
-            'chamada_id'=>'required|exists:transporte_chamadas,id'
+            'chamada_id' => 'required|exists:transporte_chamadas,id'
         ])->validate();
         try {
             $chamada = $this->chamadaRepository->find($data['chamada_id']);
@@ -470,16 +476,16 @@ class ChamadaController extends BaseController
             if (!($chamada['data']['fornecedor_id'] == $this->getUserId())) {
                 throw new \Exception('chamada não pertence a você');
             }
-            if(is_null($chamada['data']['id_pagamento_moip']) && $chamada['data']['forma_pagamento_id'] == 3){
+            if (is_null($chamada['data']['id_pagamento_moip']) && $chamada['data']['forma_pagamento_id'] == 3) {
                 throw new \Exception('pagamento não informado');
-            }else if(!is_null($chamada['data']['id_pagamento_moip']) && $chamada['data']['forma_pagamento_id'] == 3){
+            } else if (!is_null($chamada['data']['id_pagamento_moip']) && $chamada['data']['forma_pagamento_id'] == 3) {
                 $pagamento = $this->pagamentoMoipService->capturarPagamento($chamada['data']['id_pagamento_moip']);
             }
             $chamada['data']['datahora_embarque'] = Carbon::now();
             $chamada['data']['tipo'] = Chamada::TIPO_EMBARCADO;
-			$response = $this->chamadaRepository->skipPresenter(true)->find($idChamada);
-			//$this->chamadaNotificacaoService->embarque_motorista($chamada, $response->cliente->device_uuid);
-			event(new ChamadaEmbarque($response->cliente->device_uuid, $chamada, 'fornecedor'));
+            $response = $this->chamadaRepository->skipPresenter(true)->find($idChamada);
+            //$this->chamadaNotificacaoService->embarque_motorista($chamada, $response->cliente->device_uuid);
+            event(new ChamadaEmbarque($response->cliente->device_uuid, $chamada, 'fornecedor'));
             return $this->chamadaRepository->skipPresenter(false)->update($chamada['data'], $idChamada);
         } catch (ModelNotFoundException $e) {
             return parent::responseError(self::HTTP_CODE_NOT_FOUND, $e->getMessage());
@@ -490,10 +496,11 @@ class ChamadaController extends BaseController
         }
     }
 
-    function desembarquePassageiro(Request $request, $idChamada){
+    function desembarquePassageiro(Request $request, $idChamada)
+    {
         $data = ['chamada_id' => $idChamada];
         \Validator::make($data, [
-            'chamada_id'=>'required|exists:transporte_chamadas,id'
+            'chamada_id' => 'required|exists:transporte_chamadas,id'
         ])->validate();
         try {
             $chamada = $this->chamadaRepository->find($data['chamada_id']);
@@ -510,8 +517,8 @@ class ChamadaController extends BaseController
             $chamada['data']['status'] = Chamada::STATUS_PAGO;
             $this->getUser()->disponivel = true;
             $this->getUser()->save();
-			$response = $this->chamadaRepository->skipPresenter(true)->find($idChamada);
-			event(new ChamadaDesembarque($response->cliente->device_uuid, $chamada, 'cliente'));
+            $response = $this->chamadaRepository->skipPresenter(true)->find($idChamada);
+            event(new ChamadaDesembarque($response->cliente->device_uuid, $chamada, 'cliente'));
             return $this->chamadaRepository->skipPresenter(false)->update($chamada['data'], $idChamada);
         } catch (ModelNotFoundException $e) {
             return parent::responseError(self::HTTP_CODE_NOT_FOUND, $e->getMessage());
@@ -528,7 +535,7 @@ class ChamadaController extends BaseController
         $data['chamada_id'] = $idChamada;
         \Validator::make($data, [
             'avaliacao' => 'required|integer|max:5|min:0',
-            'chamada_id'=>'exists:transporte_chamadas,id'
+            'chamada_id' => 'exists:transporte_chamadas,id'
         ])->validate();
         try {
             $chamada = $this->chamadaRepository->find($data['chamada_id']);
@@ -547,11 +554,12 @@ class ChamadaController extends BaseController
         } catch (RepositoryException $e) {
             return parent::responseError(self::HTTP_CODE_NOT_FOUND, $e->getMessage());
         } catch (\Exception $e) {
-            return parent::responseError(self::HTTP_CODE_BAD_REQUEST,  $e->getMessage());
+            return parent::responseError(self::HTTP_CODE_BAD_REQUEST, $e->getMessage());
         }
     }
 
-    function finalizarChamda($idChamada){
+    function finalizarChamda($idChamada)
+    {
         try {
             $chamada = $this->chamadaRepository->find($idChamada);
             if ($chamada->status == Chamada::STATUS_CANCELADO) {
@@ -589,25 +597,28 @@ class ChamadaController extends BaseController
         return ['data' => $this->geoService->distanceCalculate($data['origem'], $data['destino'])];
     }
 
-    function pagar($idPagamento){
+    function pagar($idPagamento)
+    {
         return $this->pagamentoMoipService->capturarPagamento($idPagamento);
     }
 
-    function monitoChamadas(){
-        return $this->chamadaRepository->scopeQuery(function ($query){
-            return $query->whereBetween('transporte_chamadas.created_at', [Carbon::now()->subHour(3), Carbon::now()])->orderBy('id','DESC');
+    function monitoChamadas()
+    {
+        return $this->chamadaRepository->scopeQuery(function ($query) {
+            return $query->whereBetween('transporte_chamadas.created_at', [Carbon::now()->subHour(3), Carbon::now()])->orderBy('id', 'DESC');
         })->all();
     }
 
-    function listaChamadasAtivas(){
-        $chamadas = $this->chamadaRepository->scopeQuery(function ($query){
+    function listaChamadasAtivas()
+    {
+        $chamadas = $this->chamadaRepository->scopeQuery(function ($query) {
             return $query
                 ->where('transporte_chamadas.tipo', '=', Chamada::TIPO_SOLICITACAO)
                 ->where('transporte_chamadas.status', '=', Chamada::STATUS_PENDENTE)
                 ->whereBetween('transporte_chamadas.created_at', [Carbon::now()->subMinute(8), Carbon::now()])
-                ->orderBy('id','ASC');
+                ->orderBy('id', 'ASC');
         })->all();
-        return array_map(function($chamada){
+        return array_map(function ($chamada) {
             return [
                 'id' => $chamada['id'],
                 'cliente' => [
@@ -621,23 +632,24 @@ class ChamadaController extends BaseController
         }, $chamadas['data']);
     }
 
-    function moipTeste(){
-		/*$customer = $this->pagamentoMoipService->getMoip()::customers()->setOwnId(uniqid())
-			->setFullname('Fulano de Tal')
-			->setEmail('fulano@email.com')
-			->setBirthDate('1988-12-30')
-			->setTaxDocument('22222222222')
-			->setPhone(11, 66778899)
-			->addAddress('BILLING',
-				'Rua de teste', 123,
-				'Bairro', 'Sao Paulo', 'SP',
-				'01234567', 8)
-			->addAddress('SHIPPING',
-				'Rua de teste do SHIPPING', 123,
-				'Bairro do SHIPPING', 'Sao Paulo', 'SP',
-				'01234567', 8)
-			->create();
-		//dd($customer);
+    function moipTeste()
+    {
+        /*$customer = $this->pagamentoMoipService->getMoip()::customers()->setOwnId(uniqid())
+            ->setFullname('Fulano de Tal')
+            ->setEmail('fulano@email.com')
+            ->setBirthDate('1988-12-30')
+            ->setTaxDocument('22222222222')
+            ->setPhone(11, 66778899)
+            ->addAddress('BILLING',
+                'Rua de teste', 123,
+                'Bairro', 'Sao Paulo', 'SP',
+                '01234567', 8)
+            ->addAddress('SHIPPING',
+                'Rua de teste do SHIPPING', 123,
+                'Bairro do SHIPPING', 'Sao Paulo', 'SP',
+                '01234567', 8)
+            ->create();
+        //dd($customer);
         $order = $this->pagamentoMoipService->getMoip()::orders()->setOwnId(uniqid())
             ->addItem("bicicleta 1",1, "sku1", 10000)
             ->addItem("bicicleta 2",1, "sku2", 11000)
@@ -655,9 +667,9 @@ class ChamadaController extends BaseController
         $payment = $order->payments()->setCreditCard(12, 21, '4073020000000002', '123', $customer)
             ->execute();
         dd($payment);*/
-		//CUS-MT89U2ULBLM0
-		$pagamento = $this->pagamentoMoipService->capturarPagamento('ORD-36ULIIKO8MRL');
-		dd($pagamento);
-	}
+        //CUS-MT89U2ULBLM0
+        $pagamento = $this->pagamentoMoipService->capturarPagamento('ORD-36ULIIKO8MRL');
+        dd($pagamento);
+    }
 
 }

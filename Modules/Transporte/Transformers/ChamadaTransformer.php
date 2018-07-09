@@ -13,7 +13,7 @@ use Modules\Transporte\Models\Chamada;
  */
 class ChamadaTransformer extends TransformerAbstract
 {
-    protected $defaultIncludes = ['fornecedor', 'cliente', 'lancamentos', 'trajeto'];
+    protected $defaultIncludes = ['fornecedor', 'cliente', 'lancamentos', 'trajeto', 'cancelamento'];
     /**
      * Transform the \Chamada entity
      * @param Chamada $model
@@ -27,6 +27,7 @@ class ChamadaTransformer extends TransformerAbstract
             'fornecedor_id'=> (int) $model->fornecedor_id,
             'forma_pagamento_id'=> (int) $model->forma_pagamento_id,
             'cliente_id'=> (int) $model->cliente_id,
+            'cancelado_por'=> (int) $model->cancelado_por,
             'cliente_nome' => (string)  ($model->cliente)?$model->cliente->name:null,
             'tipo'=> (string) $model->tipo,
             'desolamento_km_com_passageiro'=> (double) $model->desolamento_km_com_passageiro,
@@ -82,6 +83,13 @@ class ChamadaTransformer extends TransformerAbstract
             return $this->null();
         }
         return $this->item($model->cliente, new UserTransformer());
+    }
+
+    public function includeCancelamento(Chamada $model){
+        if(is_null($model->cancelamento)){
+            return $this->null();
+        }
+        return $this->item($model->cancelamento, new UserTransformer());
     }
 
     public function includeLancamentos(Chamada $model){

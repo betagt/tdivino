@@ -50,6 +50,7 @@ class Chamada extends BaseModel implements Transformable
 		'valor_repasse',
 		'forma_pagamento_id',
 		'id_pagamento_moip',
+		'cancelado_por',
     ];
 
     public function lancamentos()
@@ -68,6 +69,10 @@ class Chamada extends BaseModel implements Transformable
 
     public function cliente(){
         return $this->belongsTo(User::class, 'cliente_id');
+    }
+
+    public function cancelamento(){
+        return $this->belongsTo(User::class, 'cancelado_por');
     }
 
 }
