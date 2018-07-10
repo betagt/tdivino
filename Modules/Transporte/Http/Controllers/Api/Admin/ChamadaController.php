@@ -605,7 +605,8 @@ class ChamadaController extends BaseController
     function monitoChamadas()
     {
         return $this->chamadaRepository->scopeQuery(function ($query) {
-            return $query->whereBetween('transporte_chamadas.created_at', [Carbon::now()->subHour(3), Carbon::now()])->orderBy('id', 'DESC');
+            return $query
+				->whereBetween('transporte_chamadas.created_at', [Carbon::now()->subHour(3), Carbon::now()])->orderBy('id', 'DESC');
         })->all();
     }
 
