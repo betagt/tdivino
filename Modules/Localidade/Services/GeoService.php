@@ -99,6 +99,7 @@ class GeoService
 			'tx_uso_malha' => $tx_uso_malha,
 			'tarifa_operacao' => $tarifa_operacao,//(Vlcor- vltxmpub) X (%txoper-%bonusm))
 			'valor_repasse'=> $total-$tarifa_operacao-$tx_uso_malha,
+			'valor_seguro'=> $calc['vlsegp'],
         ];
     }
 

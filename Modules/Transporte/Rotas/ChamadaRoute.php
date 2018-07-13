@@ -68,7 +68,7 @@ class ChamadaRoute implements ICustomRoute
                     'as' => 'chamda.cancelar',
                     'uses' => 'ChamadaController@visualizarFornecedor'
                 ]);
-                Route::get('chamada/cancelar-fornecedor/{idChamada}', [
+                Route::post('chamada/cancelar-fornecedor/{idChamada}', [
                     'as' => 'chamda.cancelar-fornecedor',
                     'uses' => 'ChamadaController@cancelarForcedor'
                 ]);

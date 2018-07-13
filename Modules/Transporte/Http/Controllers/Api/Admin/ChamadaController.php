@@ -174,6 +174,8 @@ class ChamadaController extends BaseController
         $data['tx_uso_malha'] = $result['tx_uso_malha'];
         $data['tarifa_operacao'] = $result['tarifa_operacao'];
         $data['valor_repasse'] = $result['valor_repasse'];
+        $data['valor_seguro'] = $result['valor_seguro'];
+        $data['tempo_deslocamento'] = $result['duracao'];
         try {
             \DB::beginTransaction();
             $chamada = $this->chamadaRepository->create($data);
@@ -389,7 +391,7 @@ class ChamadaController extends BaseController
         }
     }
 
-    function cancelarForcedor($idChamada)
+    function cancelarForcedor($idChamada, Request $request)
     {
         $data = ['chamada_id' => $idChamada];
         \Validator::make($data, ['chamada_id' => 'required']);
@@ -414,6 +416,7 @@ class ChamadaController extends BaseController
             $chamada['status'] = Chamada::STATUS_CANCELADO;
             $chamada['datahora_encerramento'] = Carbon::now();
             $chamada['cancelado_por'] = $this->getUserId();
+            $chamada['justificativa_cancelamento'] = $request->get('justificativa_cancelamento');
             $this->chamadaRepository->update($chamada, $idChamada);
             event(new ChamadaCancelar($chamada['data']['cliente']['data']['device_uuid'], 'chama foi cancelada', User::CLIENTE));
             //$this->chamadaNotificacaoService->cancelar_chamada( 'chamada finalizada', 'passageiro');
@@ -612,11 +615,12 @@ class ChamadaController extends BaseController
 
     function listaChamadasAtivas()
     {
-        $chamadas = $this->chamadaRepository->scopeQuery(function ($query) {
+    	$config = $this->configuracaoService->getConfiguracao();
+        $chamadas = $this->chamadaRepository->scopeQuery(function ($query) use ($config) {
             return $query
                 ->where('transporte_chamadas.tipo', '=', Chamada::TIPO_SOLICITACAO)
                 ->where('transporte_chamadas.status', '=', Chamada::STATUS_PENDENTE)
-                ->whereBetween('transporte_chamadas.created_at', [Carbon::now()->subMinute(8), Carbon::now()])
+                ->whereBetween('transporte_chamadas.created_at', [Carbon::now()->subMinute($config['data']['tempo_inatividade_chamada']), Carbon::now()])
                 ->orderBy('id', 'ASC');
         })->all();
         return array_map(function ($chamada) {

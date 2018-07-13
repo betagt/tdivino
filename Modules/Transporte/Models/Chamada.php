@@ -47,10 +47,13 @@ class Chamada extends BaseModel implements Transformable
 		'km_rodado',
 		'tx_uso_malha',
 		'tarifa_operacao',
+		'valor_seguro',
 		'valor_repasse',
 		'forma_pagamento_id',
 		'id_pagamento_moip',
 		'cancelado_por',
+		'justificativa_cancelamento',
+		'tempo_deslocamento',
     ];
 
     public function lancamentos()

@@ -30,6 +30,7 @@ class ChamadaTransformer extends TransformerAbstract
             'cancelado_por'=> (int) $model->cancelado_por,
             'cliente_nome' => (string)  ($model->cliente)?$model->cliente->name:null,
             'tipo'=> (string) $model->tipo,
+            'justificativa_cancelamento'=> (string) $model->justificativa_cancelamento,
             'desolamento_km_com_passageiro'=> (double) $model->desolamento_km_com_passageiro,
             'desolamento_km_sem_passageiro'=> (double) $model->desolamento_km_sem_passageiro,
             'datahora_chamado'=> $model->datahora_chamado,
@@ -49,7 +50,9 @@ class ChamadaTransformer extends TransformerAbstract
             'km_rodado'=> $model->km_rodado,
             'tx_uso_malha'=> $model->tx_uso_malha,
             'tarifa_operacao'=> $model->tarifa_operacao,
+            'valor_seguro'=> $model->valor_seguro,
             'valor_repasse'=> $model->valor_repasse,
+            'tempo_deslocamento'=> $model->tempo_deslocamento,
             'status'=> (string) $model->status,
             'created_at' => $model->created_at,
             'updated_at' => $model->updated_at

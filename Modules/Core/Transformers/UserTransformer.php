@@ -69,8 +69,8 @@ class UserTransformer extends BaseTransformer
 				$pendencias = app(TipoDocumentoRepository::class)->validadeUser($model->id, current($model->getRoles()));
 				$result = array_merge($result, [
 					'nota_fornecedor' => round($avaliacao, 2),
-					'contagem_chamadas' => $model->chamadas_fornecedor->count(),
-					'km_mes_rodado' => $model->chamadas_fornecedor->sum('km_rodado'),
+					'contagem_chamadas' => $model->chamadas_fornecedor_mes->count(),
+					'km_mes_rodado' => $model->chamadas_fornecedor_mes->sum('km_rodado'),
                     'habilitado' => (boolean) $model->habilitado,
                     'pendencias' => $pendencias,
 				]);

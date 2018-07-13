@@ -211,6 +211,10 @@ class User extends Authenticatable implements Transformable
 		return $this->hasMany(Chamada::class, 'fornecedor_id');
 	}
 
+	public function chamadas_fornecedor_mes(){
+		return $this->hasMany(Chamada::class, 'fornecedor_id')->whereBetween('transporte_chamadas.created_at', [date('Y-m-01'), date('Y-m-t')]);
+	}
+
     public function veiculoAtivo(){
         return $this->hasOne(Veiculo::class, 'user_id')->where('status', '=', Veiculo::ACEITO);
     }

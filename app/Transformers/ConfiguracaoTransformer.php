@@ -59,7 +59,9 @@ class ConfiguracaoTransformer extends TransformerAbstract
             'vlbonusp' => (double)$model->vlbonusp,
             'pbonusp' => (double)$model->pbonusp,
             'tempo_cancel_fornecedor_min' => (int)$model->tempo_cancel_fornecedor_min,
-            'tempo_cancel_cliente_min' => (int)$model->tempo_cancel_cliente_min
+            'tempo_cancel_cliente_min' => (int)$model->tempo_cancel_cliente_min,
+            'valor_minimo_cancelamento' => (double)$model->valor_minimo_cancelamento,
+            'tempo_inatividade_chamada' => (int)$model->tempo_inatividade_chamada,
         ];
     }
 
